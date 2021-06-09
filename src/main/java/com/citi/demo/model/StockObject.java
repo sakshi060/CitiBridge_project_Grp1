@@ -2,7 +2,6 @@ package com.citi.demo.model;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -15,22 +14,20 @@ import yahoofinance.histquotes.HistoricalQuote;
 @With
 @AllArgsConstructor
 @NoArgsConstructor
-public class StockObject
+public class StockObject // To use Yahoo Finance Functionality 
 {
 	public Stock stock;
-	private LocalDateTime lastAccessed;
-
-
-
-
-	public StockObject(final Stock stock)
+public StockObject(final Stock stock)
 	{
 		this.stock = stock;
-		this.lastAccessed = LocalDateTime.now();
 		
 	}
 	public StockObject() {
 		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public String toString() {
+		return "StockObject [stock=" + stock + "]";
 	}
 	public String getCompanySymbol()
 	{

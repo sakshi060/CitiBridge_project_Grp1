@@ -19,127 +19,123 @@ import com.citi.demo.BackendappApplication;
 import com.citi.demo.model.StockDetails;
 import com.citi.demo.model.UserHistory;
 import com.citi.demo.service.SectorStocksService;
-import com.citi.demo.service.StockWrapperServiceImpl;
+import com.citi.demo.service.StockRecommendationService;
 import com.citi.demo.service.UserHistoryService;
 
 import yahoofinance.histquotes.HistoricalQuote;
 
 
-@RequestMapping("/userhistory")
+@RequestMapping("/userHistory")
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
 public class UserHistoryController {
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
 	@Autowired
-	UserHistoryService dao;
+	UserHistoryService userHistoryService;
 	@Autowired
-	SectorStocksService sector;
+	SectorStocksService sectorStocksService;
+	@Autowired
+	StockRecommendationService stockRecomendationService;
 
 	@PostMapping("/saveStocks/{userId}/{companySymbol}/{quantity}")
-	public UserHistory saveStocks(@PathVariable String userId , @PathVariable String companySymbol, @PathVariable long quantity) {
-
-		UserHistory share = new UserHistory();
+	public UserHistory saveUserHistory(@PathVariable String userId , @PathVariable String companySymbol, @PathVariable long quantity) {
+		// Saves stock and quantity of the stock, the given user wants.
+		UserHistory stock = new UserHistory();
 		try
 		{
-			share = dao.saveUserHistoryByuserId(userId,companySymbol,quantity);
-			if(share.getCompanySymbol()!=null) {
-				logger.info("Stock saved successfully!");
-				return share;
+			stock = userHistoryService.saveUserHistoryByuserId(userId,companySymbol,quantity);
+			if(stock.getCompanySymbol()!=null) {
+				logger.info("User History for Stock {} and User {} saved successfully!",stock.getCompanySymbol(),userId);
+				return stock;
 			}
 		}
 		catch(Exception e)
 		{
-			logger.info("New Company could not be added!");
+			logger.error("User History for Stock {} and User {} not saved successfully!",stock.getCompanySymbol(),userId);
 		}
 
 		return new UserHistory();
 	}
 
 	@RequestMapping(value = "/showStocks/{userId}", method = RequestMethod.GET)
-	public ArrayList<UserHistory> showShares(@PathVariable String userId) {
-
+	public ArrayList<UserHistory> getUserHistory(@PathVariable String userId) {
+		//Returns saved stocks of userId passed as an argument.
 		ArrayList<UserHistory> stocks = new ArrayList<UserHistory>();
 
 		try
 		{
-			logger.info("Showing User History of user - " +userId);
-			stocks = (ArrayList<UserHistory>) dao.getUserHistoryByuserId(userId);
-			return stocks;
-
+			logger.info("User History of user - " +userId);
+			stocks = (ArrayList<UserHistory>) userHistoryService.getUserHistoryByuserId(userId);
 		}
 		catch(Exception e)
 		{
-			logger.info("User not found!");
-			return null;
+			logger.error("User not found!");
 		}
-
+		return stocks;
 	}
 
 	@RequestMapping(value = "/showTopPerformingStock/{userId}", method = RequestMethod.GET)
-	public StockDetails showTopPerformingStock(@PathVariable String userId) throws IOException 
-	{
+	public StockDetails getTopPerformingStock(@PathVariable String userId) throws IOException {
+		//Returns Top Performing Stock from Saved Stocks of userId passed as an argument.
 		StockDetails topStock = new StockDetails();
 
 		List<String> companySymbols=new ArrayList<String>(); 
-
-		try {
-
-			companySymbols =  dao.getCompanySymbolsByUserId(userId);
-			topStock = StockWrapperServiceImpl.getStocksDetails(companySymbols.get(0));
-			return topStock;
+		logger.info("Top Performing Stock for User: "+userId);
+		try 
+		{
+			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
+			topStock = stockRecomendationService.getStocksDetails(companySymbols.get(0));			
 		}
 		catch(Exception e)
 		{
-			logger.info("User not found!");
-			return null;
+			logger.error("Top Performing Stock for User: "+userId+" could not be found!");
 		}
+		return topStock;
 	}
-
-	public List<String> getCompanySymbolsByUserId(String userId) {
+	
+	@RequestMapping(value = "/getCompanySymbols/{userId}", method = RequestMethod.GET)
+	public List<String> getCompanySymbolsSavedByUserId(String userId) {
+		//Returns Company Symbols of Saved Stocks of userId passed as an argument.
 		List<String> companySymbols=new ArrayList<String>();  
+		logger.info("Searching Company Symbols of Stocks saved by User: "+userId);
 		try
 		{
-			companySymbols =  dao.getCompanySymbolsByUserId(userId);
-			return companySymbols;
-
+			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
+			logger.info("Company Symbols of Stocks saved by User: "+userId+ " found!");
+			
 		}
 		catch(Exception e)
 		{
-			logger.info("Sector not found!");
-			return null;
+			logger.error("Company Symbols of Stocks saved by User: "+userId+ " could not be found!");
 		}
+		return companySymbols;
 
 	}
 
-	@RequestMapping(value = "/deleteStocks", method = RequestMethod.POST)
-	public boolean deleteStocks( @RequestBody int[] ids) {
+	@RequestMapping(value = "/deleteSavedStocksByUserId", method = RequestMethod.POST)
+	public boolean deleteSavedStocksByUserId( @RequestBody int[] ids) {
+		// Deletes stocks for the logged in user with ids as parameter.
 		try {
 			System.out.println(ids[0]);
 			for(int i=0;i<ids.length;i++)
 			{
-				int deleted = dao.deleteUserHistoryByuserId(ids[i]);
+				int deleted = userHistoryService.deleteUserHistoryByuserId(ids[i]);
 				if(deleted==1) {
 					logger.info("Deleted Stock!");
 				}
 				else
 					logger.info("Stock could not be deleted!");
-				}
-			return true;
 			}
+			return true;
+		}
 		catch(Exception e)
 		{
-			logger.info("Invalid ID!");
+			logger.error("Invalid ID!");
 			return false;
 		}
 	}
 
-	@RequestMapping(value = "/historicalData/{companySymbol}", method = RequestMethod.GET)
-	public List<HistoricalQuote> HistoricalData(@PathVariable String companySymbol) throws IOException{
-		
-		return StockWrapperServiceImpl.findStock(companySymbol).getHistory();
-		
-		
-	}
 	
+
 }

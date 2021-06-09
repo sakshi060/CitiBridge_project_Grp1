@@ -15,33 +15,40 @@ import com.citi.demo.BackendappApplication;
 import com.citi.demo.model.UserMaster;
 import com.citi.demo.service.UserService;
 
-
 @RequestMapping("/user")
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
 public class UserController {
-	
+
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
-	
+
 	@Autowired
-	UserService userservice;
-	
+	UserService userService;
+
+
 	@PostMapping("/login")
 	public String UserLogin(@RequestBody UserMaster userObject ) {
-		
+		// Checks if user present in database, if yes returns username
+
+		UserMaster checkuser = new UserMaster();
 		try
 		{
-		logger.info("Validating login for User ", userObject.getUserId());
-		
+			logger.info("Authenticating User :"+userObject.getUserId());
+			checkuser = userService.checkLogin(userObject);
+			if(checkuser!=null)
+			{
+				logger.info("SUCCESS");
+				return checkuser.getUserId();
+			}
+			else
+				logger.error("FAILURE");
+			return null;
 		}
 		catch(Exception e)
 		{
-			System.out.println("User not found!");
-			
+			logger.error("FAILURE");
+			return null;
 		}
-		return userservice.checkLogin(userObject);
-		
-		
-	}
 
+	}
 }

@@ -34,6 +34,13 @@ public class UserMaster {
 		this.password = password;
 	}
 
+	
+
+	public UserMaster(String userId) {
+		super();
+		this.userId = userId;
+	}
+
 	public String getUserId() {
 		return userId;
 	}

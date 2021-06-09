@@ -26,5 +26,10 @@ public class SectorAvg {
 	public void setAvggrowth(double avggrowth) {
 		this.avggrowth = avggrowth;
 	}
+	@Override
+	public String toString() {
+		return "SectorAvg [sector=" + sector + ", avggrowth=" + avggrowth + "]";
+	}
+	
 
 }

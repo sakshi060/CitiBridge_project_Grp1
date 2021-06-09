@@ -28,6 +28,11 @@ public class StockDetails {
 	private List<HistoricalQuote> history;
 	
 	
+	public StockDetails() {
+		super();
+	}
+
+
 	public String getStockSymbol() {
 		return stockSymbol;
 	}
@@ -146,13 +151,7 @@ public class StockDetails {
 	public void setHistory(List<HistoricalQuote> history) {
 		this.history = history;
 	}
-
-
-	public StockDetails() {
-		super();
-	}
-
-
+	
 	public StockDetails(String stockSymbol, String companyName, BigDecimal open, BigDecimal close, BigDecimal high,
 			BigDecimal low, long volume, BigDecimal change, BigDecimal peRatio, BigDecimal marketCap,
 			BigDecimal returnOnEquity, List<HistoricalQuote> history) {
@@ -170,6 +169,17 @@ public class StockDetails {
 		this.returnOnEquity = returnOnEquity;
 		this.history = history;
 	}
+
+
+	@Override
+	public String toString() {
+		return "StockDetails [stockSymbol=" + stockSymbol + ", companyName=" + companyName + ", open=" + open
+				+ ", close=" + close + ", high=" + high + ", low=" + low + ", volume=" + volume + ", change=" + change
+				+ ", peRatio=" + peRatio + ", marketCap=" + marketCap + ", returnOnEquity=" + returnOnEquity
+				+ ", history=" + history + "]";
+	}
+	
+	
 	
 
 	

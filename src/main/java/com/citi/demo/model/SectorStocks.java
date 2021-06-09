@@ -15,6 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SectorStocks {
+	@Id
+	@Column(name ="companySymbol")
+	String companySymbol;
+	@Column(name ="companyName")
+	String companyName;
+	@Column(name ="sector")
+	String sector;	
 	
 	public String getCompanySymbol() {
 		return companySymbol;
@@ -43,12 +50,11 @@ public class SectorStocks {
 		this.companyName = companyName;
 		this.sector = sector;
 	}
-	@Id
-	@Column(name ="companySymbol")
-	String companySymbol;
-	@Column(name ="companyName")
-	String companyName;
-	@Column(name ="sector")
-	String sector;	
+	@Override
+	public String toString() {
+		return "SectorStocks [companySymbol=" + companySymbol + ", companyName=" + companyName + ", sector=" + sector
+				+ "]";
+	}
+
 
 }

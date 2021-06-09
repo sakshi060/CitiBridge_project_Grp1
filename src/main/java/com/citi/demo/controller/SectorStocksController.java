@@ -24,82 +24,78 @@ public class SectorStocksController {
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
 	@Autowired
-	SectorStocksService dao1;
-	
-	@RequestMapping(value = "/showsCompanies/{sector}", method = RequestMethod.GET)
-	public ArrayList<SectorStocks> showShares(@PathVariable String sector) {
-		ArrayList<SectorStocks> companies=new ArrayList<SectorStocks>();  
+	SectorStocksService sectorstocksService;
 
+	@RequestMapping(value = "/showCompanies/{sector}", method = RequestMethod.GET)
+	public ArrayList<SectorStocks> showStocks(@PathVariable String sector) {
+		// Returns Companies when sector is passed as an argument.
+		ArrayList<SectorStocks> companies=new ArrayList<SectorStocks>();  
 		try
 		{
-			logger.info("Showing Companies of Sector - " +sector);
-			companies = (ArrayList<SectorStocks>) dao1.findCompanyBySector(sector);
-			return companies;
-
+			companies = (ArrayList<SectorStocks>) sectorstocksService.getCompanyBySector(sector);
+			logger.info("Companies under Sector - " +sector);
 		}
 		catch(Exception e)
 		{
-			logger.info("Sector not found!");
-			return null;
+			logger.error("Companies of Sector not found!");	
 		}
+		return companies;
 
 	}
 
-	@RequestMapping(value = "/showsCompanySymbol/{sector}", method = RequestMethod.GET)
+	@RequestMapping(value = "/showCompanySymbol/{sector}", method = RequestMethod.GET)
 	public List<String> showCompanySymbols(@PathVariable String sector) {
+		// Returns Company Symbols when sector is passed as an argument.
 		List<String> companySymbols=new ArrayList<String>();  
 		try
 		{
-			logger.info("Showing Companies of Sector - " +sector);
-			companySymbols =  dao1.findCompanySymbolBySector(sector);
-			return companySymbols;
-
+			companySymbols =  sectorstocksService.getCompanySymbolBySector(sector);
+			logger.info("Company Symbols of Stocks under Sector - " +sector);
 		}
 		catch(Exception e)
 		{
-			logger.info("Sector not found!");
-			return null;
+			logger.error("Companies of Sector not found!");
 		}
+		return companySymbols;
 
 	}
-	
+
 	@RequestMapping(value = "/showSectorWiseChange", method = RequestMethod.GET)
 	public List<SectorAvg> showSectorWiseChange() {
+		// Returns Sector Wise Comparison on attribute - change.
 		List<SectorAvg> sectors=new ArrayList<SectorAvg>(); 
 		try
 		{
-			logger.info("Showing Sector Wise Growth.");
-			sectors =  dao1.getSectorWiseGrowth();
-			return sectors;
+			sectors =  sectorstocksService.getSectorWiseGrowth();
+			logger.info("Sector Wise Growth.");
 		}
 		catch(Exception e)
 		{
-			logger.info("Sector Wise data not found!");
-			return null;
+			logger.error("Sector Wise data not found!");
 		}
+		return sectors;
 	}
-	
+
 	@RequestMapping(value = "/showDistinctSectors", method = RequestMethod.GET)
 	public List<String> showSectors() {
+		// Returns Distinct sectors.
 		List<String> sectors = new ArrayList<String>();  
 		try
 		{
-			sectors =  dao1.getDistinctSectors();
-			System.out.println(sectors);
-			return sectors;
-
+			sectors =  sectorstocksService.getDistinctSectors();
+			logger.info("Distinct Sectors");
 		}
 		catch(Exception e)
 		{
-			logger.info("Sector not found!");
-			return null;
+			logger.error("Sectors not found!");
 		}
+		return sectors;
 
 	}
 
 
-	}
-	
+}
+
 
 
 

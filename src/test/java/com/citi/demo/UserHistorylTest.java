@@ -120,15 +120,12 @@ public class UserHistorylTest {
 	@Test
 	public void testdeleteStocks() {
 		try {
-			int ids[] = {1,3};
+			int ids[] = {17,18};
 			for(int i=0;i<ids.length;i++)
 			{
 				int deleted = userHistoryService.deleteUserHistoryByuserId(ids[i]);
 				if(deleted==1) {
 					logger.info("Deleted Stock!");
-					System.out.println("\n");
-					System.out.println("Stocks after deletion");
-					testgetUserHistoryByuserId();
 					System.out.println("\n");
 				}
 				else

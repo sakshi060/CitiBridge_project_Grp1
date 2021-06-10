@@ -21,6 +21,7 @@ public class SectorStocksTest {
 
 	@Test
 	public void testShowStocks() {
+		
 		ArrayList<SectorStocks> companies=new ArrayList<SectorStocks>();  
 		String sector ="FINANCIAL SERVICES";
 		try
@@ -40,6 +41,7 @@ public class SectorStocksTest {
 	}
 	@Test
 	public void testShowCompanySymbols() {
+		
 		List<String> companySymbols=new ArrayList<String>();  
 		String sector = "AUTOMOBILE";
 		try
@@ -60,6 +62,7 @@ public class SectorStocksTest {
 	@Test
 	public void testShowSectorWiseChange() {
 		// Returns Sector Wise Comparison on attribute - change.
+		
 		List<SectorAvg> sectorAvggrowth=new ArrayList<SectorAvg>(); 
 		try
 		{
@@ -78,6 +81,7 @@ public class SectorStocksTest {
 	@Test
 	public void testShowSectors() {
 		// Returns Distinct sectors.
+		
 		List<String> sectors = new ArrayList<String>();  
 		try
 		{

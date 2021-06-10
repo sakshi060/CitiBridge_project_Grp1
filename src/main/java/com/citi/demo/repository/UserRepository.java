@@ -50,8 +50,8 @@ public class UserRepository {
 				}
 				else
 				{
-					logger.error("User Login UnsSuccessful.Enter the correct Password!");
-					return null;
+					logger.error("Enter the correct Password!");
+					return temp;
 
 				}
 			}

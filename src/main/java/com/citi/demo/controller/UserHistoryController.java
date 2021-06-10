@@ -40,19 +40,23 @@ public class UserHistoryController {
 	@PostMapping("/saveStocks/{userId}/{companySymbol}/{quantity}")
 	public UserHistory saveUserHistory(@PathVariable String userId , @PathVariable String companySymbol, @PathVariable long quantity) {
 		// Saves stock and quantity of the stock, the given user wants.
-		
+
 		UserHistory stock = new UserHistory();
 		try
 		{
 			stock = userHistoryService.saveUserHistoryByuserId(userId,companySymbol,quantity);
-			if(stock.getCompanySymbol()!=null) {
+
+			if(stock != null) {
 				logger.info("User History for Stock {} and User {} saved successfully!",stock.getCompanySymbol(),userId);
 				return stock;
 			}
-				else
-					logger.error("User History for Stock {} and User {} not saved successfully!",stock.getCompanySymbol(),userId);
-			
+			else
+			{
+				logger.error("User History for Stock {} and User {} not saved successfully!",companySymbol,userId);
+				return null;
+			}
 		}
+
 		catch(Exception e)
 		{
 			logger.error("User History for Stock {} and User {} not saved successfully!",stock.getCompanySymbol(),userId);
@@ -64,13 +68,13 @@ public class UserHistoryController {
 	@RequestMapping(value = "/showStocks/{userId}", method = RequestMethod.GET)
 	public ArrayList<UserHistory> getUserHistory(@PathVariable String userId) {
 		//Returns saved stocks of userId passed as an argument.
-		
+
 		ArrayList<UserHistory> userHistoryStocks = new ArrayList<UserHistory>();
 		try
 		{
 			userHistoryStocks = (ArrayList<UserHistory>) userHistoryService.getUserHistoryByuserId(userId);
 			if(userHistoryStocks.size()!=0)
-			logger.info("Showing User History for User"+userId);
+				logger.info("Showing User History for User"+userId);
 		}
 		catch(Exception e)
 		{
@@ -82,7 +86,7 @@ public class UserHistoryController {
 	@RequestMapping(value = "/showTopPerformingStock/{userId}", method = RequestMethod.GET)
 	public StockDetails getTopPerformingStock(@PathVariable String userId) throws IOException {
 		//Returns Top Performing Stock from Saved Stocks of userId passed as an argument.
-		
+
 		StockDetails topStock = new StockDetails();
 		List<String> companySymbols=new ArrayList<String>(); 
 		try 
@@ -91,7 +95,7 @@ public class UserHistoryController {
 			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
 			topStock = stockRecomendationService.getStocksDetails(companySymbols.get(0));
 			if(topStock!=null)
-			logger.info("Showing Top Performing Stock for User: "+userId);
+				logger.info("Showing Top Performing Stock for User: "+userId);
 		}
 		catch(Exception e)
 		{
@@ -99,18 +103,18 @@ public class UserHistoryController {
 		}
 		return topStock;
 	}
-	
+
 	@RequestMapping(value = "/getCompanySymbols/{userId}", method = RequestMethod.GET)
-	public List<String> getCompanySymbolsSavedByUserId(String userId) {
+	public List<String> getCompanySymbolsSavedByUserId(@PathVariable String userId) {
 		//Returns Company Symbols of Saved Stocks of userId passed as an argument.
-		
+
 		List<String> companySymbols=new ArrayList<String>();  
 		try
 		{
 			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
 			if(companySymbols.size()!=0)
-			logger.info("Company Symbols of Stocks saved by User: "+userId+ " found!");
-			
+				logger.info("Company Symbols of Stocks saved by User: "+userId+ " found!");
+
 		}
 		catch(Exception e)
 		{
@@ -123,7 +127,7 @@ public class UserHistoryController {
 	@RequestMapping(value = "/deleteSavedStocksByUserId", method = RequestMethod.POST)
 	public boolean deleteSavedStocksByUserId( @RequestBody int[] ids) {
 		// Deletes stocks for the logged in user with ids as parameter.
-		
+
 		try {
 			for(int i=0;i<ids.length;i++)
 			{
@@ -143,6 +147,6 @@ public class UserHistoryController {
 		}
 	}
 
-	
+
 
 }

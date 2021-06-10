@@ -23,15 +23,6 @@ public class UserMaster {
 	@Column(name ="password")
 	String password;
 	
-	public UserMaster(String userId) {
-		this.userId = userId;
-	}
-	
-
-	public UserMaster() {
-	}
-
-
 	public String getUserId() {
 		return userId;
 	}

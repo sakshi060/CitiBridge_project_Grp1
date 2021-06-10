@@ -17,16 +17,7 @@ import yahoofinance.histquotes.HistoricalQuote;
 public class StockObject // To use Yahoo Finance Functionality 
 {
 	public Stock stock;
-	public StockObject()
-	{
-		
-	}
 	
-	public StockObject(Stock stock) {
-		
-		this.stock = stock;
-	}
-
 	@Override
 	public String toString() {
 		return "StockObject [stock=" + stock + "]";
@@ -84,7 +75,7 @@ public class StockObject // To use Yahoo Finance Functionality
 	{
 		return stock.getHistory();
 	}
-	public Stock getStock()
+	public Stock getStock() 
 	{
 		return stock;
 	}

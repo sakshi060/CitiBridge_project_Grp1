@@ -54,6 +54,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 			else
 			{
 				logger.error("Company Symbol - "+companySymbol+" not found!");
+				return null;
 			}
 		}
 		catch(Exception e)

@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
 		checkuser = userRepository.checkLogin(userObject,password);
 		if(checkuser != null) {
 			System.out.println("\n");
-			System.out.println(decodeString(userObject.getPassword()));
 			logger.info("User found in database");
 		}
 		else {
@@ -52,7 +51,7 @@ public class UserServiceImpl implements UserService {
 		}
 		else
 		{
-			logger.info("User Login UnsSuccessful.Enter the correct Password!");
+			logger.info("User Login UnsSuccessful");
 			System.out.println("\n");
 			return null;
 			

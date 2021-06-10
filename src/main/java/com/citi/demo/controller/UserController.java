@@ -28,7 +28,7 @@ public class UserController {
 
 	@PostMapping("/login")
 	public String UserLogin(@RequestBody UserMaster userObject ) {
-		// Checks if user present in database, if yes returns username
+		// Checks if user present in database, if yes returns userId
 
 		UserMaster checkuser = new UserMaster();
 		try

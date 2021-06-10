@@ -22,7 +22,6 @@ import com.citi.demo.service.SectorStocksService;
 import com.citi.demo.service.StockRecommendationService;
 import com.citi.demo.service.UserHistoryService;
 
-import yahoofinance.histquotes.HistoricalQuote;
 
 
 @RequestMapping("/userHistory")
@@ -41,6 +40,7 @@ public class UserHistoryController {
 	@PostMapping("/saveStocks/{userId}/{companySymbol}/{quantity}")
 	public UserHistory saveUserHistory(@PathVariable String userId , @PathVariable String companySymbol, @PathVariable long quantity) {
 		// Saves stock and quantity of the stock, the given user wants.
+		
 		UserHistory stock = new UserHistory();
 		try
 		{
@@ -49,6 +49,9 @@ public class UserHistoryController {
 				logger.info("User History for Stock {} and User {} saved successfully!",stock.getCompanySymbol(),userId);
 				return stock;
 			}
+				else
+					logger.error("User History for Stock {} and User {} not saved successfully!",stock.getCompanySymbol(),userId);
+			
 		}
 		catch(Exception e)
 		{
@@ -61,31 +64,34 @@ public class UserHistoryController {
 	@RequestMapping(value = "/showStocks/{userId}", method = RequestMethod.GET)
 	public ArrayList<UserHistory> getUserHistory(@PathVariable String userId) {
 		//Returns saved stocks of userId passed as an argument.
-		ArrayList<UserHistory> stocks = new ArrayList<UserHistory>();
-
+		
+		ArrayList<UserHistory> userHistoryStocks = new ArrayList<UserHistory>();
 		try
 		{
-			logger.info("User History of user - " +userId);
-			stocks = (ArrayList<UserHistory>) userHistoryService.getUserHistoryByuserId(userId);
+			userHistoryStocks = (ArrayList<UserHistory>) userHistoryService.getUserHistoryByuserId(userId);
+			if(userHistoryStocks.size()!=0)
+			logger.info("Showing User History for User"+userId);
 		}
 		catch(Exception e)
 		{
 			logger.error("User not found!");
 		}
-		return stocks;
+		return userHistoryStocks;
 	}
 
 	@RequestMapping(value = "/showTopPerformingStock/{userId}", method = RequestMethod.GET)
 	public StockDetails getTopPerformingStock(@PathVariable String userId) throws IOException {
 		//Returns Top Performing Stock from Saved Stocks of userId passed as an argument.
+		
 		StockDetails topStock = new StockDetails();
-
 		List<String> companySymbols=new ArrayList<String>(); 
-		logger.info("Top Performing Stock for User: "+userId);
 		try 
 		{
+			logger.info("Finding Top Performance Stock for User {} " +userId);
 			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
-			topStock = stockRecomendationService.getStocksDetails(companySymbols.get(0));			
+			topStock = stockRecomendationService.getStocksDetails(companySymbols.get(0));
+			if(topStock!=null)
+			logger.info("Showing Top Performing Stock for User: "+userId);
 		}
 		catch(Exception e)
 		{
@@ -97,11 +103,12 @@ public class UserHistoryController {
 	@RequestMapping(value = "/getCompanySymbols/{userId}", method = RequestMethod.GET)
 	public List<String> getCompanySymbolsSavedByUserId(String userId) {
 		//Returns Company Symbols of Saved Stocks of userId passed as an argument.
+		
 		List<String> companySymbols=new ArrayList<String>();  
-		logger.info("Searching Company Symbols of Stocks saved by User: "+userId);
 		try
 		{
 			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
+			if(companySymbols.size()!=0)
 			logger.info("Company Symbols of Stocks saved by User: "+userId+ " found!");
 			
 		}
@@ -116,8 +123,8 @@ public class UserHistoryController {
 	@RequestMapping(value = "/deleteSavedStocksByUserId", method = RequestMethod.POST)
 	public boolean deleteSavedStocksByUserId( @RequestBody int[] ids) {
 		// Deletes stocks for the logged in user with ids as parameter.
+		
 		try {
-			System.out.println(ids[0]);
 			for(int i=0;i<ids.length;i++)
 			{
 				int deleted = userHistoryService.deleteUserHistoryByuserId(ids[i]);
@@ -125,7 +132,7 @@ public class UserHistoryController {
 					logger.info("Deleted Stock!");
 				}
 				else
-					logger.info("Stock could not be deleted!");
+					logger.error("Stock could not be deleted!");
 			}
 			return true;
 		}

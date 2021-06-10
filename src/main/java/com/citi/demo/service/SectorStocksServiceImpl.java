@@ -28,114 +28,120 @@ public class SectorStocksServiceImpl implements SectorStocksService {
 
 	@Override
 	public ArrayList<SectorStocks> getCompanyBySector(String sector) {
-		// TODO Auto-generated method stub
-		// Returns Companies of sector passed as an argument from the database.
+		// Returns Companies of sector passed as an argument.
+
 		ArrayList<SectorStocks> sectorCompanies = new ArrayList<SectorStocks>();
 		try
 		{
 			sectorCompanies = sectorStocksRepository.findCompanyBySector(sector);
-			logger.info("Companies under Sector : "+sector+" found!");	
+			if(sectorCompanies.size()!=0)
+				logger.info("Companies under Sector : "+sector+" found!");	
 		}
 		catch(Exception e)
 		{
-			logger.error("Sector not found!");
+			logger.error("Sector not found! - {}",e.getMessage());
 		}
 		return sectorCompanies;
 	}
 
 	@Override
 	public List<String> getCompanySymbolBySector(String sector) {
-		// TODO Auto-generated method stub
+		// Returns Company Symbols of sector passed as an argument.
+
 		List<String> sectorCompanies = new ArrayList<String>();
 		try
 		{
 			sectorCompanies = sectorStocksRepository.findCompanySymbolBySector(sector);
-			logger.info("Company Symbols under Sector : "+sector+" found!");	
+			if(sectorCompanies.size()!=0)
+				logger.info("Company Symbols under Sector : "+sector+" found!");	
 		}
 		catch(Exception e)
 		{
-			logger.error("Sector not found!");
+			logger.error("Sector not found! - {}",e.getMessage());
 		}
 		return sectorCompanies;
 	}
-	
+
 	@Override
 	public String getSectorByCompanySymbol(String companySymbol) {
-		// TODO Auto-generated method stub
+		// Returns  sector of Company Symbol passed as an argument.
+		
 		String sector = null;
 		try
 		{
 			sector = sectorStocksRepository.findSectorByCompanySymbol(companySymbol);
-			logger.info("Company : "+companySymbol+" belongs to Sector :"+sector);
+			if(sector!=null)
+				logger.info("Company : "+companySymbol+" belongs to Sector :"+sector);
 		}
 		catch(Exception e)
 		{
-			logger.error("Sector for company: "+companySymbol+" not found!");
+			logger.error("Sector for company: "+companySymbol+" not found! - {}",e.getMessage());
 		}
 		return sector;
 	}
-	
+
 	@Override
 	public List<SectorAvg> getSectorWiseGrowth(){
 		//Calculates and Returns sector wise growth.
+		
 		List<SectorAvg> sectorWiseGrowth = new ArrayList<>();
 		try
 		{
-			
 			List<String> sectors = getDistinctSectors();
-			System.out.println(sectors);
-			
-			if(!ObjectUtils.isEmpty(sectors)) {
-				sectors.forEach(sector -> {
-					
-					List<String> symbols = getCompanySymbolBySector(sector);
-					if(!ObjectUtils.isEmpty(symbols)) {
-						sum = 0;
-						symbols.forEach(symbol -> {
-							try {
-								sum +=stockRecommendationService.findStock(symbol).getChange().doubleValue();
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}	
-						});
+			if(sectors.size()!=0)
+			{
+				System.out.println(sectors);
 
-					}
-					SectorAvg obj = new SectorAvg();
-					obj.setAvggrowth(sum/symbols.size());
-					obj.setSector(sector);
-					sectorWiseGrowth.add(obj);
+				if(!ObjectUtils.isEmpty(sectors)) {
+					sectors.forEach(sector -> {
 
-				});
+						List<String> symbols = getCompanySymbolBySector(sector);
+						if(!ObjectUtils.isEmpty(symbols)) {
+							sum = 0;
+							symbols.forEach(symbol -> {
+								try {
+									sum +=stockRecommendationService.findStock(symbol).getChange().doubleValue();
+								} catch (Exception e) {
+									e.printStackTrace();
+								}	
+							});
 
+						}
+						SectorAvg obj = new SectorAvg();
+						obj.setAvggrowth(sum/symbols.size());
+						obj.setSector(sector);
+						sectorWiseGrowth.add(obj);
+
+					});
+
+				}
+				logger.info("Sector Wise Avg Growth found!");
 			}
-			logger.info("Sector Wise Avg Growth!");
-			
 		}
 		catch(Exception e)
 		{
-			logger.info("Could not find Sector Wise Avg Growth!");
+			logger.error("Could not find Sector Wise Avg Growth! - {}",e.getMessage());
 		}
 		return sectorWiseGrowth;
 	}
 
 	@Override
 	public List<String> getDistinctSectors() {
-		// TODO Auto-generated method stub
+		// Returns Distinct Sectors
+		
 		List<String> sectors = new ArrayList<String>();
 		try
 		{
 			sectors = sectorStocksRepository.findDistinctSectors();
-			logger.info("Distinct Sectors found!");
+			if(sectors.size()!=0)
+				logger.info("Distinct Sectors found!");
 		}
 		catch(Exception e)
 		{
-			logger.info("Distinct sectors could not be found!");
+			logger.error("Distinct sectors could not be found! - {}", e.getMessage());
 		}
 		return sectors;
 	}
-
-	
 }
 
 

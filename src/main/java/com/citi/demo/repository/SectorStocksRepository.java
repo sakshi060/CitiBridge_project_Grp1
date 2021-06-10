@@ -6,123 +6,159 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-
+import com.citi.demo.BackendappApplication;
 import com.citi.demo.model.SectorStocks;
 
 @Repository
-public class SectorStocksRepository {
+public class SectorStocksRepository {  
+
+	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
 	@Autowired
 	JdbcTemplate template;
 	double sum;
 
 
-	public ArrayList<SectorStocks> findCompanyBySector(String sector) {
-		// TODO Auto-generated method stub
+	public ArrayList<SectorStocks> findCompanyBySector(String sector)  {
 		// Returns Companies of sector passed as an argument from the database.
+
+		logger.info("Fetching Companies under Sector - " +sector);
+		ArrayList<SectorStocks> sectorCompanies = null;
 		try
 		{
 			String FINDSHARES = "select * from sector_stocks where sector=?";
-			ArrayList<SectorStocks> sectorCompanies = (ArrayList<SectorStocks>) template.query(FINDSHARES, new RowMapper<SectorStocks>() {
+			sectorCompanies = (ArrayList<SectorStocks>) template.query(FINDSHARES, new RowMapper<SectorStocks>() {
 
 				@Override
 				public SectorStocks mapRow(ResultSet set, int arg1) throws SQLException {
-					// TODO Auto-generated method stub
-
-					return new SectorStocks(set.getString(1),set.getString(2),set.getString(3));
+					SectorStocks sectorStocks = new SectorStocks();
+					sectorStocks.setCompanySymbol(set.getString(1));
+					sectorStocks.setCompanyName(set.getString(2));
+					sectorStocks.setSector(set.getString(3));
+					return sectorStocks;
 				}
-
-			}, sector);
-
-
-			return sectorCompanies;
+			}, sector);	
+			if(sectorCompanies.size()!=0)
+			{
+				return sectorCompanies;
+			}
+			else
+				logger.error("Error occured in fetching Company Symbols");
+			return null;
 		}
 		catch(Exception e)
 		{
-
+			logger.error("Error occured in fetching Company Symbols",e.getMessage());
 			return null;
 		}
 	}
 
-
 	public List<String> findCompanySymbolBySector(String sector) {
-		// TODO Auto-generated method stub
 		// Returns Company Symbols of sector passed as an argument from the database.
+
+		logger.info("Fetching Company Symbols of Companies under Sector - " +sector);
+		List<String> sectorCompanies = null;
 		try
 		{
 			String FINDSHARES = "select company_symbol from sector_stocks where sector=?";
-			List<String> sectorCompanies = template.query(FINDSHARES, new RowMapper<String>() {
+			sectorCompanies = template.query(FINDSHARES, new RowMapper<String>() {
 
 				@Override
 				public String mapRow(ResultSet set, int arg1) throws SQLException {
-					// TODO Auto-generated method stub
-					return new String(set.getString(1));
+					SectorStocks sectorStocks = new SectorStocks();
+					sectorStocks.setCompanySymbol(set.getString(1));
+					return sectorStocks.getCompanySymbol();
 				}
-
+				
 			}, sector);
-
-			return sectorCompanies;
+			if(sectorCompanies.size()!=0)
+			{
+				return sectorCompanies;
+			}
+			else
+				logger.error("Error occured in fetching Company Symbols");
+			return null;
 		}
 		catch(Exception e)
 		{
+			logger.error("Error occured in fetching Company Symbols - {}", e.getMessage());
 			return null;
 		}
 	}
 
-
 	public String findSectorByCompanySymbol(String companySymbol) {
-		// TODO Auto-generated method stub
 		// Returns sector of companySymbol passed as an argument from the database.
+
+		logger.info("Fetching Sector of Company - " +companySymbol);
+		String sectorCompany = null;
 		try
 		{
 			String FINDSHARES = "select sector from sector_stocks where company_symbol=?";
-			List<String> sectorCompanies = template.query(FINDSHARES, new RowMapper<String>() {
+			sectorCompany = template.queryForObject(FINDSHARES, new RowMapper<String>() {
 
 				@Override
 				public String mapRow(ResultSet set, int arg1) throws SQLException {
-					// TODO Auto-generated method stub
-					return new String(set.getString(1));
+					String sector = new String();
+					sector = set.getString(1);
+					return sector;
 				}
 
 			}, companySymbol);
 
-			String sector = sectorCompanies.get(0);
-			return sector;
+			if(sectorCompany!=null)
+			{
+				return sectorCompany;
+			}
+			else
+				logger.error("Error occured in fetching Company Symbols");
+			return null;
 		}
 		catch(Exception e)
 		{
+			logger.error("Error occured in fetching Sector - {}", e.getMessage());
 			return null;
 		}
 	}
 
-
 	public List<String> findDistinctSectors() {
-		// TODO Auto-generated method stub
 		//Returns distinct sectors from the database.
+		
+		logger.info("Fetching Distict Sectors");
+		List<String> sectorCompanies;
 		try
 		{
 			String FINDSHARES = "select distinct(sector) from sector_stocks";
-
-			List<String> sectorCompanies = template.query(FINDSHARES, new RowMapper<String>() {
+			sectorCompanies = template.query(FINDSHARES, new RowMapper<String>() {
 
 				@Override
 				public String mapRow(ResultSet set, int arg1) throws SQLException {
-					// TODO Auto-generated method stub
-					return new String(set.getString(1));
+					String sectors = new String();
+					sectors = set.getString(1);
+					return sectors;
 				}
 
 			});
-			return sectorCompanies;
-
+			if(sectorCompanies.size()!=0)
+			{
+				return sectorCompanies;
+			}
+			else
+				logger.error("Error occured in fetching Company Symbols");
+			return null;
 		}
 		catch(Exception e)
 		{
+			logger.error("Error occured in fetching Distict Sectors - {}", e.getMessage());
 			return null;
 		}
+
 	}
 }
+

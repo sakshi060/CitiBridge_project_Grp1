@@ -41,16 +41,7 @@ public class SectorStocks {
 	public void setSector(String sector) {
 		this.sector = sector;
 	}
-	public SectorStocks() {
-		super();
-	}
-	public SectorStocks(String companySymbol, String companyName, String sector) {
-		super();
-		this.companySymbol = companySymbol;
-		this.companyName = companyName;
-		this.sector = sector;
-	}
-	@Override
+ @Override
 	public String toString() {
 		return "SectorStocks [companySymbol=" + companySymbol + ", companyName=" + companyName + ", sector=" + sector
 				+ "]";

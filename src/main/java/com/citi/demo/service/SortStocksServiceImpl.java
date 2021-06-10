@@ -18,16 +18,15 @@ import com.citi.demo.util.SortingParameterList;
 
 @Service
 public class SortStocksServiceImpl implements SortStocksService {
-	
+
 	@Autowired
 	StockRecommendationService stockRecommendationService;
 
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
 	public  ArrayList<StockObject> sort(List<String> companySymbols, String attribute) {
-		// TODO Auto-generated method stub
 		//Sorts stocks of Companies (companySymbols) on the basis of attribute passed as arguments in the Descending Order.
-		
+
 		ArrayList<StockObject> stocksList=new ArrayList<StockObject>();
 		if(attribute.compareTo(SortingParameterList.MARKET_CAP.toString())==0)
 		{
@@ -50,7 +49,7 @@ public class SortStocksServiceImpl implements SortStocksService {
 				return stocksList;
 			}
 		}
-		
+
 		else if(attribute.compareTo(SortingParameterList.PE_RATIO.toString())==0)
 		{
 			try

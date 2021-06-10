@@ -17,14 +17,16 @@ import yahoofinance.histquotes.HistoricalQuote;
 public class StockObject // To use Yahoo Finance Functionality 
 {
 	public Stock stock;
-public StockObject(final Stock stock)
+	public StockObject()
 	{
-		this.stock = stock;
 		
 	}
-	public StockObject() {
-		// TODO Auto-generated constructor stub
+	
+	public StockObject(Stock stock) {
+		
+		this.stock = stock;
 	}
+
 	@Override
 	public String toString() {
 		return "StockObject [stock=" + stock + "]";

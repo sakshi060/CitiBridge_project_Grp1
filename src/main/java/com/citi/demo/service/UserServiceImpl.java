@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserMaster checkLogin(UserMaster userObject) {
-		// TODO Auto-generated method stub
 		// checks if user present in database and password matches
 		
 		UserMaster checkuser = new UserMaster();

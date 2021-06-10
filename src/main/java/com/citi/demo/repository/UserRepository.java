@@ -22,8 +22,8 @@ public class UserRepository {
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
 	public UserMaster checkLogin(UserMaster userObject, String password) {
-		// TODO Auto-generated method stub
 		// checks if user present in database and password matches
+		
 		//String password = decodeString(userObject.getPassword());
 		UserMaster temp = null;
 		try
@@ -34,8 +34,10 @@ public class UserRepository {
 
 				@Override
 				public UserMaster mapRow(ResultSet set, int arg1) throws SQLException {
-					// TODO Auto-generated method stub
-					return new UserMaster(set.getString(1),set.getString(2));
+					UserMaster userMaster = new UserMaster();
+					userMaster.setUserId(set.getString(1));
+					userMaster.setPassword(set.getString(2));
+					return userMaster;
 				}
 
 			}, userObject.getUserId());
@@ -48,20 +50,20 @@ public class UserRepository {
 				}
 				else
 				{
-					logger.info("User Login UnsSuccessful.Enter the correct Password!");
-					return temp;
+					logger.error("User Login UnsSuccessful.Enter the correct Password!");
+					return null;
 
 				}
 			}
 			else
 			{
-				logger.info("User not found in database");
+				logger.error("User not found in database");
 				return null;
 			}
 		}
 		catch(Exception e)
 		{
-			logger.info("Error Occured.User not found in database");
+			logger.error("Error Occured.User not found in database");
 			return null;
 		}
 

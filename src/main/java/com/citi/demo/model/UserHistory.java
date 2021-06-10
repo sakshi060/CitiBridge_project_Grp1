@@ -44,18 +44,6 @@ public class UserHistory implements Serializable {
 	@Column(name ="volume")
 	long volume;
 	
-	public UserHistory(int id, String companySymbol, String sector, BigDecimal price, String userId, long volume) {
-		super();
-		this.id = id;
-		this.companySymbol = companySymbol;
-		this.sector = sector;
-		this.price = price;
-		this.userId = userId;
-		this.volume = volume;
-	}
-	public UserHistory() {
-		// TODO Auto-generated constructor stub
-	}
 	public int getId() {
 		return id;
 	}

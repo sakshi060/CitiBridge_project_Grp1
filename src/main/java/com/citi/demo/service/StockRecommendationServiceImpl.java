@@ -32,13 +32,14 @@ public class StockRecommendationServiceImpl implements StockRecommendationServic
 	public StockObject findStock(String companySymbol)
 	{
 		//Finds and Returns Stock for a given companySymbol passed as an argument from Yahoo Finance API.
+		
 		try
 		{
 			return new StockObject(YahooFinance.get(companySymbol));
 		}
 		catch (IOException e)
 		{
-			logger.info("Stock not found!");;
+			logger.error("Stock not found!");
 		}
 		return null;
 	}
@@ -47,13 +48,29 @@ public class StockRecommendationServiceImpl implements StockRecommendationServic
 	public StockDetails getStocksDetails(String companySymbol)
 	{
 		//Finds Stock for a given companySymbol passed as an argument from Yahoo Finance API and returns its Details.
-		StockObject stock = stockRecommendationService.findStock(companySymbol);
+		
 		StockDetails stockDetails = new StockDetails();
+		
 		try {
-			stockDetails = new StockDetails(stock.getCompanySymbol(),stock.getCompanyName(), stock.getOpen(),stock.getClose(),stock.getHigh(),stock.getLow(),stock.getVolume(),stock.getChange(),stock.getPeRatio(),stock.getMarketCap(),stock.getReturnOnEquity(),stock.getHistory());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
+			StockObject stock = stockRecommendationService.findStock(companySymbol);
+			stockDetails.setCompanySymbol(stock.getCompanySymbol());
+			stockDetails.setCompanyName(stock.getCompanyName());
+			stockDetails.setOpen(stock.getOpen());
+			stockDetails.setClose(stock.getClose());
+			stockDetails.setHigh(stock.getHigh());
+			stockDetails.setLow(stock.getLow());
+			stockDetails.setVolume(stock.getVolume());
+			stockDetails.setChange(stock.getChange());
+			stockDetails.setPeRatio(stock.getPeRatio());
+			stockDetails.setMarketCap(stock.getMarketCap());
+			stockDetails.setHistory(stock.getHistory());
+			
+			logger.info("Stock Details of Company Symbol: "+companySymbol+ " found!");
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
+			logger.error("Stock Details not found!");
 		}
 		return stockDetails;
 	}
@@ -62,79 +79,119 @@ public class StockRecommendationServiceImpl implements StockRecommendationServic
 	public StockDetails findTopPerformingStock(List<String> companySymbols)
 	{
 		//Finds Top Performing Stock from the given list of Companies(companySymbols) passed as an argument.
-		ArrayList<StockObject> stocksList=new ArrayList<StockObject>();
-		ArrayList<StockDetails> sortedstockslist=new ArrayList<StockDetails>();
 		
-		StockDetails stockDetails[] = new StockDetails[companySymbols.size()];
+		ArrayList<StockObject> stocksList=new ArrayList<StockObject>();
+		ArrayList<StockDetails> sortedStocksList=new ArrayList<StockDetails>();
+		StockDetails stockDetailsList[] = new StockDetails[companySymbols.size()];
+		
 		try {
 			stocksList = stockRecommendationService.findStocksOnChange(companySymbols);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		for(int i = 0;i<companySymbols.size();i++)
 		{
 			try {
-				stockDetails[i] = new StockDetails(stocksList.get(i).getCompanySymbol(),stocksList.get(i).getCompanyName(), stocksList.get(i).getOpen(),stocksList.get(i).getClose(),stocksList.get(i).getHigh(),stocksList.get(i).getLow(),stocksList.get(i).getVolume(),stocksList.get(i).getChange(),stocksList.get(i).getPeRatio(),stocksList.get(i).getMarketCap(),stocksList.get(i).getReturnOnEquity(),stocksList.get(i).getHistory());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				StockDetails stockDetails = new StockDetails();
+				stockDetails.setCompanySymbol(stocksList.get(i).getCompanySymbol());
+				stockDetails.setCompanyName(stocksList.get(i).getCompanyName());
+				stockDetails.setOpen(stocksList.get(i).getOpen());
+				stockDetails.setClose(stocksList.get(i).getClose());
+				stockDetails.setHigh(stocksList.get(i).getHigh());
+				stockDetails.setLow(stocksList.get(i).getLow());
+				stockDetails.setVolume(stocksList.get(i).getVolume());
+				stockDetails.setChange(stocksList.get(i).getChange());
+				stockDetails.setPeRatio(stocksList.get(i).getPeRatio());
+				stockDetails.setMarketCap(stocksList.get(i).getMarketCap());
+				stockDetails.setHistory(stocksList.get(i).getHistory());
+				stockDetailsList[i] = stockDetails;
+				
+				logger.info("Top Performing Stock found!");
+			} 
+			catch (IOException e) {
+				logger.error("Top Performing Stock not found!");
 				e.printStackTrace();
 			}
-			sortedstockslist.add(stockDetails[i]);
+			sortedStocksList.add(stockDetailsList[i]);
 		}
-		return sortedstockslist.get(0);
+		return sortedStocksList.get(0);
 	}
 
 	@Override
 	public  ArrayList<StockDetails> findStocksAndSort(String sector, String attribute) 
 	{
 		ArrayList<StockObject> stocksList=new ArrayList<StockObject>();
-		ArrayList<StockDetails> sortedstockslist=new ArrayList<StockDetails>();
-		ArrayList<StockDetails> topstockslist=new ArrayList<StockDetails>();
+		ArrayList<StockDetails> sortedStocksList=new ArrayList<StockDetails>();
+		ArrayList<StockDetails> topStocksList=new ArrayList<StockDetails>();
 		List<String> companySymbols = new ArrayList<String>();
-		companySymbols =  sectorStocksService.getCompanySymbolBySector(sector);
+		StockDetails stockDetailsList[] = new StockDetails[companySymbols.size()];
 		
-		StockDetails stockDetails[] = new StockDetails[companySymbols.size()];
 		try {
+			companySymbols =  sectorStocksService.getCompanySymbolBySector(sector);
 			if(attribute.compareTo(SortingParameterList.MARKET_CAP.toString())==0)
 			{
 				logger.info("Sorting on Market Capital");
 				stocksList = stockRecommendationService.findStocksOnMarketCap(companySymbols);
 				for(int i = 0;i<companySymbols.size();i++)
 				{
-					stockDetails[i] = new StockDetails(stocksList.get(i).getCompanySymbol(),stocksList.get(i).getCompanyName(), stocksList.get(i).getOpen(),stocksList.get(i).getClose(),stocksList.get(i).getHigh(),stocksList.get(i).getLow(),stocksList.get(i).getVolume(),stocksList.get(i).getChange(),stocksList.get(i).getPeRatio(),stocksList.get(i).getMarketCap(),stocksList.get(i).getReturnOnEquity(),stocksList.get(i).getHistory());
-					sortedstockslist.add(stockDetails[i]);
+					StockDetails stockDetails = new StockDetails();
+					stockDetails.setCompanySymbol(stocksList.get(i).getCompanySymbol());
+					stockDetails.setCompanyName(stocksList.get(i).getCompanyName());
+					stockDetails.setOpen(stocksList.get(i).getOpen());
+					stockDetails.setClose(stocksList.get(i).getClose());
+					stockDetails.setHigh(stocksList.get(i).getHigh());
+					stockDetails.setLow(stocksList.get(i).getLow());
+					stockDetails.setVolume(stocksList.get(i).getVolume());
+					stockDetails.setChange(stocksList.get(i).getChange());
+					stockDetails.setPeRatio(stocksList.get(i).getPeRatio());
+					stockDetails.setMarketCap(stocksList.get(i).getMarketCap());
+					stockDetails.setHistory(stocksList.get(i).getHistory());
+					stockDetailsList[i] = stockDetails;
+					sortedStocksList.add(stockDetailsList[i]);
 				}
-				if(sortedstockslist.size()>5)
+				if(sortedStocksList.size()>5)
 				{
 					for(int i =0; i<5;i++)
 					{
-						topstockslist.add(sortedstockslist.get(i));
+						topStocksList.add(sortedStocksList.get(i));
 					}
 				}
 				else
-					topstockslist = sortedstockslist;
+					topStocksList = sortedStocksList;
 			}
 			else if(attribute.compareTo(SortingParameterList.PE_RATIO.toString())==0)
 			{
 				logger.info("Sorting on PE Ratio");
-				System.out.println(attribute);
 				stocksList = stockRecommendationService.findStocksOnPeRatio(companySymbols);
 				System.out.println(stocksList);
 				for(int i = 0;i<companySymbols.size();i++)
 				{
-					stockDetails[i] = new StockDetails(stocksList.get(i).getCompanySymbol(),stocksList.get(i).getCompanyName(),stocksList.get(i).getOpen(),stocksList.get(i).getClose(),stocksList.get(i).getHigh(),stocksList.get(i).getLow(),stocksList.get(i).getVolume(),stocksList.get(i).getChange(),stocksList.get(i).getPeRatio(),stocksList.get(i).getMarketCap(),stocksList.get(i).getReturnOnEquity(),stocksList.get(i).getHistory());
-					sortedstockslist.add(stockDetails[i]);
+					StockDetails stockDetails = new StockDetails();
+					stockDetails.setCompanySymbol(stocksList.get(i).getCompanySymbol());
+					stockDetails.setCompanyName(stocksList.get(i).getCompanyName());
+					stockDetails.setOpen(stocksList.get(i).getOpen());
+					stockDetails.setClose(stocksList.get(i).getClose());
+					stockDetails.setHigh(stocksList.get(i).getHigh());
+					stockDetails.setLow(stocksList.get(i).getLow());
+					stockDetails.setVolume(stocksList.get(i).getVolume());
+					stockDetails.setChange(stocksList.get(i).getChange());
+					stockDetails.setPeRatio(stocksList.get(i).getPeRatio());
+					stockDetails.setMarketCap(stocksList.get(i).getMarketCap());
+					stockDetails.setHistory(stocksList.get(i).getHistory());
+					stockDetailsList[i] = stockDetails;
+					sortedStocksList.add(stockDetailsList[i]);
 				}
-				if(sortedstockslist.size()>5)
+				if(sortedStocksList.size()>5)
 				{
 					for(int i =0; i<5;i++)
 					{
-						topstockslist.add(sortedstockslist.get(i));
+						topStocksList.add(sortedStocksList.get(i));
 					}
 				}
 				else
-					topstockslist = sortedstockslist;
+					topStocksList = sortedStocksList;
 			}
 			else if(attribute.compareTo(SortingParameterList.CHANGE.toString())==0)
 			{
@@ -142,26 +199,42 @@ public class StockRecommendationServiceImpl implements StockRecommendationServic
 				stocksList = stockRecommendationService.findStocksOnChange(companySymbols);
 				for(int i = 0;i<companySymbols.size();i++)
 				{
-					stockDetails[i] = new StockDetails(stocksList.get(i).getCompanySymbol(),stocksList.get(i).getCompanyName(),stocksList.get(i).getOpen(),stocksList.get(i).getClose(),stocksList.get(i).getHigh(),stocksList.get(i).getLow(),stocksList.get(i).getVolume(),stocksList.get(i).getChange(),stocksList.get(i).getPeRatio(),stocksList.get(i).getMarketCap(),stocksList.get(i).getReturnOnEquity(),stocksList.get(i).getHistory());
-					sortedstockslist.add(stockDetails[i]);
+					StockDetails stockDetails = new StockDetails();
+					stockDetails.setCompanySymbol(stocksList.get(i).getCompanySymbol());
+					stockDetails.setCompanyName(stocksList.get(i).getCompanyName());
+					stockDetails.setOpen(stocksList.get(i).getOpen());
+					stockDetails.setClose(stocksList.get(i).getClose());
+					stockDetails.setHigh(stocksList.get(i).getHigh());
+					stockDetails.setLow(stocksList.get(i).getLow());
+					stockDetails.setVolume(stocksList.get(i).getVolume());
+					stockDetails.setChange(stocksList.get(i).getChange());
+					stockDetails.setPeRatio(stocksList.get(i).getPeRatio());
+					stockDetails.setMarketCap(stocksList.get(i).getMarketCap());
+					stockDetails.setHistory(stocksList.get(i).getHistory());
+					stockDetailsList[i] = stockDetails;
+					sortedStocksList.add(stockDetailsList[i]);
 				}
-				System.out.println(sortedstockslist);
-				if(sortedstockslist.size()>5)
+				System.out.println(sortedStocksList);
+
+				if(sortedStocksList.size()>5)
 					for(int i =0; i<5;i++)
 					{
-						topstockslist.add(sortedstockslist.get(i));
+						topStocksList.add(sortedStocksList.get(i));
 					}
 			}
 			else
-				topstockslist = sortedstockslist;
-			logger.info("Mentioned Attribute found!");
-			return topstockslist;
+				topStocksList = sortedStocksList;
+			if(topStocksList.size()!=0)
+				logger.info("Mentioned Attribute found!");
+			else
+				logger.error("Mentioned Attribute can not be found!");
+			return topStocksList;
 		}
 
 		catch(Exception e)
 		{
-			logger.info("Mentioned Attribute can not be found!");
-			return topstockslist;
+			logger.error("Mentioned Attribute can not be found!");
+			return topStocksList;
 		}
 
 	}
@@ -175,11 +248,12 @@ public class StockRecommendationServiceImpl implements StockRecommendationServic
 				findStock(companySymbols.get(i));
 			}
 			stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());
+			logger.info("Sorting done on the basis of Market Capital");
 			return stocksList;
 		}
 		catch(Exception e)
 		{
-			logger.info("Error");
+			logger.error("Error occured while sorting on the basis of Market Capital");
 			return null;
 		}
 	}
@@ -193,11 +267,12 @@ public class StockRecommendationServiceImpl implements StockRecommendationServic
 				findStock(companySymbols.get(i));
 			}
 			stocksList = sortStocks.sort(companySymbols, SortingParameterList.PE_RATIO.toString());
+			logger.info("Sorting done on the basis of PE Ratio");
 			return stocksList;
 		}
 		catch(Exception e)
 		{
-			logger.info("Error");
+			logger.error("Error occured while sorting on the basis of PE Ratio");
 			return null;
 		}
 	}
@@ -211,11 +286,12 @@ public class StockRecommendationServiceImpl implements StockRecommendationServic
 				findStock(companySymbols.get(i));
 			}
 			stocksList = sortStocks.sort(companySymbols, SortingParameterList.CHANGE.toString());
+			logger.info("Sorting done on the basis of Change");
 			return stocksList;
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error!");
+			logger.error("Error occured while sorting on the basis of Change",e.getMessage());
 			return null;
 		}
 	}

@@ -29,15 +29,17 @@ public class SectorStocksController {
 	@RequestMapping(value = "/showCompanies/{sector}", method = RequestMethod.GET)
 	public ArrayList<SectorStocks> showStocks(@PathVariable String sector) {
 		// Returns Companies when sector is passed as an argument.
+
 		ArrayList<SectorStocks> companies=new ArrayList<SectorStocks>();  
 		try
 		{
 			companies = (ArrayList<SectorStocks>) sectorstocksService.getCompanyBySector(sector);
-			logger.info("Companies under Sector - " +sector);
+			if(companies.size()!=0)
+				logger.info("Showing Companies under Sector - " +sector);
 		}
 		catch(Exception e)
 		{
-			logger.error("Companies of Sector not found!");	
+			logger.error("Companies under Sector not found! - {}",e.getMessage());	
 		}
 		return companies;
 
@@ -46,15 +48,17 @@ public class SectorStocksController {
 	@RequestMapping(value = "/showCompanySymbol/{sector}", method = RequestMethod.GET)
 	public List<String> showCompanySymbols(@PathVariable String sector) {
 		// Returns Company Symbols when sector is passed as an argument.
+
 		List<String> companySymbols=new ArrayList<String>();  
 		try
 		{
 			companySymbols =  sectorstocksService.getCompanySymbolBySector(sector);
-			logger.info("Company Symbols of Stocks under Sector - " +sector);
+			if(companySymbols.size()!=0)
+				logger.info("Showing Company Symbols of Stocks under Sector - " +sector);
 		}
 		catch(Exception e)
 		{
-			logger.error("Companies of Sector not found!");
+			logger.error("Companies of Sector not found! - {}",e.getMessage());
 		}
 		return companySymbols;
 
@@ -63,15 +67,17 @@ public class SectorStocksController {
 	@RequestMapping(value = "/showSectorWiseChange", method = RequestMethod.GET)
 	public List<SectorAvg> showSectorWiseChange() {
 		// Returns Sector Wise Comparison on attribute - change.
+
 		List<SectorAvg> sectors=new ArrayList<SectorAvg>(); 
 		try
 		{
 			sectors =  sectorstocksService.getSectorWiseGrowth();
-			logger.info("Sector Wise Growth.");
+			if(sectors.size()!=0)
+				logger.info("Showing Sector Wise Growth");
 		}
 		catch(Exception e)
 		{
-			logger.error("Sector Wise data not found!");
+			logger.error("Sector Wise data not found! - {}",e.getMessage());
 		}
 		return sectors;
 	}
@@ -79,20 +85,21 @@ public class SectorStocksController {
 	@RequestMapping(value = "/showDistinctSectors", method = RequestMethod.GET)
 	public List<String> showSectors() {
 		// Returns Distinct sectors.
+
 		List<String> sectors = new ArrayList<String>();  
 		try
 		{
 			sectors =  sectorstocksService.getDistinctSectors();
-			logger.info("Distinct Sectors");
+			if(sectors.size()!=0)
+				logger.info("Showing Distinct Sectors");
 		}
 		catch(Exception e)
 		{
-			logger.error("Sectors not found!");
+			logger.error("Sectors not found! {} - ",e.getMessage());
 		}
 		return sectors;
 
 	}
-
 
 }
 

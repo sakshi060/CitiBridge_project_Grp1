@@ -23,23 +23,14 @@ public class UserMaster {
 	@Column(name ="password")
 	String password;
 	
-	public UserMaster()
-	{
-		
-	}
-
-	public UserMaster(String userId, String password) {
-		super();
+	public UserMaster(String userId) {
 		this.userId = userId;
-		this.password = password;
 	}
-
 	
 
-	public UserMaster(String userId) {
-		super();
-		this.userId = userId;
+	public UserMaster() {
 	}
+
 
 	public String getUserId() {
 		return userId;

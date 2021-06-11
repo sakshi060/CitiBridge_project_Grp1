@@ -98,7 +98,5 @@ public class StockDetailsController {
 			e.printStackTrace();
 			return null;
 		}
-
 	}
-
 }

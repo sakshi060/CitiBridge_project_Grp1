@@ -146,7 +146,4 @@ public class UserHistoryController {
 			return false;
 		}
 	}
-
-
-
 }

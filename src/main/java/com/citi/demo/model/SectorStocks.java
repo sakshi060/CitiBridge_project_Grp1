@@ -23,29 +23,4 @@ public class SectorStocks {
 	@Column(name ="sector")
 	String sector;	
 	
-	public String getCompanySymbol() {
-		return companySymbol;
-	}
-	public void setCompanySymbol(String companySymbol) {
-		this.companySymbol = companySymbol;
-	}
-	public String getCompanyName() {
-		return companyName;
-	}
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-	public String getSector() {
-		return sector;
-	}
-	public void setSector(String sector) {
-		this.sector = sector;
-	}
- @Override
-	public String toString() {
-		return "SectorStocks [companySymbol=" + companySymbol + ", companyName=" + companyName + ", sector=" + sector
-				+ "]";
-	}
-
-
 }

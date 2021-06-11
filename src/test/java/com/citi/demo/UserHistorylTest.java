@@ -99,23 +99,6 @@ public class UserHistorylTest {
 
 		}
 	}
-	@Test
-	public void getCompanySymbolsByUserId(String userId) {
-		//Returns Company Symbols of Saved Stocks of userId passed as an argument.
-		List<String> companySymbols=new ArrayList<String>();  
-		try
-		{
-			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
-			System.out.println("Company Symbols of Stocks Saved by user:  "+userId);
-			System.out.println(companySymbols);
-		}
-		catch(Exception e)
-		{
-			logger.info("Sector not found!");
-		}
-	
-	}
-
 
 	@Test
 	public void testdeleteStocks() {

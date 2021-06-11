@@ -78,6 +78,7 @@ public class SectorStocksTest {
 		System.out.println(sectorAvggrowth);
 		System.out.println("\n");
 	}
+	
 	@Test
 	public void testShowSectors() {
 		// Returns Distinct sectors.

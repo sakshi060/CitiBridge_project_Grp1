@@ -23,12 +23,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserHistory implements Serializable {
 
-	@Override
-	public String toString() {
-		return "UserHistory [id=" + id + ", companySymbol=" + companySymbol + ", sector=" + sector + ", price=" + price
-				+ ", userId=" + userId + ", volume=" + volume + "]";
-	}
-
 	private static final AtomicInteger count = new AtomicInteger(0); 
 	@Id
 	@Column
@@ -43,47 +37,5 @@ public class UserHistory implements Serializable {
 	String userId;
 	@Column(name ="volume")
 	long volume;
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getCompanySymbol() {
-		return companySymbol;
-	}
-	public void setCompanySymbol(String companySymbol) {
-		this.companySymbol = companySymbol;
-	}
-	public String getSector() {
-		return sector;
-	}
-	public void setSector(String sector) {
-		this.sector = sector;
-	}
-	public BigDecimal getPrice() {
-		return price;
-	}
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public long getVolume() {
-		return volume;
-	}
-	public void setVolume(long volume) {
-		this.volume = volume;
-	}
-
-
-
-		
-	
 	
 }

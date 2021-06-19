@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserMaster checkLogin(UserMaster userObject) {
 		// checks if user present in database and password matches
-		
+
 		UserMaster checkuser = new UserMaster();
 		String password = decodeString(userObject.getPassword());
 		checkuser = userRepository.checkLogin(userObject,password);
@@ -39,22 +39,21 @@ public class UserServiceImpl implements UserService {
 			System.out.println("\n");
 			logger.info("User not found in database.User Login UnsSuccessful" );
 			System.out.println("\n");
-			return null;
-			
+			return checkuser;
 		}
-		
+
 		if(checkuser.getPassword().equals(decodeString(userObject.getPassword()).replaceAll("\\s",""))) {
-			logger.info("User Login Successful. User - "+userObject.getUserId());
+			logger.info("User Login Successful. User: {} - ",userObject.getUserId());
 			System.out.println("\n");
 			return checkuser;
-		
+
 		}
 		else
 		{
 			logger.info("User Login UnsSuccessful");
 			System.out.println("\n");
 			return null;
-			
+
 		}
 
 	}

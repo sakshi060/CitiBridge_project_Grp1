@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,90 +19,55 @@ public class SectorStocksTest {
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
 	@Autowired
-	SectorStocksService sectorStocksService;
+	SectorStocksService sectorstocksService;
+
 
 	@Test
-	public void testShowStocks() {
-		
+	public void testShowCompanies() {
+
+		logger.info("");
 		ArrayList<SectorStocks> companies=new ArrayList<SectorStocks>();  
 		String sector ="FINANCIAL SERVICES";
-		try
-		{
-			logger.info("Companies under Sector - " +sector);
-			companies = (ArrayList<SectorStocks>) sectorStocksService.getCompanyBySector(sector);
-		}
-		catch(Exception e)
-		{
-			logger.info("Sector not found!");
-		}
-		System.out.println("\n");
-		System.out.println("\nCompamies under Sector "+sector+" : ");
-		System.out.println(companies);
-		System.out.println("\n");
+		companies = (ArrayList<SectorStocks>) sectorstocksService.getCompanyBySector(sector);
+		Assertions.assertNotNull(companies);
+		//Assertions.assertNull(sectorstocksService.getCompanyBySector(null));
+
+		//Doubt
+		//String companySymbol = "SBIN.NS";
+		//Assertions.assertTrue(companies.contains(stockDetailsService.findStock(companySymbol)));
+
 
 	}
 	@Test
 	public void testShowCompanySymbols() {
-		
+
 		List<String> companySymbols=new ArrayList<String>();  
 		String sector = "AUTOMOBILE";
-		try
-		{
-			companySymbols =  sectorStocksService.getCompanySymbolBySector(sector);
-			
-		}
-		catch(Exception e)
-		{
-			System.out.println("Companies of Sector not found!");
-		}
-		System.out.println("\n");
-		System.out.println("\nCompany Symbols of Stocks under Sector - " +sector);
-		System.out.println(companySymbols);
-		System.out.println("\n");
+		companySymbols = sectorstocksService.getCompanySymbolBySector(sector);
+		Assertions.assertNotNull(companySymbols);
+		Assertions.assertTrue(companySymbols.contains("TATAMOTORS.NS"));
+		//Assertions.assertNull(sectorstocksService.getCompanySymbolBySector(null));
 	}
 
 	@Test
 	public void testShowSectorWiseChange() {
 		// Returns Sector Wise Comparison on attribute - change.
-		
+
+		//Doubt
 		List<SectorAvg> sectorAvggrowth=new ArrayList<SectorAvg>(); 
-		try
-		{
-			sectorAvggrowth =  sectorStocksService.getSectorWiseGrowth();
-			
-		}
-		catch(Exception e)
-		{
-			System.out.println("Sector Wise data not found!");
-		}
-		System.out.println("\n");
-		System.out.println("Sector Wise Growth.");
-		System.out.println(sectorAvggrowth);
-		System.out.println("\n");
+		sectorAvggrowth =  sectorstocksService.getSectorWiseGrowth();
+		Assertions.assertNotNull(sectorAvggrowth);
 	}
-	
+
 	@Test
 	public void testShowSectors() {
 		// Returns Distinct sectors.
-		
+		//Doubt
 		List<String> sectors = new ArrayList<String>();  
-		try
-		{
-			sectors =  sectorStocksService.getDistinctSectors();
-			
-		}
-		catch(Exception e)
-		{
-			logger.error("Sectors not found!");
-		}
-		System.out.println("\n");
-		System.out.println("Distinct Sectors");
-		System.out.println(sectors);
-		System.out.println("\n");
-
+		sectors =  sectorstocksService.getDistinctSectors();
+		Assertions.assertNotNull(sectors);
 	}
 }
 
 
 
-	

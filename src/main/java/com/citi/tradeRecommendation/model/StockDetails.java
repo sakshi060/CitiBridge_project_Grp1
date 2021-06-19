@@ -3,14 +3,17 @@ package com.citi.tradeRecommendation.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import yahoofinance.histquotes.HistoricalQuote;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class StockDetails {
-	
 	private String companySymbol;
 	private String companyName;
 	private BigDecimal open;

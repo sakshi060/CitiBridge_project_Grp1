@@ -47,19 +47,19 @@ public class UserHistoryController {
 			stock = userHistoryService.saveUserHistoryByuserId(userId,companySymbol,quantity);
 
 			if(stock != null) {
-				logger.info("User History for Stock {} and User {} saved successfully!",stock.getCompanySymbol(),userId);
+				logger.info("User History for Stock {} and User: {} saved successfully!",stock.getCompanySymbol(),userId);
 				return stock;
 			}
 			else
 			{
-				logger.error("User History for Stock {} and User {} not saved successfully!",companySymbol,userId);
+				logger.error("User History for Stock {} and User: {} not saved successfully!",companySymbol,userId);
 				return null;
 			}
 		}
 
 		catch(Exception e)
 		{
-			logger.error("User History for Stock {} and User {} not saved successfully!",stock.getCompanySymbol(),userId);
+			logger.error("User History for Stock {} and User: {} not saved successfully!",stock.getCompanySymbol(),userId);
 		}
 
 		return new UserHistory();
@@ -73,8 +73,8 @@ public class UserHistoryController {
 		try
 		{
 			userHistoryStocks = (ArrayList<UserHistory>) userHistoryService.getUserHistoryByuserId(userId);
-			if(userHistoryStocks.size()!=0)
-				logger.info("Showing User History for User"+userId);
+			if(userHistoryStocks!=null && userHistoryStocks.size()!=0)
+				logger.info("Showing User History for User: {}",userId);
 		}
 		catch(Exception e)
 		{
@@ -91,15 +91,15 @@ public class UserHistoryController {
 		List<String> companySymbols=new ArrayList<String>(); 
 		try 
 		{
-			logger.info("Finding Top Performance Stock for User {} " +userId);
+			logger.info("Finding Top Performance Stock for User: {} " ,userId);
 			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
-			topStock = stockDetailsService.getStocksDetails(companySymbols.get(0));
+			topStock = stockDetailsService.findTopPerformingStock(companySymbols);
 			if(topStock!=null)
-				logger.info("Showing Top Performing Stock for User: "+userId);
+				logger.info("Showing Top Performing Stock for User: {}",userId);
 		}
 		catch(Exception e)
 		{
-			logger.error("Top Performing Stock for User: "+userId+" could not be found!");
+			logger.error("Top Performing Stock for User: {} could not be found!",userId);
 		}
 		return topStock;
 	}
@@ -112,13 +112,13 @@ public class UserHistoryController {
 		try
 		{
 			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
-			if(companySymbols.size()!=0)
-				logger.info("Company Symbols of Stocks saved by User: "+userId+ " found!");
+			if(companySymbols!= null && companySymbols.size()!=0)
+				logger.info("Company Symbols of Stocks saved by User: {} found!",userId);
 
 		}
 		catch(Exception e)
 		{
-			logger.error("Company Symbols of Stocks saved by User: "+userId+ " could not be found!");
+			logger.error("Company Symbols of Stocks saved by User: {} could not be found!",userId);
 		}
 		return companySymbols;
 
@@ -129,15 +129,13 @@ public class UserHistoryController {
 		// Deletes stocks for the logged in user with ids as parameter.
 
 		try {
-			for(int i=0;i<ids.length;i++)
-			{
-				int deleted = userHistoryService.deleteUserHistoryByuserId(ids[i]);
-				if(deleted==1) {
-					logger.info("Deleted Stock!");
-				}
-				else
-					logger.error("Stock could not be deleted!");
+			int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
+			if(deleted==1) {
+				logger.info("Deleted Stock!");
 			}
+			else
+				logger.error("Stock could not be deleted!");
+
 			return true;
 		}
 		catch(Exception e)

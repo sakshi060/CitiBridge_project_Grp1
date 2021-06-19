@@ -45,7 +45,7 @@ public class SectorStocksRepository {
 					return sectorStocks;
 				}
 			}, sector);	
-			if(sectorCompanies.size()!=0)
+			if(sectorCompanies!=null && sectorCompanies.size()!=0)
 			{
 				return sectorCompanies;
 			}
@@ -55,7 +55,7 @@ public class SectorStocksRepository {
 		}
 		catch(Exception e)
 		{
-			logger.error("Error occured in fetching Company Symbols",e.getMessage());
+			logger.error("Error occured in fetching Company Symbols - {}",e.getMessage());
 			return null;
 		}
 	}
@@ -76,9 +76,9 @@ public class SectorStocksRepository {
 					sectorStocks.setCompanySymbol(set.getString(1));
 					return sectorStocks.getCompanySymbol();
 				}
-				
+
 			}, sector);
-			if(sectorCompanies.size()!=0)
+			if(sectorCompanies!=null && sectorCompanies.size()!=0)
 			{
 				return sectorCompanies;
 			}
@@ -129,7 +129,7 @@ public class SectorStocksRepository {
 
 	public List<String> findDistinctSectors() {
 		//Returns distinct sectors from the database.
-		
+
 		logger.info("Fetching Distict Sectors");
 		List<String> sectorCompanies;
 		try
@@ -145,7 +145,7 @@ public class SectorStocksRepository {
 				}
 
 			});
-			if(sectorCompanies.size()!=0)
+			if(sectorCompanies!=null && sectorCompanies.size()!=0)
 			{
 				return sectorCompanies;
 			}

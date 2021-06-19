@@ -1,9 +1,8 @@
 package com.citi.tradeRecommendation;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Base64;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,54 +12,33 @@ import com.citi.tradeRecommendation.service.UserService;
 
 @SpringBootTest
 public class UserTest {
-	
-    @Autowired
-   UserService userService;
-    
-    
-    @Test
-    public void testFindByUser_name() {
-    	UserMaster user = new UserMaster();
-    	UserMaster checkuser = new UserMaster();
-    	String user_name = "Kiran";
-    	String password = "MzIxbmFyaUsNCg==";
-    	user.setUserId(user_name);
+	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
+
+	@Autowired
+	UserService userService;
+
+
+	@Test
+	public void testFindByUserName() {
+		UserMaster user = new UserMaster();
+		UserMaster checkuser = new UserMaster();
+		String userName = "Kiran";
+		String password = "MzIxbmFyaUsNCg==";
+		user.setUserId(userName);
 		user.setPassword(password);
-		
+
+
+		logger.info("Authenticating User: {}",user.getUserId());
 		checkuser = userService.checkLogin(user);
-		if(checkuser != null) {
-			System.out.println("\n");
-			System.out.println("User found in database");
-		}
-		else {
-			System.out.println("\n");
-			System.out.println("User not found in database" );
-			System.out.println("\n");
-			return;
-			
-		}
-		
-		if(checkuser.getPassword().equals(decodeString(password).replaceAll("\\s",""))) {
-			System.out.println("User Login Successful. User - "+user.getUserId());
-			System.out.println("\n");
-		
+		if(checkuser!=null)
+		{
+			logger.info("SUCCESS");
 		}
 		else
-		{
-			System.out.println("User Login UnsSuccessful.Enter the correct Password!");
-			System.out.println("\n");
-		}
+			logger.error("FAILURE");
 		
-		
-		assertThat(user).isNotNull();
-    }	
-	private String decodeString(String encodedPassword) {
-
-		String decoded = new String(Base64.getDecoder().decode(encodedPassword));
-		StringBuilder password = new StringBuilder();
-		password.append(decoded);
-		password = password.reverse();
-		return password.toString();
+		Assertions.assertNotNull(checkuser);
+		//Assertions.assertNull(userService.checkLogin(null));
 	}
 
 }

@@ -12,5 +12,4 @@ public interface SectorStocksService {
 	public String getSectorByCompanySymbol(String companySymbol);
 	public List<SectorAvg> getSectorWiseGrowth();
 	public List<String> getDistinctSectors();
-
 }

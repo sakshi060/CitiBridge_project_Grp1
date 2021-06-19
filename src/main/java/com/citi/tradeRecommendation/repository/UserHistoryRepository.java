@@ -26,26 +26,26 @@ public class UserHistoryRepository {
 	@Autowired
 	SectorStocksService sectorStocksService;
 	@Autowired
-	StockDetailsService stockDetailsService;
+	StockDetailsService stockRecommendationService;
 
 	UserHistory finalList[];
 
 	UserHistory share = new UserHistory();
 
-	public int addUserHistoryByuserId(String userId, String companySymbol, long quantity, String companySymbol_sector) {
+	public int addUserHistoryByuserId(String userId, String companySymbol, long quantity, String companySymbolSector) {
 		// Saves User History
 
 		try
 		{
-			logger.info("Inserting into database User History for User "+userId);
-			stockDetailsService.findStock(companySymbol);
+			logger.info("Inserting into database User History for User: {} ",userId);
+			stockRecommendationService.findStock(companySymbol);
 
 			int added = template.update("insert into user_history(company_symbol,price,sector,user_id,volume) values(?,?,?,?,?)",
-					companySymbol,stockDetailsService.findStock(companySymbol).getPrice(),companySymbol_sector,userId,quantity);
+					companySymbol,stockRecommendationService.findStock(companySymbol).getPrice(),companySymbolSector,userId,quantity);
 
 			if(added ==1)
 			{
-				logger.info("Insertion Successful for User: "+userId);
+				logger.info("Insertion Successful for User: {} ",userId);
 				return added;
 			}
 		}
@@ -64,7 +64,7 @@ public class UserHistoryRepository {
 		ArrayList<UserHistory> finalStocks = new ArrayList<UserHistory>();
 		try
 		{
-			logger.info("Fetching User History of user - " +userId);
+			logger.info("Fetching User History of User: {} " ,userId);
 			String FINDSHARES = "select * from user_history where user_id=?";
 			ArrayList<UserHistory> shares = (ArrayList<UserHistory>) template.query(FINDSHARES, new RowMapper<UserHistory>() {
 
@@ -82,7 +82,7 @@ public class UserHistoryRepository {
 
 			}, userId);
 			finalList = new UserHistory[shares.size()];
-			if(finalList.length != 0)
+			if(finalList!=null && finalList.length != 0)
 			{
 				for(int i = 0;i<shares.size();i++)
 				{
@@ -100,13 +100,13 @@ public class UserHistoryRepository {
 			}
 			else
 			{
-				logger.info("User History data could not be obtained!");
+				logger.error("User History of User: {}  could not be obtained!",userId);
 				return null;
 			}
 		}
 		catch(Exception e)
 		{
-			logger.error("User History data could not be obtained!");
+			logger.error("User History of User: {}  could not be obtained!",userId);
 			return null;
 		}
 
@@ -127,15 +127,15 @@ public class UserHistoryRepository {
 				}
 
 			}, userId);
-			if(companySymbols.size()!=0)
-				logger.info("User History found for User : "+userId);
+			if(companySymbols!= null && companySymbols.size()!=0)
+				logger.info("User History found for User: {} ",userId);
 			else
-				logger.error("User History not found for User: "+userId);
+				logger.error("User History not found for User: {}",userId);
 			return companySymbols;
 		}
 		catch(Exception e)
 		{
-			logger.error("User History data could not be obtained!");
+			logger.error("User History of User: {} could not be obtained!",userId);
 			return null;
 		}
 	}
@@ -146,14 +146,32 @@ public class UserHistoryRepository {
 
 		try
 		{
-			logger.info("Deleting Stock with Stock ID {} ",id);
+			logger.info("Deleting Stock with Stock ID - {} ",id);
 			String deleteQuery = "delete from user_history where id=?";
 			int deleted = template.update(deleteQuery,id);
 			return deleted;
 		}
 		catch(Exception e)
 		{
-			logger.error("User History data could not be deleted");
+			logger.error("User History with Stock ID - {} id could not be deleted",id);
+			return 0;
+		}
+
+	}
+
+	public int deleteUserHistoryByuserId(String userId) {
+		//Deletes selected stocks.
+
+		try
+		{
+			logger.info("Deleting Stock for User {} ",userId);
+			String deleteQuery = "delete from user_history where user_id=?";
+			int deleted = template.update(deleteQuery,userId);
+			return deleted;
+		}
+		catch(Exception e)
+		{
+			logger.error("User History of User: {} could not be deleted",userId);
 			return 0;
 		}
 

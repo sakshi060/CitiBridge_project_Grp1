@@ -32,7 +32,7 @@ public class UserController {
 		UserMaster checkuser = new UserMaster();
 		try
 		{
-			logger.info("Authenticating User :"+userObject.getUserId());
+			logger.info("Authenticating User {} :",userObject.getUserId());
 			checkuser = userService.checkLogin(userObject);
 			if(checkuser!=null)
 			{
@@ -45,7 +45,7 @@ public class UserController {
 		}
 		catch(Exception e)
 		{
-			logger.error("FAILURE {}", e);
+			logger.error("FAILURE");
 			return false;
 		}
 

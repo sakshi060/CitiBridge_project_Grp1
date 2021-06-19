@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "SectorStocks")
+@AllArgsConstructor
 @NoArgsConstructor
 public class SectorStocks {
 	@Id
@@ -19,6 +21,6 @@ public class SectorStocks {
 	@Column(name ="companyName")
 	String companyName;
 	@Column(name ="sector")
-	String sector;	
-	
+	String sector;
+
 }

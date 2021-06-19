@@ -4,15 +4,20 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.With;
 import yahoofinance.Stock;
 import yahoofinance.histquotes.HistoricalQuote;
-
+@Getter
+@With
+@AllArgsConstructor
 @NoArgsConstructor
 public class StockObject // To use Yahoo Finance Functionality 
 {
 	public Stock stock;
-
+	
 	public String getCompanySymbol()
 	{
 		return stock.getSymbol();
@@ -25,7 +30,7 @@ public class StockObject // To use Yahoo Finance Functionality
 	{
 		return stock.getQuote().getPrice();
 	}
-
+	
 	public BigDecimal getOpen()
 	{
 		return stock.getQuote().getOpen();
@@ -54,10 +59,7 @@ public class StockObject // To use Yahoo Finance Functionality
 	{
 		return stock.getStats().getMarketCap();
 	}
-	public BigDecimal getReturnOnEquity()
-	{
-		return stock.getStats().getROE();
-	}
+	
 	public BigDecimal getPeRatio()
 	{
 		return stock.getStats().getPe();
@@ -70,5 +72,9 @@ public class StockObject // To use Yahoo Finance Functionality
 	{
 		return stock;
 	}
-
+	public void setStock(Stock stock)
+	{
+		 this.stock = stock;
+	}
+	
 }

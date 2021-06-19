@@ -32,7 +32,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 	@Override
 	public UserHistory saveUserHistoryByuserId(String userId, String companySymbol, long quantity) {
 		// Saves User History
-		
+
 		int added = 0;
 		String companySymbolSector = null; 
 		try
@@ -48,21 +48,20 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 					stock.setCompanySymbol(companySymbol);
 					stock.setSector(companySymbolSector);
 					stock.setVolume(quantity);
-					logger.info("Stock of "+companySymbol+" added!");
+					logger.info("Stock of {} added!",companySymbol);
 				}
 			}
 			else
 			{
-				logger.error("Company Symbol - "+companySymbol+" not found!");
+				logger.error("Company Symbol - {} not found!",companySymbol);
 				return null;
 			}
 		}
 		catch(Exception e)
 		{
-			logger.error("Stock of "+companySymbol+" could not be added!");	
+			logger.error("Stock of {} could not be added!",companySymbol);	
 		}
 		return stock;
-
 	}
 
 	@Override
@@ -73,10 +72,10 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 		try
 		{
 			finalStocks = (ArrayList<UserHistory>) userHistoryRepository.findUserHistoryByuserId(userId);
-			if(finalStocks.size()!=0)
-				logger.info("User History of user: "+userId+" Found!");
+			if(finalStocks!=null && finalStocks.size()!=0)
+				logger.info("User History of User: {} Found!",userId);
 			else
-				logger.error("User History of user: "+userId+" not Found!");
+				logger.error("User History of User: {} not Found!",userId);
 
 		}
 		catch(Exception e)
@@ -89,30 +88,55 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 
 	@Override
 	public List<String> getCompanySymbolsSavedByUserId(String userId) {
-		
+
 		List<String> companySymbols = new ArrayList<>();
+		List<String> distinctcompanySymbols = new ArrayList<>();
 		try
 		{
 			companySymbols = userHistoryRepository.findCompanySymbolsByUserId(userId);
-			if(companySymbols.size()!=0)
-				logger.info("Company Symbols of Stocks saved by user: "+userId+" Found!");
+			HashMap<String,Integer> hm = new HashMap<String,Integer>();
+			for (int i = 0; i < companySymbols.size(); i++) {
+				hm.put(companySymbols.get(i), i);
+			}
+		    distinctcompanySymbols.addAll(hm.keySet());
+			if(companySymbols!=null && companySymbols.size()!=0)
+				logger.info("Company Symbols of Stocks saved by User: {} Found!",userId);
 		}
 		catch(Exception e)
 		{
-			logger.error("Company Symbols of Stocks saved by user: "+userId+" not Found!");
+			logger.error("Company Symbols of Stocks saved by User: {} not Found!",userId);
 		}
-		return companySymbols;
+		return distinctcompanySymbols;
 	}
 
 	@Override
-	public int deleteUserHistoryByuserId(int id) {
+	public int deleteUserHistoryByuserId(int[] ids) {
 		//Deletes selected stocks.
-		
+
 		int deleted = 0;
 		try
 		{
-			deleted = userHistoryRepository.deleteUserHistoryByuserId(id);
-			logger.info("User History data of ID: "+id+" deleted");
+			for(int i = 0;i<ids.length;i++) {
+				deleted = userHistoryRepository.deleteUserHistoryByuserId(ids[i]);
+				logger.info("User History data of ID: {} deleted",ids[i]);
+			}
+		}
+		catch(Exception e)
+		{
+			logger.error("User History could not be deleted");
+		}
+		return deleted;
+	}
+
+	@Override
+	public int deleteUserHistoryByuserId(String userId) {
+		//Deletes selected stocks.
+
+		int deleted = 0;
+		try
+		{
+			deleted = userHistoryRepository.deleteUserHistoryByuserId(userId);
+			logger.info("User History of User {} deleted",userId);
 		}
 		catch(Exception e)
 		{

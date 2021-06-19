@@ -23,7 +23,7 @@ public class UserRepository {
 
 	public UserMaster checkLogin(UserMaster userObject, String password) {
 		// checks if user present in database and password matches
-		
+
 		//String password = decodeString(userObject.getPassword());
 		UserMaster temp = null;
 		try
@@ -43,9 +43,8 @@ public class UserRepository {
 			}, userObject.getUserId());
 
 			if(temp != null) {
-				
+
 				if(temp.getPassword().equals(password.replaceAll("\\s",""))) {
-					logger.info("User Login Successful for user: "+temp.getUserId());
 					return temp;
 				}
 				else

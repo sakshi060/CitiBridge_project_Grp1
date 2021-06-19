@@ -43,14 +43,14 @@ public class StockDetailsController {
 		{
 			logger.info("Getting Recommendations for Sector - {} and Parameter - {}",sector,parameter);
 			finalList = stockDetailsService.findStocksAndSort(sector, parameter);
-			if(finalList.size()!=0)
+			if(finalList!= null && finalList.size()!=0)
 				logger.info("Showing Recommendations");
 			else
 				logger.error("Recommendations not found!");
 		}
 		catch(Exception e)
 		{
-			logger.error("Recommendations not found!",e.getMessage());
+			logger.error("Recommendations not found! {}",e.getMessage());
 		}
 		return finalList;
 	}
@@ -58,14 +58,14 @@ public class StockDetailsController {
 	@RequestMapping(value = "/showStockDetails/{companySymbol}", method = RequestMethod.GET)
 	public StockDetails showStockDetails(@PathVariable String companySymbol ) {
 		// Returns Stock Details of companySymbol passed as an argument.
-		
+
 		StockDetails stockDetails = new StockDetails();
 		try
 		{
 			logger.info("Getting Stock Details for Company - {}",companySymbol);
 			stockDetails = stockDetailsService.getStocksDetails(companySymbol);
 			if(stockDetails!=null)
-				logger.info("Showing Stock Details of {}"+companySymbol);
+				logger.info("Showing Stock Details of {}",companySymbol);
 			else
 				logger.error("Stock Details not found!");
 		}
@@ -83,18 +83,18 @@ public class StockDetailsController {
 
 		StockObject stock = new StockObject();
 		try {
-			logger.info("Getting Stock History of "+companySymbol);
+			logger.info("Getting Stock History of {} ",companySymbol);
 			stock = stockDetailsService.findStock(companySymbol);
-			if(stock.getHistory()!= null)
+			if(stock!= null)
 			{
-				logger.info("Showing History of Stock {} "+companySymbol);
+				logger.info("Showing History of Stock - {} ",companySymbol);
 				return stock.getHistory();
 			}
 			else
-				logger.error("History of "+companySymbol+ " not found!");
-				return null;
+				logger.error("History of {} not found!",companySymbol);
+			return null;
 		} catch (NullPointerException | IOException e) {
-			logger.error("History of "+companySymbol+ " not found!",e.getMessage());
+			logger.error("History of {} not found! {}",companySymbol,e.getMessage());
 			e.printStackTrace();
 			return null;
 		}

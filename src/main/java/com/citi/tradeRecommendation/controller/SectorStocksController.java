@@ -24,7 +24,7 @@ public class SectorStocksController {
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
 	@Autowired
-	SectorStocksService sectorStocksService;
+	SectorStocksService sectorstocksService;
 
 	@RequestMapping(value = "/showCompanies/{sector}", method = RequestMethod.GET)
 	public ArrayList<SectorStocks> showStocks(@PathVariable String sector) {
@@ -33,9 +33,9 @@ public class SectorStocksController {
 		ArrayList<SectorStocks> companies=new ArrayList<SectorStocks>();  
 		try
 		{
-			companies = (ArrayList<SectorStocks>) sectorStocksService.getCompanyBySector(sector);
-			if(companies.size()!=0)
-				logger.info("Showing Companies under Sector - " +sector);
+			companies = (ArrayList<SectorStocks>) sectorstocksService.getCompanyBySector(sector);
+			if(companies!= null && companies.size()!=0)
+				logger.info("Showing Companies under Sector - {}",sector);
 		}
 		catch(Exception e)
 		{
@@ -52,9 +52,9 @@ public class SectorStocksController {
 		List<String> companySymbols=new ArrayList<String>();  
 		try
 		{
-			companySymbols =  sectorStocksService.getCompanySymbolBySector(sector);
-			if(companySymbols.size()!=0)
-				logger.info("Showing Company Symbols of Stocks under Sector - " +sector);
+			companySymbols =  sectorstocksService.getCompanySymbolBySector(sector);
+			if(companySymbols!= null && companySymbols.size()!=0)
+				logger.info("Showing Company Symbols of Stocks under Sector - {}" +sector);
 		}
 		catch(Exception e)
 		{
@@ -71,8 +71,8 @@ public class SectorStocksController {
 		List<SectorAvg> sectors=new ArrayList<SectorAvg>(); 
 		try
 		{
-			sectors =  sectorStocksService.getSectorWiseGrowth();
-			if(sectors.size()!=0)
+			sectors =  sectorstocksService.getSectorWiseGrowth();
+			if(sectors!=null && sectors.size()!=0)
 				logger.info("Showing Sector Wise Growth");
 		}
 		catch(Exception e)
@@ -83,19 +83,19 @@ public class SectorStocksController {
 	}
 
 	@RequestMapping(value = "/showDistinctSectors", method = RequestMethod.GET)
-	public List<String> showSectors() {
+	public List<String> showDistinctSectors() {
 		// Returns Distinct sectors.
 
 		List<String> sectors = new ArrayList<String>();  
 		try
 		{
-			sectors =  sectorStocksService.getDistinctSectors();
-			if(sectors.size()!=0)
+			sectors =  sectorstocksService.getDistinctSectors();
+			if(sectors!=null && sectors.size()!=0)
 				logger.info("Showing Distinct Sectors");
 		}
 		catch(Exception e)
 		{
-			logger.error("Sectors not found! {} - ",e.getMessage());
+			logger.error("Sectors not found! - {}  ",e.getMessage());
 		}
 		return sectors;
 

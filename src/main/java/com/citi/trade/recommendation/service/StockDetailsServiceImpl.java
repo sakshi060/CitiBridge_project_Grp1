@@ -73,7 +73,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 		}
 		catch(Exception e)
 		{
-			logger.error("Exception caught in findAllStocks {}", e);
+			logger.error("Exception caught in findAllStocks {}", e.getMessage());
 		}
 		return  sectorWiseStocks;
 	}
@@ -158,12 +158,14 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 //				.map(SortingParameterList::name)
 //				.collect(Collectors.toList());
 		if((attribute.compareTo(SortingParameterList.CHANGE.toString())!=0)
-				|| (attribute.compareTo(SortingParameterList.PE_RATIO.toString())!=0)
-				|| (attribute.compareTo(SortingParameterList.MARKET_CAP.toString())!=0))
+				&& (attribute.compareTo(SortingParameterList.PE_RATIO.toString())!=0)
+				&& (attribute.compareTo(SortingParameterList.MARKET_CAP.toString())!=0))
 		{
 			logger.info("Mentioned Attribute: {} not found!",attribute);
+			
 			return sortedStocksList;
 		}
+		
 
 		try {
 			companySymbols =  sectorStocksService.getCompanySymbolBySector(sector);
@@ -194,6 +196,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 			logger.error("Sorting could not be done!");
 		}
 		return sortedStocksList;
+		
 	}
 
  public List<StockDetails> setAttributesofTop5Stocks(List<StockObject> stocksList){

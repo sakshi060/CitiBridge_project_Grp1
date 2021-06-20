@@ -34,7 +34,7 @@ public class SectorStocksController {
 		try
 		{
 			companies = (ArrayList<SectorStocks>) sectorstocksService.getCompanyBySector(sector);
-			if(companies!= null && companies.size()!=0)
+			if(!companies.isEmpty())
 				logger.info("Showing Companies under Sector - {}",sector);
 		}
 		catch(Exception e)
@@ -53,8 +53,8 @@ public class SectorStocksController {
 		try
 		{
 			companySymbols =  sectorstocksService.getCompanySymbolBySector(sector);
-			if(companySymbols.isEmpty())
-				logger.info("Showing Company Symbols of Stocks under Sector - {}" +sector);
+			if(!companySymbols.isEmpty())
+				logger.info("Showing Company Symbols of Stocks under Sector - {}" ,sector);
 		}
 		catch(Exception e)
 		{
@@ -72,7 +72,7 @@ public class SectorStocksController {
 		try
 		{
 			sectors =  sectorstocksService.getSectorWiseGrowth();
-			if(sectors!=null && sectors.size()!=0)
+			if(!sectors.isEmpty())
 				logger.info("Showing Sector Wise Growth");
 		}
 		catch(Exception e)

@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.UserHistory;
+import com.citi.trade.recommendation.service.SectorStocksService;
 import com.citi.trade.recommendation.service.StockDetailsService;
 import com.citi.trade.recommendation.service.UserHistoryService;
 
@@ -27,21 +28,33 @@ public class UserHistoryTest {
 	UserHistoryService userHistoryService;
 	@Autowired
 	StockDetailsService stockDetailsService;
+	@Autowired
+	SectorStocksService sectorStocksService;
 
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
-//	@Test
-//	public void testsaveUserHistoryByuserId() {
-//		// TODO Auto-generated method stub
-//		String userId = "XYZ";
-//		String companySymbol = "TCS.NS";
-//		long quantity = 30;
-//		UserHistory stock = new UserHistory();
-//		logger.info("");
-//		stock = userHistoryService.saveUserHistoryByuserId(userId,companySymbol,quantity);
-//		Assertions.assertNotNull(stock);
-//		//Assertions.assertEquals("TCS.NS",stock.getCompanySymbol());
-//	}
+	@Test
+	public void testsaveUserHistoryByuserId() {
+	
+	String sector = sectorStocksService.getSectorByCompanySymbol("TCS.NS");
+	UserHistory userHistory = new UserHistory();
+	userHistory.setUserId("XYZ");
+	userHistory.setCompanySymbol("TCS.NS");
+	userHistory.setId(100);
+	userHistory.setSector(sector);
+	try {
+		userHistory.setPrice(stockDetailsService.findStock("TCS.NS").getPrice());
+	} catch (IOException e) {
+		
+		e.printStackTrace();
+	}
+	userHistory.setVolume(45);
+
+	logger.info("");
+	Assertions.assertNotNull(userHistoryService.saveUserHistoryByuserId(userHistory));
+	//Assertions.assertEquals("TCS.NS",stock.getCompanySymbol());
+}
+	
 	@Test
 	public void testdeleteStocksByUserId() {
 
@@ -91,14 +104,14 @@ public class UserHistoryTest {
 	}
 
 
-	@Test
-	public void testdeleteStocks() {
-		int ids[] = {2,5};
-		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
-			//Assertions.assertNull(userHistoryService.deleteUserHistoryByuserId(null));
-		Assertions.assertEquals(1,  deleted);
-
-	}
+//	@Test
+//	public void testdeleteStocks() {
+//		int ids[] = {6,7};
+//		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
+//			//Assertions.assertNull(userHistoryService.deleteUserHistoryByuserId(null));
+//		Assertions.assertEquals(1,  deleted);
+//
+//	}
 
 	@Test
 	public void testgetHistoricalData() throws IOException{

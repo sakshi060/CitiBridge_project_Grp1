@@ -64,20 +64,8 @@ public class StockDetailsTest {
 	@Test
 	public void getTopPerformingStock()
 	{
-		List<String> companySymbols = new ArrayList<String>();
-
-		companySymbols.add("SUNPHARMA.NS");
-		companySymbols.add("ULTRACEMCO.NS");
-		companySymbols.add("ONGC.NS");
-		companySymbols.add("POWERGRID.NS");
-		companySymbols.add("NESTLEIND.NS");
-		companySymbols.add("INDUSINDBK.NS");
-		companySymbols.add("DRREDDY.NS");
-		companySymbols.add("AXISBANK.NS");
-		companySymbols.add("HDFCBANK.NS");
-		companySymbols.add("JSWSTEEL.NS");
-		StockDetails stockDetails = new StockDetails();
-		stockDetails = stockDetailsService.findTopPerformingStock("companySymbols");
+		String userId = "Sakshi";
+		StockDetails stockDetails = stockDetailsService.findTopPerformingStock(userId);
 		Assertions.assertNotNull(stockDetails);
 		//Assertions.assertNull(stockDetailsService.findTopPerformingStock(null));
 	}

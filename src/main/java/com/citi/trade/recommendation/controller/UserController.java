@@ -30,24 +30,9 @@ public class UserController {
 		// Checks if user present in database, if yes returns userId
 
 		UserMaster checkuser = new UserMaster();
-		try
-		{
+
 			logger.info("Authenticating User {} :",userObject.getUserId());
 			checkuser = userService.checkLogin(userObject);
-			if(checkuser!=null)
-			{
-				logger.info("SUCCESS");
-				return true;
-			}
-			else
-				logger.error("FAILURE");
-			return false;
-		}
-		catch(Exception e)
-		{
-			logger.error("FAILURE");
-			return false;
-		}
-
+		return checkuser != null;
 	}
 }

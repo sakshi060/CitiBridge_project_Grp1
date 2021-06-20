@@ -31,38 +31,26 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 	UserHistory stock = new UserHistory();
 
 	@Override
-	public UserHistory saveUserHistoryByuserId(String userId, String companySymbol, long quantity) {
+	public boolean saveUserHistoryByuserId(UserHistory history) {
 		// Saves User History
 
 		int added = 0;
-		String companySymbolSector = null; 
 		try
 		{
-			companySymbolSector = sectorStocksService.getSectorByCompanySymbol(companySymbol);
-			if (companySymbolSector!= null)
-			{
-				added = userHistoryRepository.addUserHistoryByuserId(userId, companySymbol, quantity,companySymbolSector);
-				if(added ==1)
-				{
-					stock.setUserId(userId);
-					stock.setPrice(stockDetailsService.findStock(companySymbol).getPrice());
-					stock.setCompanySymbol(companySymbol);
-					stock.setSector(companySymbolSector);
-					stock.setVolume(quantity);
-					logger.info("Stock of {} added!",companySymbol);
-				}
-			}
-			else
-			{
-				logger.error("Company Symbol - {} not found!",companySymbol);
-				return null;
-			}
+              if(history!=null) {
+				  added = userHistoryRepository.addUserHistoryByuserId(history);
+				  if (added == 1) {
+
+					  logger.info("Stock of {} added!", history.getCompanySymbol());
+				  }
+			  }
+
 		}
 		catch(Exception e)
 		{
-			logger.error("Stock of {} could not be added!",companySymbol);	
+			logger.error("Stock of {} could not be added!",e);
 		}
-		return stock;
+		return added == 1;
 	}
 
 	@Override
@@ -131,7 +119,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 
 	@Override
 	public int deleteUserHistoryByuserId(String userId) {
-		//Deletes selected stocks.
+		//Deletes all stocks of a particular user.
 
 		int deleted = 0;
 		try

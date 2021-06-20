@@ -31,9 +31,11 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 	SortStocksService sortStocks;
 	@Autowired
 	StockDetailsService stockDetailsService;
+	@Autowired
+	UserHistoryService userHistoryService;
 
 	@Override
-	public StockObject findStock(String companySymbol) throws IOException {
+	public StockObject findStock(String companySymbol) {
 		//Finds and Returns Stock for a given companySymbol passed as an argument from Yahoo Finance API.
 
 		try
@@ -50,7 +52,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 	}
 
 	@Override
-	public List<StockObject> findAllStock(List<String> symbols) throws IOException {
+	public List<StockObject> findAllStock(List<String> symbols){
 		String[] allSymbols = new String[symbols.size()];
 		List<StockObject> sectorWiseStocks = new ArrayList<>();
 		try
@@ -86,17 +88,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 		try {
 
 			StockObject stock = stockDetailsService.findStock(companySymbol);
-			stockDetails.setCompanySymbol(stock.getCompanySymbol());
-			stockDetails.setCompanyName(stock.getCompanyName());
-			stockDetails.setOpen(stock.getOpen());
-			stockDetails.setClose(stock.getClose());
-			stockDetails.setHigh(stock.getHigh());
-			stockDetails.setLow(stock.getLow());
-			stockDetails.setVolume(stock.getVolume());
-			stockDetails.setChange(stock.getChange());
-			stockDetails.setPeRatio(stock.getPeRatio());
-			stockDetails.setMarketCap(stock.getMarketCap());
-			stockDetails.setHistory(stock.getHistory());
+		    stockDetails = setStockDetails(stock);
 			logger.info("Stock Details of Company Symbol: {} found!",companySymbol);
 
 		} 
@@ -108,9 +100,9 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 	}
 
 	@Override
-	public StockDetails findTopPerformingStock(List<String> companySymbols) {
+	public StockDetails findTopPerformingStock(String userId) {
 		//Finds Top Performing Stock from the given list of Companies(companySymbols) passed as an argument.
-
+		List<String> companySymbols = userHistoryService.getCompanySymbolsSavedByUserId(userId);
 		List<StockObject> stocksList=new ArrayList<>();
 		List<StockDetails> sortedStocksList=new ArrayList<>();
 		StockDetails topPerformingStock;
@@ -123,22 +115,11 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 		for(int i = 0;i<companySymbols.size();i++)
 		{
 			try {
-				StockDetails stockDetails = new StockDetails();
-				stockDetails.setCompanySymbol(stocksList.get(i).getCompanySymbol());
-				stockDetails.setCompanyName(stocksList.get(i).getCompanyName());
-				stockDetails.setOpen(stocksList.get(i).getOpen());
-				stockDetails.setClose(stocksList.get(i).getClose());
-				stockDetails.setHigh(stocksList.get(i).getHigh());
-				stockDetails.setLow(stocksList.get(i).getLow());
-				stockDetails.setVolume(stocksList.get(i).getVolume());
-				stockDetails.setChange(stocksList.get(i).getChange());	
-				stockDetails.setPeRatio(stocksList.get(i).getPeRatio());
-				stockDetails.setMarketCap(stocksList.get(i).getMarketCap());
-				stockDetails.setHistory(stocksList.get(i).getHistory());
+				StockDetails stockDetails = setStockDetails(stocksList.get(i));
 				sortedStocksList.add(stockDetails);
 				logger.info("Top Performing Stock found!");	
 			} 
-			catch (IOException e) {
+			catch (Exception e) {
 				logger.error("Top Performing Stock not found!");
 				e.printStackTrace();
 			}
@@ -151,7 +132,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 	public  List<StockDetails> findStocksAndSort(String sector, String attribute) {
 		//Gets Stock from Yahoo API and sorts based on the sector and parameter mentioned
 
-		List<StockObject> stocksList;
+		List<StockObject> stocksList = new ArrayList<>();
 		List<StockDetails> sortedStocksList=new ArrayList<>();
 		List<String> companySymbols;
 //		List<String> enumNames = Stream.of(SortingParameterList.values())
@@ -174,22 +155,20 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 			{
 				logger.info("Sorting on the basis of Market Capital");
 				stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());
-				sortedStocksList = setAttributesofTop5Stocks(stocksList);
 			}
 			else if(attribute.compareTo(SortingParameterList.PE_RATIO.toString())==0)
 			{
 				logger.info("Sorting on the basis of PE Ratio");
 				stocksList = sortStocks.sort(companySymbols, SortingParameterList.PE_RATIO.toString());
-				sortedStocksList = setAttributesofTop5Stocks(stocksList);
 
 			}
 			else if(attribute.compareTo(SortingParameterList.CHANGE.toString())==0)
 			{
 				logger.info("Sorting on the basis of Change");
 				stocksList = sortStocks.sort(companySymbols, SortingParameterList.CHANGE.toString());
-				sortedStocksList = setAttributesofTop5Stocks(stocksList);
-			}
 
+			}
+			sortedStocksList = setAttributesofTop5Stocks(stocksList);
 		}
 		catch(Exception e)
 		{
@@ -205,18 +184,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 		 if (!stocksList.isEmpty()) {
 			 int size = (stocksList.size() >= 5) ? 5 : stocksList.size(); //incase sector has less than 5 stocks
 			 for (int i = 0; i < size; i++) {
-				 StockDetails stockDetails = new StockDetails();
-				 stockDetails.setCompanySymbol(stocksList.get(i).getCompanySymbol());
-				 stockDetails.setCompanyName(stocksList.get(i).getCompanyName());
-				 stockDetails.setOpen(stocksList.get(i).getOpen());
-				 stockDetails.setClose(stocksList.get(i).getClose());
-				 stockDetails.setHigh(stocksList.get(i).getHigh());
-				 stockDetails.setLow(stocksList.get(i).getLow());
-				 stockDetails.setVolume(stocksList.get(i).getVolume());
-				 stockDetails.setChange(stocksList.get(i).getChange());
-				 stockDetails.setPeRatio(stocksList.get(i).getPeRatio());
-				 stockDetails.setMarketCap(stocksList.get(i).getMarketCap());
-				 stockDetails.setHistory(stocksList.get(i).getHistory());
+				 StockDetails stockDetails = setStockDetails(stocksList.get(i));
 				 sortedStocksList.add(stockDetails);
 			 }
 
@@ -225,5 +193,28 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 	 	logger.error("Error in setAttributesofTop5Stocks {}", e);
 	 }
 	 return sortedStocksList;
+ }
+
+ public StockDetails setStockDetails(StockObject stock) {
+	 StockDetails stockDetails = new StockDetails();
+		try {
+
+	 stockDetails.setCompanySymbol(stock.getCompanySymbol());
+	 stockDetails.setCompanyName(stock.getCompanyName());
+	 stockDetails.setOpen(stock.getOpen());
+	 stockDetails.setClose(stock.getClose());
+	 stockDetails.setHigh(stock.getHigh());
+	 stockDetails.setLow(stock.getLow());
+	 stockDetails.setVolume(stock.getVolume());
+	 stockDetails.setChange(stock.getChange());
+	 stockDetails.setPeRatio(stock.getPeRatio());
+	 stockDetails.setMarketCap(stock.getMarketCap());
+	 stockDetails.setHistory(stock.getHistory());
+		}
+		catch (IOException e) {
+			logger.error("Top Performing Stock not found!");
+			e.printStackTrace();
+		}
+	 return stockDetails;
  }
 }

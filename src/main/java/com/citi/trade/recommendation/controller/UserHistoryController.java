@@ -37,90 +37,31 @@ public class UserHistoryController {
 	@Autowired
 	StockDetailsService stockDetailsService;
 
-	@PostMapping("/saveStocks/{userId}/{companySymbol}/{quantity}")
-	public UserHistory saveUserHistory(@PathVariable String userId , @PathVariable String companySymbol, @PathVariable long quantity) {
+	@PostMapping("/saveStocks")
+	public boolean saveUserHistory(@RequestBody UserHistory history) {
 		// Saves stock and quantity of the stock, the given user wants.
-
-		UserHistory stock = new UserHistory();
-		try
-		{
-			stock = userHistoryService.saveUserHistoryByuserId(userId,companySymbol,quantity);
-
-			if(stock != null) {
-				logger.info("User History for Stock {} and User: {} saved successfully!",stock.getCompanySymbol(),userId);
-				return stock;
-			}
-			else
-			{
-				logger.error("User History for Stock {} and User: {} not saved successfully!",companySymbol,userId);
-				return null;
-			}
-		}
-
-		catch(Exception e)
-		{
-			logger.error("User History for Stock {} and User: {} not saved successfully!",stock, userId);
-		}
-
-		return new UserHistory();
+return userHistoryService.saveUserHistoryByuserId(history);
 	}
 
 	@RequestMapping(value = "/showStocks/{userId}", method = RequestMethod.GET)
 	public List<UserHistory> getUserHistory(@PathVariable String userId) {
 		//Returns saved stocks of userId passed as an argument.
+		return userHistoryService.getUserHistoryByuserId(userId);
 
-		List<UserHistory> userHistoryStocks = new ArrayList<>();
-		try
-		{
-			userHistoryStocks = (ArrayList<UserHistory>) userHistoryService.getUserHistoryByuserId(userId);
-			if(!userHistoryStocks.isEmpty())
-				logger.info("Showing User History for User: {}",userId);
-		}
-		catch(Exception e)
-		{
-			logger.error("User not found!");
-		}
-		return userHistoryStocks;
 	}
 
 	@RequestMapping(value = "/showTopPerformingStock/{userId}", method = RequestMethod.GET)
 	public StockDetails getTopPerformingStock(@PathVariable String userId) throws IOException {
 		//Returns Top Performing Stock from Saved Stocks of userId passed as an argument.
+			return stockDetailsService.findTopPerformingStock(userId);
 
-		StockDetails topStock = new StockDetails();
-		List<String> companySymbols=new ArrayList<>();
-		try 
-		{
-			logger.info("Finding Top Performance Stock for User: {} " ,userId);
-			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
-			topStock = stockDetailsService.findTopPerformingStock(companySymbols);
-			if(topStock!=null)
-				logger.info("Showing Top Performing Stock for User: {}",userId);
-		}
-		catch(Exception e)
-		{
-			logger.error("Top Performing Stock for User: {} could not be found!",userId);
-		}
-		return topStock;
 	}
 
 	@RequestMapping(value = "/getCompanySymbols/{userId}", method = RequestMethod.GET)
 	public List<String> getCompanySymbolsSavedByUserId(@PathVariable String userId) {
 		//Returns Company Symbols of Saved Stocks of userId passed as an argument.
+		return userHistoryService.getCompanySymbolsSavedByUserId(userId);
 
-		List<String> companySymbols=new ArrayList<>();
-		try
-		{
-			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
-			if(!companySymbols.isEmpty())
-				logger.info("Company Symbols of Stocks saved by User: {} found!",userId);
-
-		}
-		catch(Exception e)
-		{
-			logger.error("Company Symbols of Stocks saved by User: {} could not be found!",userId);
-		}
-		return companySymbols;
 
 	}
 
@@ -128,21 +69,9 @@ public class UserHistoryController {
 	public boolean deleteSavedStocksByUserId( @RequestBody int[] ids) {
 		// Deletes stocks for the logged in user with ids as parameter.
 
-		try {
 			int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
-			if(deleted==1) {
-				logger.info("Deleted Stock!");
-			}
-			else
-				logger.error("Stock could not be deleted!");
+			return deleted==1;
 
-			return true;
-		}
-		catch(Exception e)
-		{
-			logger.error("Invalid ID!");
-			return false;
-		}
 	}
 
 

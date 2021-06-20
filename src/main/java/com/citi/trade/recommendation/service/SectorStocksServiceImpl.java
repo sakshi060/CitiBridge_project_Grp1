@@ -56,7 +56,7 @@ public class SectorStocksServiceImpl implements SectorStocksService {
 		try
 		{
 			sectorCompanies = sectorStocksRepository.findCompanySymbolBySector(sector);
-			if(sectorCompanies.isEmpty())
+			if(!sectorCompanies.isEmpty())
 				logger.info("Company Symbols under Sector: {} found!",sector);	
 			else
 				logger.error("Sector: {} not found! ",sector);

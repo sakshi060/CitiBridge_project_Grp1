@@ -90,7 +90,7 @@ public class SectorStocksController {
 		try
 		{
 			sectors =  sectorstocksService.getDistinctSectors();
-			if(sectors.isEmpty())
+			if(!sectors.isEmpty())
 				logger.info("Showing Distinct Sectors");
 		}
 		catch(Exception e)

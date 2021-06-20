@@ -49,9 +49,6 @@ public class SectorStocksRepository {
 			{
 				logger.info("Company symbols not found");
 			}
-
-
-
 		}
 		catch(Exception e)
 		{
@@ -109,19 +106,13 @@ public class SectorStocksRepository {
 
 			}, companySymbol);
 
-			if(sectorCompany!=null)
-			{
-				return sectorCompany;
-			}
-			else
-				logger.error("Error occured in fetching Company Symbols");
-			return null;
 		}
 		catch(Exception e)
 		{
 			logger.error("Error occured in fetching Sector - {}", e.getMessage());
-			return null;
+
 		}
+		return sectorCompany;
 	}
 
 	public List<String> findDistinctSectors() {

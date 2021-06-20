@@ -89,7 +89,6 @@ public class SectorStocksServiceImpl implements SectorStocksService {
 	@Override
 	public List<SectorAvg> getSectorWiseGrowth(){
 		//Calculates and Returns sector wise growth.
-
 		List<SectorAvg> sectorWiseGrowth = new ArrayList<>();
 		try
 		{
@@ -97,31 +96,9 @@ public class SectorStocksServiceImpl implements SectorStocksService {
 			List<String> sectors = getDistinctSectors();
 			if(!sectors.isEmpty())
 			{
-				if(!ObjectUtils.isEmpty(sectors)) {
-					sectors.forEach(sector -> {
-
-						List<String> symbols = getCompanySymbolBySector(sector);
-
-						try {
-							sum = 0;
-							List<StockObject> sectorWiseStocks = stockDetailsService.findAllStock(symbols);
-							if(!ObjectUtils.isEmpty(sectorWiseStocks)) {
-								sectorWiseStocks.forEach(stock -> {
-									if(stock !=null && stock.getChange() != null)
-									{sum +=stock.getChange().doubleValue();
-									}
-								});
-							}
-
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						SectorAvg obj = new SectorAvg();
-						obj.setAvggrowth(sum/symbols.size());
-						obj.setSector(sector);
-						sectorWiseGrowth.add(obj);
-					});
-				}
+					sectors.forEach(sector ->
+						sectorWiseGrowth.add(calculateSectorAvg(sector))
+					);
 				logger.info("Sector Wise Avg Growth found!");
 			}
 		}
@@ -130,6 +107,29 @@ public class SectorStocksServiceImpl implements SectorStocksService {
 			logger.error("Could not find Sector Wise Avg Growth! - {}",e.getMessage());
 		}
 		return sectorWiseGrowth;
+	}
+
+	public SectorAvg calculateSectorAvg(String sector){
+		SectorAvg obj = new SectorAvg();
+		try {
+			List<String> symbols = getCompanySymbolBySector(sector);
+			sum = 0;
+			List<StockObject> sectorWiseStocks = stockDetailsService.findAllStock(symbols);
+			if (!ObjectUtils.isEmpty(sectorWiseStocks)) {
+				sectorWiseStocks.forEach(stock -> {
+					if (stock != null && stock.getChange() != null) {
+						sum += stock.getChange().doubleValue();
+					}
+				});
+			}
+
+			obj.setAvggrowth(sum / symbols.size());
+			obj.setSector(sector);
+		}
+		catch(Exception e){
+			logger.error("Error in calculating avergae growth {}", e);
+		}
+		return obj;
 	}
 
 	@Override

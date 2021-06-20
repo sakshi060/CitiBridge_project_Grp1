@@ -2,6 +2,7 @@ package com.citi.trade.recommendation.service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +24,7 @@ public class SortStocksServiceImpl implements SortStocksService {
 
 	public  List<StockObject> sort(List<String> companySymbols, String attribute) {
 		//Sorts stocks of Companies (companySymbols) on the basis of attribute passed as arguments in the Descending Order.
-
+		List<StockObject> sortedStocks = new ArrayList<>();
 		try {
 
 			List<StockObject> sectorStocks = stockDetailsService.findAllStock(companySymbols);
@@ -31,36 +32,33 @@ public class SortStocksServiceImpl implements SortStocksService {
 			if(attribute.compareTo(SortingParameterList.MARKET_CAP.toString())==0)
 			{
 
-				return  sectorStocks.stream()
+				sortedStocks =  sectorStocks.stream()
 						.sorted(Comparator.comparing(StockObject::getMarketCap).reversed())      
 						.collect(Collectors.toList());
 			}
 
 			else if(attribute.compareTo(SortingParameterList.PE_RATIO.toString())==0)
 			{
-				return sectorStocks.stream()
+				sortedStocks = sectorStocks.stream()
 						.sorted(Comparator.comparing(StockObject::getPeRatio).reversed())      
 						.collect(Collectors.toList());
 			}
 
 			else if(attribute.compareTo(SortingParameterList.CHANGE.toString())==0)
 			{
-				return sectorStocks.stream()
+				sortedStocks = sectorStocks.stream()
 						.sorted(Comparator.comparing(StockObject::getChange).reversed())      
 						.collect(Collectors.toList());
 
 			}
-			else
-				return  null;
-
 		}
 		catch(Exception e)
 		{
 			logger.error("Sorting could not be done!");
-			return null;
+
 		}
 
-
+		return sortedStocks;
 	}
 
 }

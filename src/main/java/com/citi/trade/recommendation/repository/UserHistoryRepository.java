@@ -60,13 +60,12 @@ public class UserHistoryRepository {
 
 	public List<UserHistory> findUserHistoryByuserId(String userId) {
 		//Displays UserHistory
-
-		ArrayList<UserHistory> finalStocks = new ArrayList<UserHistory>();
+		List<UserHistory> userHistoryList = new ArrayList<>();
 		try
 		{
 			logger.info("Fetching User History of User: {} " ,userId);
 			String findShares = "select * from user_history where user_id=?";
-			ArrayList<UserHistory> shares = (ArrayList<UserHistory>) template.query(findShares, new RowMapper<UserHistory>() {
+			userHistoryList = (ArrayList<UserHistory>) template.query(findShares, new RowMapper<UserHistory>() {
 
 				@Override
 				public UserHistory mapRow(ResultSet set, int arg1) throws SQLException {
@@ -81,49 +80,26 @@ public class UserHistoryRepository {
 				}
 
 			}, userId);
-			finalList = new UserHistory[shares.size()];
-			if(finalList!=null && finalList.length != 0)
-			{
-				for(int i = 0;i<shares.size();i++)
-				{
-					UserHistory userHistory = new UserHistory();
-					userHistory.setId(shares.get(i).getId());
-					userHistory.setCompanySymbol(shares.get(i).getCompanySymbol());
-					userHistory.setSector(shares.get(i).getSector());
-					userHistory.setPrice(shares.get(i).getPrice());
-					userHistory.setUserId(shares.get(i).getUserId());
-					userHistory.setVolume(shares.get(i).getVolume());
-					finalList[i] = userHistory;
-					finalStocks.add(finalList[i]);
-				}
-				return finalStocks;
-			}
-			else
-			{
-				logger.error("User History of User: {}  could not be obtained!",userId);
-				return null;
-			}
 		}
 		catch(Exception e)
 		{
 			logger.error("User History of User: {}  could not be obtained!",userId);
-			return null;
 		}
+		return userHistoryList;
 
 	}
 
-
 	public List<String> findCompanySymbolsByUserId(String userId) {
-
+		List<String> companySymbols = new ArrayList<>();
 		try
 		{
 			logger.info("Fetching Company Symbols of saved stocks of user - " +userId);
 			String findShares = "select company_symbol from user_history where user_id=?";
-			List<String> companySymbols = template.query(findShares, new RowMapper<String>() {
+			companySymbols = template.query(findShares, new RowMapper<String>() {
 
 				@Override
 				public String mapRow(ResultSet set, int arg1) throws SQLException {
-					return new String(set.getString(1));
+					return set.getString(1);
 				}
 
 			}, userId);
@@ -131,13 +107,12 @@ public class UserHistoryRepository {
 				logger.info("User History found for User: {} ",userId);
 			else
 				logger.error("User History not found for User: {}",userId);
-			return companySymbols;
 		}
 		catch(Exception e)
 		{
 			logger.error("User History of User: {} could not be obtained!",userId);
-			return null;
 		}
+		return companySymbols;
 	}
 
 

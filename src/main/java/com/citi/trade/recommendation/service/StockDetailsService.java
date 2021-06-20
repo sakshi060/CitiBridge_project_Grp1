@@ -1,7 +1,6 @@
 package com.citi.trade.recommendation.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.citi.trade.recommendation.model.StockDetails;

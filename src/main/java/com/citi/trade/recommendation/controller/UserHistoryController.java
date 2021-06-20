@@ -59,7 +59,7 @@ public class UserHistoryController {
 
 		catch(Exception e)
 		{
-			logger.error("User History for Stock {} and User: {} not saved successfully!",stock.getCompanySymbol(),userId);
+			logger.error("User History for Stock {} and User: {} not saved successfully!",stock, userId);
 		}
 
 		return new UserHistory();
@@ -112,7 +112,7 @@ public class UserHistoryController {
 		try
 		{
 			companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
-			if(companySymbols!= null && companySymbols.size()!=0)
+			if(!companySymbols.isEmpty())
 				logger.info("Company Symbols of Stocks saved by User: {} found!",userId);
 
 		}

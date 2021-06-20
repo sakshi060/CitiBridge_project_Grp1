@@ -32,20 +32,18 @@ public class UserHistoryRepository {
 
 	UserHistory share = new UserHistory();
 
-	public int addUserHistoryByuserId(String userId, String companySymbol, long quantity, String companySymbolSector) {
+	public int addUserHistoryByuserId(UserHistory history) {
 		// Saves User History
-
 		try
 		{
-			logger.info("Inserting into database User History for User: {} ",userId);
-			stockRecommendationService.findStock(companySymbol);
+			logger.info("Inserting into database User History for User: {} ",history.getUserId());
 
 			int added = template.update("insert into user_history(company_symbol,price,sector,user_id,volume) values(?,?,?,?,?)",
-					companySymbol,stockRecommendationService.findStock(companySymbol).getPrice(),companySymbolSector,userId,quantity);
+					history.getCompanySymbol(),history.getPrice(),history.getSector(),history.getUserId(),history.getQuantity());
 
 			if(added ==1)
 			{
-				logger.info("Insertion Successful for User: {} ",userId);
+				logger.info("Insertion Successful for User: {} ",history.getUserId());
 				return added;
 			}
 		}

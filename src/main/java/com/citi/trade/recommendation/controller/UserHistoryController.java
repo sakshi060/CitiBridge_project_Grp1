@@ -37,13 +37,10 @@ public class UserHistoryController {
 	@Autowired
 	StockDetailsService stockDetailsService;
 
-	@PostMapping("/saveStocks/{userId}/{companySymbol}/{quantity}")
-	public UserHistory saveUserHistory(@PathVariable String userId , @PathVariable String companySymbol, @PathVariable long quantity) {
+	@PostMapping("/saveStocks")
+	public boolean saveUserHistory(@RequestBody UserHistory history) {
 		// Saves stock and quantity of the stock, the given user wants.
-
-		UserHistory stock = new UserHistory();
-			stock = userHistoryService.saveUserHistoryByuserId(userId,companySymbol,quantity);
-		return stock;
+return userHistoryService.saveUserHistoryByuserId(history);
 	}
 
 	@RequestMapping(value = "/showStocks/{userId}", method = RequestMethod.GET)

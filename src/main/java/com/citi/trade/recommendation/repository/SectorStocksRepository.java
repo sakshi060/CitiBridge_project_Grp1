@@ -65,22 +65,6 @@ public class SectorStocksRepository {
         return sectorCompanies;
     }
 
-    public String findSectorByCompanySymbol(String companySymbol) {
-        // Returns sector of companySymbol passed as an argument from the database.
-
-        logger.info("Fetching Sector of Company {} ", companySymbol);
-        String sectorCompany = null;
-        try {
-            String findShares = "select sector from sector_stocks where company_symbol=?";
-            sectorCompany = template.queryForObject(findShares, (set, arg1) -> set.getString(1), companySymbol);
-
-        } catch (Exception e) {
-            logger.error("Error occured in fetching Sector - {}", e.getMessage());
-
-        }
-        return sectorCompany;
-    }
-
     public List<String> findDistinctSectors() {
         //Returns distinct sectors from the database.
 

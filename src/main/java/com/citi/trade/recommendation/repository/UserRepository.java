@@ -5,11 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Repository
 public class UserRepository {
@@ -20,20 +16,15 @@ public class UserRepository {
 
     public UserMaster checkLogin(UserMaster userObject, String password) {
         // checks if user present in database and password matches
-        UserMaster temp = null;
+        UserMaster temp;
         try {
 
             String findUser = "select * from user_master where user_id=?";
-            temp = template.queryForObject(findUser, new RowMapper<UserMaster>() {
-
-                @Override
-                public UserMaster mapRow(ResultSet set, int arg1) throws SQLException {
-                    UserMaster userMaster = new UserMaster();
-                    userMaster.setUserId(set.getString(1));
-                    userMaster.setPassword(set.getString(2));
-                    return userMaster;
-                }
-
+            temp = template.queryForObject(findUser, (set, arg1) -> {
+                UserMaster userMaster = new UserMaster();
+                userMaster.setUserId(set.getString(1));
+                userMaster.setPassword(set.getString(2));
+                return userMaster;
             }, userObject.getUserId());
 
             if (temp != null) {

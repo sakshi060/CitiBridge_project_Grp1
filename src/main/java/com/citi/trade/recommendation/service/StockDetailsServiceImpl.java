@@ -117,7 +117,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 				sortedStocksList.add(stockDetails);
 				logger.info("Top Performing Stock found!");	
 			} 
-			catch (IOException e) {
+			catch (Exception e) {
 				logger.error("Top Performing Stock not found!");
 				e.printStackTrace();
 			}

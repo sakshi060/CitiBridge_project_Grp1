@@ -2,7 +2,6 @@ package com.citi.trade.recommendation.controller;
 
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.UserHistory;
-import com.citi.trade.recommendation.service.SectorStocksService;
 import com.citi.trade.recommendation.service.StockDetailsService;
 import com.citi.trade.recommendation.service.UserHistoryService;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -22,8 +20,6 @@ public class UserHistoryController {
 
     @Autowired
     UserHistoryService userHistoryService;
-    @Autowired
-    SectorStocksService sectorStocksService;
     @Autowired
     StockDetailsService stockDetailsService;
 

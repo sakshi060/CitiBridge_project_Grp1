@@ -30,7 +30,7 @@ public class SectorStocksServiceImpl implements SectorStocksService {
 
 	@Override
 	public List<SectorStocks> getCompanyBySector(String sector) {
-		// Returns Companies of sector passed as an argument.
+		// Returns Company Names of sector passed as an argument.
 
 		List<SectorStocks> sectorCompanies = new ArrayList<>();
 		try

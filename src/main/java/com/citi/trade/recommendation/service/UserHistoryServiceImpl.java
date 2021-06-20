@@ -131,7 +131,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 
 	@Override
 	public int deleteUserHistoryByuserId(String userId) {
-		//Deletes selected stocks.
+		//Deletes all stocks of a particular user.
 
 		int deleted = 0;
 		try

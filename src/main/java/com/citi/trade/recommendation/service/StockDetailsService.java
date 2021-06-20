@@ -12,6 +12,6 @@ public interface StockDetailsService {
 	public StockObject findStock(String companySymbol) throws IOException;
 	public List<StockObject> findAllStock(List<String> companySymbol) throws IOException;
 	public StockDetails getStocksDetails(String companySymbol);
-	public StockDetails findTopPerformingStock(List<String> companySymbols);
+	public StockDetails findTopPerformingStock(String userId);
 	public List<StockDetails> findStocksAndSort(String sector, String attribute);
 }

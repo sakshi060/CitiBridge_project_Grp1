@@ -37,67 +37,30 @@ public class StockDetailsController {
 	@RequestMapping(value = "/showRecommendedStocks/{sector}/{parameter}", method = RequestMethod.GET)
 	public List<StockDetails> showRecommendedStocks(@PathVariable String sector , @PathVariable String parameter) throws IOException {
 		// Returns sorted stocks of given sector and parameters passed as arguments.
+			return  stockDetailsService.findStocksAndSort(sector, parameter);
 
-		List<StockDetails> finalList=new ArrayList<>();
-		try
-		{
-			logger.info("Getting Recommendations for Sector - {} and Parameter - {}",sector,parameter);
-			finalList = stockDetailsService.findStocksAndSort(sector, parameter);
-			if(finalList!= null && finalList.size()!=0)
-				logger.info("Showing Recommendations");
-			else
-				logger.error("Recommendations not found!");
-		}
-		catch(Exception e)
-		{
-			logger.error("Recommendations not found! {}",e.getMessage());
-		}
-		return finalList;
 	}
 
 	@RequestMapping(value = "/showStockDetails/{companySymbol}", method = RequestMethod.GET)
 	public StockDetails showStockDetails(@PathVariable String companySymbol ) {
 		// Returns Stock Details of companySymbol passed as an argument.
+	return stockDetailsService.getStocksDetails(companySymbol);
 
-		StockDetails stockDetails = new StockDetails();
-		try
-		{
-			logger.info("Getting Stock Details for Company - {}",companySymbol);
-			stockDetails = stockDetailsService.getStocksDetails(companySymbol);
-			if(stockDetails!=null)
-				logger.info("Showing Stock Details of {}",companySymbol);
-			else
-				logger.error("Stock Details not found!");
-		}
-		catch(Exception e)
-		{
-			logger.error("Stock Details not found!",e.getMessage());
-		}
-		return stockDetails;
 	}
 
 	@RequestMapping(value = "/showStockHistory/{companySymbol}", method = RequestMethod.GET)
-	public List<HistoricalQuote> getHistory(@PathVariable String companySymbol) throws NullPointerException
+	public List<HistoricalQuote> getHistory(@PathVariable String companySymbol)
 	{
 		// Returns History of companySymbol passed as an argument.
-		List<HistoricalQuote> history = new ArrayList<>();
-		StockObject stock = new StockObject();
-		try {
-			logger.info("Getting Stock History of {} ",companySymbol);
-			stock = stockDetailsService.findStock(companySymbol);
-			if(stock!= null)
-			{
-				logger.info("Showing History of Stock - {} ",companySymbol);
-				history = stock.getHistory();
-			}
-			else
-				logger.error("History of {} not found!",companySymbol);
 
-		} catch (NullPointerException | IOException e) {
-			logger.error("History of {} not found! {}",companySymbol,e.getMessage());
-			e.printStackTrace();
+		List<HistoricalQuote> history = new ArrayList<>();
+		try {
+			StockObject stock = stockDetailsService.findStock(companySymbol);
+		 	history = stock.getHistory();
+		 } catch( Exception e) {
+			logger.error("Error in getting history {}", e);
 		}
- return history;
+	return history;
 	}
 
 }

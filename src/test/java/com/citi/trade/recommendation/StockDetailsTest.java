@@ -77,7 +77,7 @@ public class StockDetailsTest {
 		companySymbols.add("HDFCBANK.NS");
 		companySymbols.add("JSWSTEEL.NS");
 		StockDetails stockDetails = new StockDetails();
-		stockDetails = stockDetailsService.findTopPerformingStock(companySymbols);
+		stockDetails = stockDetailsService.findTopPerformingStock("companySymbols");
 		Assertions.assertNotNull(stockDetails);
 		//Assertions.assertNull(stockDetailsService.findTopPerformingStock(null));
 	}

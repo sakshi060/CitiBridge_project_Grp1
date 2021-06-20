@@ -31,6 +31,8 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 	SortStocksService sortStocks;
 	@Autowired
 	StockDetailsService stockDetailsService;
+	@Autowired
+	UserHistoryService userHistoryService;
 
 	@Override
 	public StockObject findStock(String companySymbol) {
@@ -98,9 +100,9 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 	}
 
 	@Override
-	public StockDetails findTopPerformingStock(List<String> companySymbols) {
+	public StockDetails findTopPerformingStock(String userId) {
 		//Finds Top Performing Stock from the given list of Companies(companySymbols) passed as an argument.
-
+		List<String> companySymbols = userHistoryService.getCompanySymbolsSavedByUserId(userId);
 		List<StockObject> stocksList=new ArrayList<>();
 		List<StockDetails> sortedStocksList=new ArrayList<>();
 		StockDetails topPerformingStock;
@@ -130,7 +132,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 	public  List<StockDetails> findStocksAndSort(String sector, String attribute) {
 		//Gets Stock from Yahoo API and sorts based on the sector and parameter mentioned
 
-		List<StockObject> stocksList;
+		List<StockObject> stocksList = new ArrayList<>();
 		List<StockDetails> sortedStocksList=new ArrayList<>();
 		List<String> companySymbols;
 //		List<String> enumNames = Stream.of(SortingParameterList.values())
@@ -151,22 +153,20 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 			{
 				logger.info("Sorting on the basis of Market Capital");
 				stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());
-				sortedStocksList = setAttributesofTop5Stocks(stocksList);
 			}
 			else if(attribute.compareTo(SortingParameterList.PE_RATIO.toString())==0)
 			{
 				logger.info("Sorting on the basis of PE Ratio");
 				stocksList = sortStocks.sort(companySymbols, SortingParameterList.PE_RATIO.toString());
-				sortedStocksList = setAttributesofTop5Stocks(stocksList);
 
 			}
 			else if(attribute.compareTo(SortingParameterList.CHANGE.toString())==0)
 			{
 				logger.info("Sorting on the basis of Change");
 				stocksList = sortStocks.sort(companySymbols, SortingParameterList.CHANGE.toString());
-				sortedStocksList = setAttributesofTop5Stocks(stocksList);
-			}
 
+			}
+			sortedStocksList = setAttributesofTop5Stocks(stocksList);
 		}
 		catch(Exception e)
 		{

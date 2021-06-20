@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface SortStocksService {
 
-    public List<StockObject> sort(List<String> companySymbols, String attribute);
+      List<StockObject> sort(List<String> companySymbols, String attribute);
 }

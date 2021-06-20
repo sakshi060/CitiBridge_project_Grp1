@@ -6,7 +6,6 @@ import com.citi.trade.recommendation.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -16,8 +15,7 @@ import java.util.Base64;
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
-    @Autowired
-    JdbcTemplate template;
+
     @Autowired
     UserRepository userRepository;
 
@@ -25,7 +23,7 @@ public class UserServiceImpl implements UserService {
     public UserMaster checkLogin(UserMaster userObject) {
         // checks if user present in database and password matches
 
-        UserMaster checkuser = null;
+        UserMaster checkuser;
         String password = decodeString(userObject.getPassword());
         checkuser = userRepository.checkLogin(userObject, password);
         if (checkuser != null) {
@@ -46,7 +44,7 @@ public class UserServiceImpl implements UserService {
         String decoded = new String(Base64.getDecoder().decode(encodedPassword));
         StringBuilder password = new StringBuilder();
         password.append(decoded);
-        password = password.reverse();
+        password.reverse();
         return password.toString();
     }
 

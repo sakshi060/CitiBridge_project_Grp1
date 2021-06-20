@@ -4,6 +4,6 @@ import com.citi.trade.recommendation.model.UserMaster;
 
 public interface UserService {
 
-    public UserMaster checkLogin(UserMaster userObject);
+     UserMaster checkLogin(UserMaster userObject);
 
 }

@@ -7,13 +7,11 @@ import java.util.List;
 
 public interface SectorStocksService {
 
-    public List<SectorStocks> getCompanyBySector(String sector);
+    List<SectorStocks> getCompanyBySector(String sector);
 
-    public List<String> getCompanySymbolBySector(String sector);
+    List<String> getCompanySymbolBySector(String sector);
 
-    public String getSectorByCompanySymbol(String companySymbol);
+    List<SectorAvg> getSectorWiseGrowth();
 
-    public List<SectorAvg> getSectorWiseGrowth();
-
-    public List<String> getDistinctSectors();
+    List<String> getDistinctSectors();
 }

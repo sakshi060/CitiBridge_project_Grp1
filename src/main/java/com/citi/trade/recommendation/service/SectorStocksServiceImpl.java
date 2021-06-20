@@ -62,21 +62,6 @@ public class SectorStocksServiceImpl implements SectorStocksService {
     }
 
     @Override
-    public String getSectorByCompanySymbol(String companySymbol) {
-        // Returns  sector of Company Symbol passed as an argument.
-
-        String sector = null;
-        try {
-            sector = sectorStocksRepository.findSectorByCompanySymbol(companySymbol);
-            if (sector != null)
-                logger.info("Company: {} belongs to Sector: {}", companySymbol, sector);
-        } catch (Exception e) {
-            logger.error("Sector for company: {} not found! - {}", companySymbol, e.getMessage());
-        }
-        return sector;
-    }
-
-    @Override
     public List<SectorAvg> getSectorWiseGrowth() {
         //Calculates and Returns sector wise growth.
         List<SectorAvg> sectorWiseGrowth = new ArrayList<>();
@@ -112,7 +97,7 @@ public class SectorStocksServiceImpl implements SectorStocksService {
             obj.setAvggrowth(sum / symbols.size());
             obj.setSector(sector);
         } catch (Exception e) {
-            logger.error("Error in calculating avergae growth {}", e);
+            logger.error("Error in calculating avergae growth {}", e.getMessage());
         }
         return obj;
     }

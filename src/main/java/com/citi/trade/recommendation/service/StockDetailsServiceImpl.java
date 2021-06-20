@@ -57,14 +57,14 @@ public class StockDetailsServiceImpl implements StockDetailsService {
                 }
             }
             List<Stock> apiStockDetails = new ArrayList<>(YahooFinance.get(allSymbols).values()); //get data for all stocks from Yahoo API
-            for (int i = 0; i < apiStockDetails.size(); i++) {
+            for (Stock apiStockDetail : apiStockDetails) {
                 StockObject stock = new StockObject();
-                stock.setStock(apiStockDetails.get(i));
+                stock.setStock(apiStockDetail);
                 sectorWiseStocks.add(stock);
             }
 
         } catch (Exception e) {
-            logger.error("Exception caught in findAllStocks {}", e);
+            logger.error("Exception caught in findAllStocks {}", e.getMessage());
         }
         return sectorWiseStocks;
     }
@@ -80,7 +80,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
             stockDetails = setStockDetails(stock);
             logger.info("Stock Details of Company Symbol: {} found!", companySymbol);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             logger.error("Stock Details not found!");
         }
@@ -120,9 +120,6 @@ public class StockDetailsServiceImpl implements StockDetailsService {
         List<StockObject> stocksList = new ArrayList<>();
         List<StockDetails> sortedStocksList = new ArrayList<>();
         List<String> companySymbols;
-//		List<String> enumNames = Stream.of(SortingParameterList.values())
-//				.map(SortingParameterList::name)
-//				.collect(Collectors.toList());
         if ((attribute.compareTo(SortingParameterList.CHANGE.toString()) != 0)
                 || (attribute.compareTo(SortingParameterList.PE_RATIO.toString()) != 0)
                 || (attribute.compareTo(SortingParameterList.MARKET_CAP.toString()) != 0)) {
@@ -156,7 +153,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
         List<StockDetails> sortedStocksList = new ArrayList<>();
         try {
             if (!stocksList.isEmpty()) {
-                int size = (stocksList.size() >= 5) ? 5 : stocksList.size(); //incase sector has less than 5 stocks
+                int size = Math.min(stocksList.size(), 5); //incase sector has less than 5 stocks
                 for (int i = 0; i < size; i++) {
                     StockDetails stockDetails = setStockDetails(stocksList.get(i));
                     sortedStocksList.add(stockDetails);
@@ -164,7 +161,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 
             }
         } catch (Exception e) {
-            logger.error("Error in setAttributesofTop5Stocks {}", e);
+            logger.error("Error in setAttributesofTop5Stocks {}", e.getMessage());
         }
         return sortedStocksList;
     }

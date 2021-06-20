@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import yahoofinance.histquotes.HistoricalQuote;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class StockDetailsController {
     StockDetailsService stockDetailsService;
 
     @GetMapping(value = "/showRecommendedStocks/{sector}/{parameter}")
-    public List<StockDetails> showRecommendedStocks(@PathVariable String sector, @PathVariable String parameter) throws IOException {
+    public List<StockDetails> showRecommendedStocks(@PathVariable String sector, @PathVariable String parameter){
         // Returns sorted stocks of given sector and parameters passed as arguments.
         return stockDetailsService.findStocksAndSort(sector, parameter);
 
@@ -46,7 +45,7 @@ public class StockDetailsController {
             StockObject stock = stockDetailsService.findStock(companySymbol);
             history = stock.getHistory();
         } catch (Exception e) {
-            logger.error("Error in getting history {}", e);
+            logger.error("Error in getting history {}", e.getMessage());
         }
         return history;
     }

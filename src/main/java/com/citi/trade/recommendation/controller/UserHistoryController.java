@@ -41,7 +41,7 @@ public class UserHistoryController {
     }
 
     @GetMapping(value = "/showTopPerformingStock/{userId}")
-    public StockDetails getTopPerformingStock(@PathVariable String userId) throws IOException {
+    public StockDetails getTopPerformingStock(@PathVariable String userId){
         //Returns Top Performing Stock from Saved Stocks of userId passed as an argument.
         return stockDetailsService.findTopPerformingStock(userId);
 

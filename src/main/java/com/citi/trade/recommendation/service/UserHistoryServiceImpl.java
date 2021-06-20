@@ -18,14 +18,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
     private static final Logger logger = LogManager.getLogger(UserHistoryServiceImpl.class);
 
     @Autowired
-    SectorStocksService sectorStocksService;
-    @Autowired
     UserHistoryRepository userHistoryRepository;
-    @Autowired
-    StockDetailsService stockDetailsService;
-    UserHistory[] finalList;
-
-    UserHistory stock = new UserHistory();
 
     @Override
     public boolean saveUserHistoryByuserId(UserHistory history) {
@@ -42,7 +35,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
             }
 
         } catch (Exception e) {
-            logger.error("Stock of {} could not be added!", e);
+            logger.error("Stock of {} could not be added!", e.getMessage());
         }
         return added == 1;
     }
@@ -69,7 +62,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
     @Override
     public List<String> getCompanySymbolsSavedByUserId(String userId) {
 
-        List<String> companySymbols = new ArrayList<>();
+        List<String> companySymbols;
         List<String> distinctcompanySymbols = new ArrayList<>();
         try {
             companySymbols = userHistoryRepository.findCompanySymbolsByUserId(userId);
@@ -92,9 +85,9 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 
         int deleted = 0;
         try {
-            for (int i = 0; i < ids.length; i++) {
-                deleted = userHistoryRepository.deleteUserHistoryByuserId(ids[i]);
-                logger.info("User History data of ID: {} deleted", ids[i]);
+            for (int id : ids) {
+                deleted = userHistoryRepository.deleteUserHistoryByuserId(id);
+                logger.info("User History data of ID: {} deleted", id);
             }
         } catch (Exception e) {
             logger.error("User History could not be deleted");

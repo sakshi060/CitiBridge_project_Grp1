@@ -37,11 +37,11 @@ public class UserServiceImpl implements UserService {
 			}
 			else
 			{
-				logger.info("User Login UnsSuccessful");
+				logger.error("User Login UnsSuccessful");
 			}
 		}
 		else {
-			logger.info("User not found in database.User Login UnSuccessful" );
+			logger.error("User not found in database.User Login UnSuccessful" );
 		}
 		return checkuser;
 

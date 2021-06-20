@@ -61,7 +61,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 		try
 		{
 			finalStocks = (ArrayList<UserHistory>) userHistoryRepository.findUserHistoryByuserId(userId);
-			if(finalStocks!=null && finalStocks.size()!=0)
+			if(!finalStocks.isEmpty())
 				logger.info("User History of User: {} Found!",userId);
 			else
 				logger.error("User History of User: {} not Found!",userId);

@@ -29,7 +29,6 @@ public class SectorStocksRepository {
 	public List<SectorStocks> findCompanyBySector(String sector)  {
 		// Returns Companies of sector passed as an argument from the database.
 
-		logger.info("Fetching Companies under Sector - " +sector);
 		List<SectorStocks> sectorCompanies = null;
 		try
 		{
@@ -61,7 +60,6 @@ public class SectorStocksRepository {
 	public List<String> findCompanySymbolBySector(String sector) {
 		// Returns Company Symbols of sector passed as an argument from the database.
 
-		logger.info("Fetching Company Symbols of Companies under Sector - " +sector);
 		List<String> sectorCompanies = null;
 		try
 		{

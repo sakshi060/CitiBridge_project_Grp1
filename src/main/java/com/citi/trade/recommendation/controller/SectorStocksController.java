@@ -1,6 +1,5 @@
 package com.citi.trade.recommendation.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -29,29 +28,33 @@ public class SectorStocksController {
 	@RequestMapping(value = "/showCompanies/{sector}", method = RequestMethod.GET)
 	public List<SectorStocks> showStocks(@PathVariable String sector) {
 		// Returns Companies when sector is passed as an argument.
-	return sectorstocksService.getCompanyBySector(sector);
 
-
+		logger.info("Fetching Companies belonging to Sector: {}" ,sector);
+		return sectorstocksService.getCompanyBySector(sector);
 	}
 
 	@RequestMapping(value = "/showCompanySymbol/{sector}", method = RequestMethod.GET)
 	public List<String> showCompanySymbols(@PathVariable String sector) {
 		// Returns Company Symbols when sector is passed as an argument.
-			return sectorstocksService.getCompanySymbolBySector(sector);
+
+		logger.info("Fetching Company Symbols of Companies belonging to Sector: {}" ,sector);
+		return sectorstocksService.getCompanySymbolBySector(sector);
 	}
 
 	@RequestMapping(value = "/showSectorWiseChange", method = RequestMethod.GET)
 	public List<SectorAvg> showSectorWiseChange() {
 		// Returns Sector Wise Comparison on attribute - change.
 
+		logger.info("Finding Sector Wise Avg Growth");
 		return sectorstocksService.getSectorWiseGrowth();
 	}
 
 	@RequestMapping(value = "/showDistinctSectors", method = RequestMethod.GET)
 	public List<String> showDistinctSectors() {
 		// Returns Distinct sectors.
- return sectorstocksService.getDistinctSectors();
 
+		logger.info("Finding Distinct Sectors");
+		return sectorstocksService.getDistinctSectors();
 	}
 
 }

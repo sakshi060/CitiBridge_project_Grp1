@@ -39,7 +39,7 @@ public class UserHistoryRepository {
 			logger.info("Inserting into database User History for User: {} ",history.getUserId());
 
 			int added = template.update("insert into user_history(company_symbol,price,sector,user_id,volume) values(?,?,?,?,?)",
-					history.getCompanySymbol(),history.getPrice(),history.getSector(),history.getUserId(),history.getQuantity());
+					history.getCompanySymbol(),history.getPrice(),history.getSector(),history.getUserId(),history.getVolume());
 
 			if(added ==1)
 			{

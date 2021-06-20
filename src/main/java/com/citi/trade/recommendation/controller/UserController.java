@@ -31,7 +31,7 @@ public class UserController {
 
 		UserMaster checkuser = new UserMaster();
 
-			logger.info("Authenticating User {} :",userObject.getUserId());
+			logger.info("Authenticating User: {}", userObject.getUserId());
 			checkuser = userService.checkLogin(userObject);
 		return checkuser != null;
 	}

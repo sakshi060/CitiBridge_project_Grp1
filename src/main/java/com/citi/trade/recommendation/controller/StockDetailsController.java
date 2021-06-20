@@ -37,30 +37,32 @@ public class StockDetailsController {
 	@RequestMapping(value = "/showRecommendedStocks/{sector}/{parameter}", method = RequestMethod.GET)
 	public List<StockDetails> showRecommendedStocks(@PathVariable String sector , @PathVariable String parameter) throws IOException {
 		// Returns sorted stocks of given sector and parameters passed as arguments.
-			return  stockDetailsService.findStocksAndSort(sector, parameter);
 
+		logger.info("Getting Stocks Recommendation for Sector: {} and Parameter: {}" ,sector,parameter);
+		return  stockDetailsService.findStocksAndSort(sector, parameter);
 	}
 
 	@RequestMapping(value = "/showStockDetails/{companySymbol}", method = RequestMethod.GET)
 	public StockDetails showStockDetails(@PathVariable String companySymbol ) {
 		// Returns Stock Details of companySymbol passed as an argument.
-	return stockDetailsService.getStocksDetails(companySymbol);
-
+		
+		logger.info("Getting Stock Details of Company: {}" ,companySymbol);
+		return stockDetailsService.getStocksDetails(companySymbol);
 	}
 
 	@RequestMapping(value = "/showStockHistory/{companySymbol}", method = RequestMethod.GET)
-	public List<HistoricalQuote> getHistory(@PathVariable String companySymbol)
-	{
+	public List<HistoricalQuote> getHistory(@PathVariable String companySymbol) {
 		// Returns History of companySymbol passed as an argument.
 
+		logger.info("Getting Stock History of Company: {}" ,companySymbol);
 		List<HistoricalQuote> history = new ArrayList<>();
 		try {
 			StockObject stock = stockDetailsService.findStock(companySymbol);
-		 	history = stock.getHistory();
-		 } catch( Exception e) {
-			logger.error("Error in getting history {}", e);
+			history = stock.getHistory();
+		} catch( Exception e) {
+			logger.error("Error in getting history {}", e.getMessage());
 		}
-	return history;
+		return history;
 	}
 
 }

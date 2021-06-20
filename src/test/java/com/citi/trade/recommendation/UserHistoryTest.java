@@ -30,18 +30,18 @@ public class UserHistoryTest {
 
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
-	@Test
-	public void testsaveUserHistoryByuserId() {
-		// TODO Auto-generated method stub
-		String userId = "XYZ";
-		String companySymbol = "TCS.NS";
-		long quantity = 30;
-		UserHistory stock = new UserHistory();
-		logger.info("");
-		stock = userHistoryService.saveUserHistoryByuserId(userId,companySymbol,quantity);
-		Assertions.assertNotNull(stock);
-		//Assertions.assertEquals("TCS.NS",stock.getCompanySymbol());
-	}
+//	@Test
+//	public void testsaveUserHistoryByuserId() {
+//		// TODO Auto-generated method stub
+//		String userId = "XYZ";
+//		String companySymbol = "TCS.NS";
+//		long quantity = 30;
+//		UserHistory stock = new UserHistory();
+//		logger.info("");
+//		stock = userHistoryService.saveUserHistoryByuserId(userId,companySymbol,quantity);
+//		Assertions.assertNotNull(stock);
+//		//Assertions.assertEquals("TCS.NS",stock.getCompanySymbol());
+//	}
 	@Test
 	public void testdeleteStocksByUserId() {
 

@@ -160,13 +160,11 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 			{
 				logger.info("Sorting on the basis of PE Ratio");
 				stocksList = sortStocks.sort(companySymbols, SortingParameterList.PE_RATIO.toString());
-
 			}
 			else if(attribute.compareTo(SortingParameterList.CHANGE.toString())==0)
 			{
 				logger.info("Sorting on the basis of Change");
 				stocksList = sortStocks.sort(companySymbols, SortingParameterList.CHANGE.toString());
-
 			}
 			sortedStocksList = setAttributesofTop5Stocks(stocksList);
 		}

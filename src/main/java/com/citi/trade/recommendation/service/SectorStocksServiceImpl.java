@@ -36,7 +36,7 @@ public class SectorStocksServiceImpl implements SectorStocksService {
 		try
 		{
 			sectorCompanies = sectorStocksRepository.findCompanyBySector(sector);
-			if(sectorCompanies !=null && sectorCompanies.size()!=0)
+			if(!sectorCompanies.isEmpty())
 				logger.info("Companies under Sector: {} found!",sector);
 			else
 				logger.error("Sector: {} not found! ",sector);
@@ -92,7 +92,6 @@ public class SectorStocksServiceImpl implements SectorStocksService {
 		List<SectorAvg> sectorWiseGrowth = new ArrayList<>();
 		try
 		{
-			logger.info("Finding Sector Wise Avg Growth");
 			List<String> sectors = getDistinctSectors();
 			if(!sectors.isEmpty())
 			{

@@ -1,9 +1,9 @@
 package com.citi.trade.recommendation;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.citi.trade.recommendation.model.StockDetails;
+import com.citi.trade.recommendation.model.StockObject;
+import com.citi.trade.recommendation.service.SectorStocksService;
+import com.citi.trade.recommendation.service.StockDetailsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.citi.trade.recommendation.model.StockDetails;
-import com.citi.trade.recommendation.model.StockObject;
-import com.citi.trade.recommendation.service.SectorStocksService;
-import com.citi.trade.recommendation.service.StockDetailsService;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SpringBootTest

@@ -1,17 +1,20 @@
 package com.citi.trade.recommendation.service;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.StockObject;
+
+import java.util.List;
 
 
 public interface StockDetailsService {
 
-	public StockObject findStock(String companySymbol) throws IOException;
-	public List<StockObject> findAllStock(List<String> companySymbol) throws IOException;
-	public StockDetails getStocksDetails(String companySymbol);
-	public StockDetails findTopPerformingStock(String userId);
-	public List<StockDetails> findStocksAndSort(String sector, String attribute);
+     StockObject findStock(String companySymbol);
+
+     List<StockObject> findAllStock(List<String> companySymbol);
+
+     StockDetails getStocksDetails(String companySymbol);
+
+     StockDetails findTopPerformingStock(String userId);
+
+     List<StockDetails> findStocksAndSort(String sector, String attribute);
 }

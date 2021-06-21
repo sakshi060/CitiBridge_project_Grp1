@@ -8,24 +8,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.citi.trade.recommendation.BackendappApplication;
 import com.citi.trade.recommendation.model.SectorAvg;
 import com.citi.trade.recommendation.model.SectorStocks;
 import com.citi.trade.recommendation.service.SectorStocksService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/sectorStocks")
 @RestController
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 public class SectorStocksController {
-	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
+	private static final Logger logger = LogManager.getLogger(SectorStocksController.class);
 
 	@Autowired
 	SectorStocksService sectorstocksService;
 
-	@RequestMapping(value = "/showCompanies/{sector}", method = RequestMethod.GET)
+	@GetMapping(value = "/showCompanies/{sector}")
 	public List<SectorStocks> showStocks(@PathVariable String sector) {
 		// Returns Companies when sector is passed as an argument.
 
@@ -33,7 +39,7 @@ public class SectorStocksController {
 		return sectorstocksService.getCompanyBySector(sector);
 	}
 
-	@RequestMapping(value = "/showCompanySymbol/{sector}", method = RequestMethod.GET)
+	@GetMapping(value = "/showCompanySymbol/{sector}")
 	public List<String> showCompanySymbols(@PathVariable String sector) {
 		// Returns Company Symbols when sector is passed as an argument.
 
@@ -41,7 +47,7 @@ public class SectorStocksController {
 		return sectorstocksService.getCompanySymbolBySector(sector);
 	}
 
-	@RequestMapping(value = "/showSectorWiseChange", method = RequestMethod.GET)
+	@GetMapping(value = "/showSectorWiseChange")
 	public List<SectorAvg> showSectorWiseChange() {
 		// Returns Sector Wise Comparison on attribute - change.
 
@@ -49,7 +55,7 @@ public class SectorStocksController {
 		return sectorstocksService.getSectorWiseGrowth();
 	}
 
-	@RequestMapping(value = "/showDistinctSectors", method = RequestMethod.GET)
+	@GetMapping(value = "/showDistinctSectors")
 	public List<String> showDistinctSectors() {
 		// Returns Distinct sectors.
 

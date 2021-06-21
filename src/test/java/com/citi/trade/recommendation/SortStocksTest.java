@@ -1,7 +1,8 @@
 package com.citi.trade.recommendation;
 
-import java.util.List;
-
+import com.citi.trade.recommendation.model.StockDetails;
+import com.citi.trade.recommendation.service.StockDetailsService;
+import com.citi.trade.recommendation.util.SortingParameterList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;

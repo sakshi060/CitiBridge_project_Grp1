@@ -120,16 +120,9 @@ public class StockDetailsServiceImpl implements StockDetailsService {
         List<StockObject> stocksList = new ArrayList<>();
         List<StockDetails> sortedStocksList = new ArrayList<>();
         List<String> companySymbols;
-        if ((attribute.compareTo(SortingParameterList.CHANGE.toString()) != 0)
-                || (attribute.compareTo(SortingParameterList.PE_RATIO.toString()) != 0)
-                || (attribute.compareTo(SortingParameterList.MARKET_CAP.toString()) != 0)) {
-            logger.info("Mentioned Attribute: {} not found!", attribute);
-            return sortedStocksList;
-        }
 
         try {
             companySymbols = sectorStocksService.getCompanySymbolBySector(sector);
-
             if (attribute.compareTo(SortingParameterList.MARKET_CAP.toString()) == 0) {
                 logger.info("Sorting on the basis of Market Capital");
                 stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());
@@ -140,16 +133,17 @@ public class StockDetailsServiceImpl implements StockDetailsService {
             } else if (attribute.compareTo(SortingParameterList.CHANGE.toString()) == 0) {
                 logger.info("Sorting on the basis of Change");
                 stocksList = sortStocks.sort(companySymbols, SortingParameterList.CHANGE.toString());
-
+            } else {
+                logger.error("Incorrect parameter passed!");
             }
-            sortedStocksList = setAttributesofTop5Stocks(stocksList);
+            sortedStocksList = setAttributesOfTop5Stocks(stocksList);
         } catch (Exception e) {
             logger.error("Sorting could not be done!");
         }
         return sortedStocksList;
     }
 
-    public List<StockDetails> setAttributesofTop5Stocks(List<StockObject> stocksList) {
+    public List<StockDetails> setAttributesOfTop5Stocks(List<StockObject> stocksList) {
         List<StockDetails> sortedStocksList = new ArrayList<>();
         try {
             if (!stocksList.isEmpty()) {
@@ -161,7 +155,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 
             }
         } catch (Exception e) {
-            logger.error("Error in setAttributesofTop5Stocks {}", e.getMessage());
+            logger.error("Error in setAttributesOfTop5Stocks {}", e.getMessage());
         }
         return sortedStocksList;
     }

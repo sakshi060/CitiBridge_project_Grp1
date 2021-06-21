@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
             if (checkuser.getPassword().equals(decodeString(userObject.getPassword()).replaceAll("\\s", ""))) {
                 logger.info("User Login Successful. User: {} - ", userObject.getUserId());
             } else {
-                logger.info("User Login UnsSuccessful");
+                logger.info("User Login UnSuccessful");
             }
         } else {
             logger.info("User not found in database.User Login UnSuccessful");

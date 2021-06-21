@@ -21,18 +21,15 @@ public class SectorStocksRepository {
 
     public List<SectorStocks> findCompanyBySector(String sector) {
         // Returns Companies of sector passed as an argument from the database.
-
         logger.info("Fetching Companies under Sector {} " , sector);
         List<SectorStocks> sectorCompanies = null;
         try {
             String findShares = "select * from sector_stocks where sector=?";
-            sectorCompanies = template.query(findShares, (set, arg1) -> {
-                SectorStocks sectorStocks = new SectorStocks();
-                sectorStocks.setCompanySymbol(set.getString(1));
-                sectorStocks.setCompanyName(set.getString(2));
-                sectorStocks.setSector(set.getString(3));
-                return sectorStocks;
-            }, sector);
+            sectorCompanies = template.query(findShares, (set, arg1) -> new SectorStocks(
+                    set.getString(1),
+                    set.getString(2),
+                    set.getString(3)
+            ), sector);
             if (sectorCompanies.isEmpty()) {
                 logger.info("Company symbols not found");
             }
@@ -45,29 +42,24 @@ public class SectorStocksRepository {
 
     public List<String> findCompanySymbolBySector(String sector) {
         // Returns Company Symbols of sector passed as an argument from the database.
-
         logger.info("Fetching Company Symbols of Companies under Sector {}", sector);
         List<String> sectorCompanies = null;
         try {
             String findShares = "select company_symbol from sector_stocks where sector=?";
             sectorCompanies = template.query(findShares, (set, arg1) -> {
-                SectorStocks sectorStocks = new SectorStocks();
-                sectorStocks.setCompanySymbol(set.getString(1));
-                return sectorStocks.getCompanySymbol();
+                return set.getString(1); //return company symbol
             }, sector);
             if (sectorCompanies.isEmpty()) {
                 logger.info("Company symbols not found");
             }
         } catch (Exception e) {
             logger.error("Error occured in fetching Company Symbols - {}", e.getMessage());
-
         }
         return sectorCompanies;
     }
 
     public List<String> findDistinctSectors() {
         //Returns distinct sectors from the database.
-
         logger.info("Fetching Distict Sectors");
         List<String> sectorCompanies = new ArrayList<>();
         try {

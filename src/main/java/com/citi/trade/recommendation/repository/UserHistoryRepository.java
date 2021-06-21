@@ -77,7 +77,6 @@ public class UserHistoryRepository {
 
     public int deleteUserHistoryByuserId(int id) {
         //Deletes selected stocks.
-
         try {
             logger.info("Deleting Stock with Stock ID - {} ", id);
             String deleteQuery = "delete from user_history where id=?";
@@ -91,7 +90,6 @@ public class UserHistoryRepository {
 
     public int deleteUserHistoryByuserId(String userId) {
         //Deletes selected stocks.
-
         try {
             logger.info("Deleting Stock for User {} ", userId);
             String deleteQuery = "delete from user_history where user_id=?";

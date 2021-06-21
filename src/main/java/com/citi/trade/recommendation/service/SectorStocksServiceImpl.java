@@ -93,11 +93,10 @@ public class SectorStocksServiceImpl implements SectorStocksService {
                     }
                 });
             }
-
-            obj.setAvggrowth(sum / symbols.size());
+            obj.setAvgGrowth(sum / symbols.size());
             obj.setSector(sector);
         } catch (Exception e) {
-            logger.error("Error in calculating avergae growth {}", e.getMessage());
+            logger.error("Error in calculating average growth {}", e.getMessage());
         }
         return obj;
     }
@@ -105,7 +104,6 @@ public class SectorStocksServiceImpl implements SectorStocksService {
     @Override
     public List<String> getDistinctSectors() {
         // Returns Distinct Sectors
-
         List<String> sectors = new ArrayList<>();
         try {
             sectors = sectorStocksRepository.findDistinctSectors();

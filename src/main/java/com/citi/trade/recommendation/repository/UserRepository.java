@@ -16,34 +16,26 @@ public class UserRepository {
 
     public UserMaster checkLogin(UserMaster userObject, String password) {
         // checks if user present in database and password matches
-        UserMaster temp;
+        UserMaster temp = null;
         try {
-
             String findUser = "select * from user_master where user_id=?";
             temp = template.queryForObject(findUser, (set, arg1) -> {
-                UserMaster userMaster = new UserMaster();
-                userMaster.setUserId(set.getString(1));
-                userMaster.setPassword(set.getString(2));
-                return userMaster;
+                return new UserMaster(
+                        set.getString(1),
+                        set.getString(2)
+                );
             }, userObject.getUserId());
 
             if (temp != null) {
-
-                if (temp.getPassword().equals(password.replaceAll("\\s", ""))) {
-                    return temp;
-                } else {
+                if (!temp.getPassword().equals(password.replaceAll("\\s", ""))) {
                     logger.error("Enter the correct Password!");
-                    return temp;
-
                 }
             } else {
                 logger.error("User not found in database");
-                return null;
             }
         } catch (Exception e) {
             logger.error("Error Occured.User not found in database");
-            return null;
         }
-
+    return temp;
     }
 }

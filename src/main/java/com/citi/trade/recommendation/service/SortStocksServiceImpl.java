@@ -39,13 +39,10 @@ public class SortStocksServiceImpl implements SortStocksService {
                 sortedStocks = sectorStocks.stream()
                         .sorted(Comparator.comparing(StockObject::getChange).reversed())
                         .collect(Collectors.toList());
-
             }
         } catch (Exception e) {
             logger.error("Sorting could not be done!");
-
         }
-
         return sortedStocks;
     }
 

@@ -82,7 +82,6 @@ public class UserHistoryServiceImpl implements UserHistoryService {
     @Override
     public int deleteUserHistoryByuserId(int[] ids) {
         //Deletes selected stocks.
-
         int deleted = 0;
         try {
             for (int id : ids) {

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class UserTest {
+public class UserServiceTest {
     private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
     @Autowired

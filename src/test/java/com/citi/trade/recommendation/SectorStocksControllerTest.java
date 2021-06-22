@@ -1,43 +1,35 @@
 package com.citi.trade.recommendation;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.citi.trade.recommendation.controller.SectorStocksController;
-import com.citi.trade.recommendation.service.SectorStocksService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-
-
-import com.citi.trade.recommendation.model.SectorStocks;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = SectorStocksController.class)
+import com.citi.trade.recommendation.controller.SectorStocksController;
+import com.citi.trade.recommendation.model.SectorAvg;
+import com.citi.trade.recommendation.model.SectorStocks;
+import com.citi.trade.recommendation.service.SectorStocksService;
+
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {SectorStocksController.class})
 @WebMvcTest
 public class SectorStocksControllerTest {
 
@@ -55,12 +47,44 @@ public class SectorStocksControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-    @LocalServerPort
-    private int port;
+  
+    @Test
+    public void getCompaniesBySector()  {
+        String expectedResult = "TATAMOTORS.NS";
+        List<SectorStocks> mockResult = new ArrayList<>();
+        SectorStocks sectorStocks = new SectorStocks("TATAMOTORS.NS","Tata Motors Ltd.","AUTOMOBILE");
+        mockResult.add(sectorStocks);
+        Mockito.when(sectorStocksService.getCompanyBySector(Matchers.anyString())).thenReturn(mockResult);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/sectorStocks/showCompanies/AUTOMOBILE");
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+        try {
+            MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+            logger.info("Result is {}", result.getResponse().getContentAsString());
+            Assertions.assertTrue(result.getResponse().getContentAsString().contains(expectedResult));
+            Assertions.assertEquals(200, result.getResponse().getStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Test
+    public void getCompanySymbolsBySector()  {
+        String expectedResult = "HDFCLIFE.NS";
+        List<String> mockResult = new ArrayList<>();
+        mockResult.add("HDFCLIFE.NS");
+        Mockito.when(sectorStocksService.getCompanySymbolBySector(Matchers.anyString())).thenReturn(mockResult);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/sectorStocks/showCompanySymbol/FINANCIAL SERVICES");
 
+        try {
+            MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+            logger.info("Result is {}", result.getResponse().getContentAsString());
+            Assertions.assertTrue(result.getResponse().getContentAsString().contains(expectedResult));
+            Assertions.assertEquals(200, result.getResponse().getStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     @Test
     public void getDistinctSectors()  {
         String expectedResult = "ENERGY";
@@ -68,41 +92,42 @@ public class SectorStocksControllerTest {
         mockResult.add("ENERGY");
         Mockito.when(sectorStocksService.getDistinctSectors()).thenReturn(mockResult);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/sectorStocks/showDistinctSectors");
+        
 
         try {
             MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-            logger.info("Result is {}", result.getResponse());
-            assertTrue(result.getResponse().getContentLength() ==1);
+            logger.info("Result is {}", result.getResponse().getContentAsString());
+            Assertions.assertTrue(result.getResponse().getContentAsString().contains(expectedResult));
+            Assertions.assertEquals(200, result.getResponse().getStatus());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+    
+    @Test
+    public void getSectorWiseGrowth()  {
+    	SectorAvg sectorAvg = new SectorAvg();
+    	sectorAvg.setSector("ENERGY");
+    	//sectorAvg.setAvgGrowth(-1.7000000000000002);
+        String expectedResult = "ENERGY" ;
+        
+        List<SectorAvg> mockResult = new ArrayList<>();
+        mockResult.add(sectorAvg);
+        Mockito.when(sectorStocksService.getSectorWiseGrowth()).thenReturn(mockResult);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/sectorStocks/showSectorWiseChange");
+        
 
+        try {
+            MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+            logger.info("Result is {}", result.getResponse().getContentAsString());
+            Assertions.assertTrue(result.getResponse().getContentAsString().contains(expectedResult));
+            Assertions.assertEquals(200, result.getResponse().getStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
-//@BeforeAll
-//public void setUp() {
-//
-//}
-//
-//   @Test
-//   public void getStocksBySector() throws Exception {
-//
-//	  logger.info("Calling Sector Stocks Controller");
-//	  String uri = "sectorStocks/showCompanies/FINANCIAL SERVICES";
-//      MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
-//         .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
-//
-//      int status = mvcResult.getResponse().getStatus();
-//
-//      assertEquals(200, status);
-//      logger.info("Called Sector Stocks Controller");
-//      String content = mvcResult.getResponse().getContentAsString();
-//      ArrayList<SectorStocks> sectorStocks = super.mapFromJson(content,  SectorStocks.class);
-//      assertTrue(sectorStocks.size() > 0);
-//      logger.info(" Sector Stocks ");
-//   }
-//
 
 }

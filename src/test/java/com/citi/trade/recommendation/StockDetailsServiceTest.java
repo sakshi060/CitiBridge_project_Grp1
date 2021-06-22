@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @SpringBootTest
-public class StockDetailsTest {
+public class StockDetailsServiceTest {
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
 	@Autowired

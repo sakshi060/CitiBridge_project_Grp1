@@ -26,7 +26,7 @@ public class UserHistoryController {
     @PostMapping("/saveStocks")
     public boolean saveUserHistory(@RequestBody UserHistory history) {
         // Saves stock and quantity of the stock, the given user wants.
-        logger.info("Assing stock to User History of User: {}" ,history.getUserId());
+        logger.info("Adding stock to User History of User: {}" ,history.getUserId());
         return userHistoryService.saveUserHistoryByuserId(history);
     }
 

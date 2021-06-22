@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
-public class UserHistoryTest {
+public class UserHistoryServiceTest {
 
 	@Autowired
 	UserHistoryService userHistoryService;

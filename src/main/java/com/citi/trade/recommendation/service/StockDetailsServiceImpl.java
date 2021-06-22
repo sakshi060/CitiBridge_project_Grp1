@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.HistoricalQuote;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -180,4 +181,16 @@ public class StockDetailsServiceImpl implements StockDetailsService {
         }
         return stockDetails;
     }
+
+	@Override
+	public List<HistoricalQuote> findHistory(String companySymbol) {
+		
+		try {
+			return stockDetailsService.findStock(companySymbol).getHistory();
+		} catch (IOException e) {
+			logger.error("Stock History not found!");
+			
+		}
+		return null;
+	}
 }

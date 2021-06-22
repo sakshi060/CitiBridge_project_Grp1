@@ -1,7 +1,6 @@
 package com.citi.trade.recommendation.controller;
 
 import com.citi.trade.recommendation.model.StockDetails;
-import com.citi.trade.recommendation.model.StockObject;
 import com.citi.trade.recommendation.service.StockDetailsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,8 +44,9 @@ public class StockDetailsController {
         logger.info("Getting Stock History of Company: {}" ,companySymbol);
 		List<HistoricalQuote> history = new ArrayList<>();
 		try {
-			StockObject stock = stockDetailsService.findStock(companySymbol);
-			history = stock.getHistory();
+			
+			history = stockDetailsService.findHistory(companySymbol);
+			
 		} catch( Exception e) {
 			logger.error("Error in getting history {}", e.getMessage());
 		}

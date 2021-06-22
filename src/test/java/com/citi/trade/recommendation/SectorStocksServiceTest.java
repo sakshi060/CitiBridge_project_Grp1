@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-public class SectorStocksTest {
+public class SectorStocksServiceTest {
     private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
     @Autowired

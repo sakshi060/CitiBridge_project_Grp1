@@ -1,6 +1,5 @@
 package com.citi.trade.recommendation.model;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import yahoofinance.Stock;
 import yahoofinance.histquotes.HistoricalQuote;
@@ -9,7 +8,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-@AllArgsConstructor
+
 @NoArgsConstructor
 public class StockObject // To use Yahoo Finance Functionality 
 {

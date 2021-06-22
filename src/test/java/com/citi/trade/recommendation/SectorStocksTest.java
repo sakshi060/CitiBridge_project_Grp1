@@ -29,7 +29,7 @@ public class SectorStocksTest {
         String sector = "FINANCIAL SERVICES";
         companies = (ArrayList<SectorStocks>) sectorstocksService.getCompanyBySector(sector);
         Assertions.assertNotNull(companies);
-        //Assertions.assertNull(sectorstocksService.getCompanyBySector(null));
+        Assertions.assertEquals(0,sectorstocksService.getCompanyBySector(null).size());
 
         //Doubt
         //String companySymbol = "SBIN.NS";

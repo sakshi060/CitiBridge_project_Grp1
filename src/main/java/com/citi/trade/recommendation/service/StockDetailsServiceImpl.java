@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
@@ -33,15 +35,14 @@ public class StockDetailsServiceImpl implements StockDetailsService {
     @Override
     public StockObject findStock(String companySymbol) {
         //Finds and Returns Stock for a given companySymbol passed as an argument from Yahoo Finance API.
-
+    	StockObject stockObject = new StockObject();
         try {
-            StockObject stockObject = new StockObject();
+            if(!ObjectUtils.isEmpty(companySymbol))
             stockObject.setStock(YahooFinance.get(companySymbol));
-            return stockObject;
         } catch (IOException e) {
             logger.error("Stock not found!");
         }
-        return null;
+        return stockObject;
     }
 
     @Override
@@ -55,13 +56,14 @@ public class StockDetailsServiceImpl implements StockDetailsService {
                     allSymbols[i] = symbol;
                     i++;
                 }
+                List<Stock> apiStockDetails = new ArrayList<>(YahooFinance.get(allSymbols).values()); //get data for all stocks from Yahoo API
+                for (Stock apiStockDetail : apiStockDetails) {
+                    StockObject stock = new StockObject();
+                    stock.setStock(apiStockDetail);
+                    sectorWiseStocks.add(stock);
+                }
             }
-            List<Stock> apiStockDetails = new ArrayList<>(YahooFinance.get(allSymbols).values()); //get data for all stocks from Yahoo API
-            for (Stock apiStockDetail : apiStockDetails) {
-                StockObject stock = new StockObject();
-                stock.setStock(apiStockDetail);
-                sectorWiseStocks.add(stock);
-            }
+           
 
         } catch (Exception e) {
             logger.error("Exception caught in findAllStocks {}", e.getMessage());
@@ -75,11 +77,12 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 
         StockDetails stockDetails = new StockDetails();
         try {
-
+        	if(!ObjectUtils.isEmpty(companySymbol))
+        	{
             StockObject stock = stockDetailsService.findStock(companySymbol);
             stockDetails = setStockDetails(stock);
             logger.info("Stock Details of Company Symbol: {} found!", companySymbol);
-
+        	}
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("Stock Details not found!");
@@ -90,10 +93,14 @@ public class StockDetailsServiceImpl implements StockDetailsService {
     @Override
     public StockDetails findTopPerformingStock(String userId) {
         //Finds Top Performing Stock from the given list of Companies(companySymbols) passed as an argument.
+    	
+    	StockDetails topPerformingStock = null;
+    	if(!ObjectUtils.isEmpty(userId))
+    	{
         List<String> companySymbols = userHistoryService.getCompanySymbolsSavedByUserId(userId);
         List<StockObject> stocksList = new ArrayList<>();
         List<StockDetails> sortedStocksList = new ArrayList<>();
-        StockDetails topPerformingStock;
+        
         try {
             stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());
         } catch (Exception e) {
@@ -109,7 +116,9 @@ public class StockDetailsServiceImpl implements StockDetailsService {
                 e.printStackTrace();
             }
         }
+    	
         topPerformingStock = sortedStocksList.get(0);
+    	}
         return topPerformingStock;
     }
 
@@ -120,8 +129,10 @@ public class StockDetailsServiceImpl implements StockDetailsService {
         List<StockObject> stocksList = new ArrayList<>();
         List<StockDetails> sortedStocksList = new ArrayList<>();
         List<String> companySymbols;
-
+       
         try {
+        	 if(!ObjectUtils.isEmpty(sector) && !ObjectUtils.isEmpty(attribute))
+             {
             companySymbols = sectorStocksService.getCompanySymbolBySector(sector);
             if (attribute.compareTo(SortingParameterList.MARKET_CAP.toString()) == 0) {
                 logger.info("Sorting on the basis of Market Capital");
@@ -137,7 +148,10 @@ public class StockDetailsServiceImpl implements StockDetailsService {
                 logger.error("Incorrect parameter passed!");
             }
             sortedStocksList = setAttributesOfTop5Stocks(stocksList);
-        } catch (Exception e) {
+        }
+        }
+        
+        catch (Exception e) {
             logger.error("Sorting could not be done!");
         }
         return sortedStocksList;

@@ -154,7 +154,7 @@ class UserHistoryControllerTest {
 
 		try {
 
-			MvcResult result = (MvcResult) mockMvc.perform(MockMvcRequestBuilders.post("/userHistory/deleteSavedStocksByUserId")
+			MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/userHistory/deleteSavedStocksByUserId")
 					.content(asJsonString(id))
 					.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andReturn();
 

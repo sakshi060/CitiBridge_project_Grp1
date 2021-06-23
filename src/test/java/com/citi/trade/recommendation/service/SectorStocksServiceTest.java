@@ -1,8 +1,7 @@
-package com.citi.trade.recommendation;
+package com.citi.trade.recommendation.service;
 
 import com.citi.trade.recommendation.model.SectorAvg;
 import com.citi.trade.recommendation.model.SectorStocks;
-import com.citi.trade.recommendation.service.SectorStocksService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;

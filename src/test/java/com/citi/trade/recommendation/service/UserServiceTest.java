@@ -1,7 +1,7 @@
-package com.citi.trade.recommendation;
+package com.citi.trade.recommendation.service;
 
+import com.citi.trade.recommendation.BackendappApplication;
 import com.citi.trade.recommendation.model.UserMaster;
-import com.citi.trade.recommendation.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;

@@ -1,7 +1,6 @@
-package com.citi.trade.recommendation;
+package com.citi.trade.recommendation.controller;
 
 
-import com.citi.trade.recommendation.controller.StockDetailsController;
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.service.StockDetailsService;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -91,7 +90,7 @@ import java.util.List;
      void getStockDetails()  {
         String expectedResult = "SBILIFE.NS";
         StockDetails mockResult = stockDetails;
-        Mockito.when(stockDetailsService.getStocksDetails(anyString())).thenReturn(mockResult);
+        Mockito.when(stockDetailsService.getStocksDetails(ArgumentMatchers.anyString())).thenReturn(mockResult);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/stockDetails/showStockDetails/SBILIFE.NS");
 
         try {

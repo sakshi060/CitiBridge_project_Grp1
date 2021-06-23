@@ -1,5 +1,6 @@
-package com.citi.trade.recommendation;
+package com.citi.trade.recommendation.service;
 
+import com.citi.trade.recommendation.BackendappApplication;
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.UserHistory;
 import com.citi.trade.recommendation.service.StockDetailsService;

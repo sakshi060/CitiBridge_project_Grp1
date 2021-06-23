@@ -1,5 +1,4 @@
-package com.citi.trade.recommendation;
-import com.citi.trade.recommendation.controller.UserHistoryController;
+package com.citi.trade.recommendation.controller;
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.UserHistory;
 import com.citi.trade.recommendation.service.StockDetailsService;

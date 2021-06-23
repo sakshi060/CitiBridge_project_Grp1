@@ -1,6 +1,5 @@
-package com.citi.trade.recommendation;
+package com.citi.trade.recommendation.controller;
 
-import com.citi.trade.recommendation.controller.SectorStocksController;
 import com.citi.trade.recommendation.model.SectorAvg;
 import com.citi.trade.recommendation.model.SectorStocks;
 import com.citi.trade.recommendation.service.SectorStocksService;
@@ -10,7 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -53,7 +52,7 @@ class SectorStocksControllerTest {
         List<SectorStocks> mockResult = new ArrayList<>();
         SectorStocks sectorStocks = new SectorStocks("TATAMOTORS.NS","Tata Motors Ltd.","AUTOMOBILE");
         mockResult.add(sectorStocks);
-        Mockito.when(sectorStocksService.getCompanyBySector(anyString())).thenReturn(mockResult);
+        Mockito.when(sectorStocksService.getCompanyBySector(ArgumentMatchers.anyString())).thenReturn(mockResult);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/sectorStocks/showCompanies/AUTOMOBILE");
 
         try {
@@ -71,7 +70,7 @@ class SectorStocksControllerTest {
         String expectedResult = "HDFCLIFE.NS";
         List<String> mockResult = new ArrayList<>();
         mockResult.add("HDFCLIFE.NS");
-        Mockito.when(sectorStocksService.getCompanySymbolBySector(anyString())).thenReturn(mockResult);
+        Mockito.when(sectorStocksService.getCompanySymbolBySector(ArgumentMatchers.anyString())).thenReturn(mockResult);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/sectorStocks/showCompanySymbol/FINANCIAL SERVICES");
 
         try {

@@ -5,23 +5,24 @@ import com.citi.trade.recommendation.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(&quot;/user&quot;)
 @RestController
 @CrossOrigin(origins = &quot;http://localhost:4200&quot;)
-<span class="fc" id="L13">public class UserController {</span>
+<span class="fc" id="L14">public class UserController {</span>
 
-<span class="fc" id="L15">    private static final Logger logger = LogManager.getLogger(UserController.class);</span>
+<span class="fc" id="L16">    private static final Logger logger = LogManager.getLogger(UserController.class);</span>
 
     @Autowired
     UserService userService;
 
-    @PostMapping(&quot;/login&quot;)
+    @PostMapping(value = &quot;/login&quot;, consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean userLogin(@RequestBody UserMaster userObject) {
         // Checks if user present in database, if yes returns userId
-<span class="fc" id="L23">        logger.info(&quot;Authenticating User {} :&quot;, userObject.getUserId());</span>
-<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        return userService.checkLogin(userObject) != null;</span>
+<span class="fc" id="L24">        logger.info(&quot;Authenticating User {} :&quot;, userObject.getUserId());</span>
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        return userService.checkLogin(userObject) != null;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -19,7 +19,7 @@ import java.util.List;
     SectorStocksService sectorstocksService;
 
 
-    @Order(1)
+    
     @Test
      void testShowCompanies() {
 

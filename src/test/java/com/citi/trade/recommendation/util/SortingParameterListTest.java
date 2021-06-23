@@ -3,7 +3,6 @@ package com.citi.trade.recommendation.util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class SortingParameterListTest {
 
@@ -15,5 +14,7 @@ class SortingParameterListTest {
     @Test
     void valueOf() {
         Assertions.assertEquals("PE_RATIO", SortingParameterList.valueOf("PE_RATIO").toString());
+        Assertions.assertEquals("CHANGE", SortingParameterList.valueOf("CHANGE").toString());
+        Assertions.assertEquals("MARKET_CAP", SortingParameterList.valueOf("MARKET_CAP").toString());
     }
 }

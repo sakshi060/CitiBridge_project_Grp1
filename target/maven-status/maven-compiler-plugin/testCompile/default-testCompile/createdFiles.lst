@@ -7,4 +7,5 @@ com\citi\trade\recommendation\BackendappApplicationTests.class
 com\citi\trade\recommendation\controller\SectorStocksControllerTest.class
 com\citi\trade\recommendation\service\UserHistoryServiceTest.class
 com\citi\trade\recommendation\controller\UserHistoryControllerTest.class
+com\citi\trade\recommendation\util\SortingParameterListTest.class
 com\citi\trade\recommendation\service\SortStocksServiceTest.class

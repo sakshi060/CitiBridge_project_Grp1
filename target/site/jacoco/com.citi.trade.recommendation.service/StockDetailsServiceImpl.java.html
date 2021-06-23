@@ -34,164 +34,178 @@ import java.util.List;
     @Override
     public StockObject findStock(String companySymbol) {
         //Finds and Returns Stock for a given companySymbol passed as an argument from Yahoo Finance API.
-
-        try {
-<span class="fc" id="L39">            StockObject stockObject = new StockObject();</span>
-<span class="fc" id="L40">            stockObject.setStock(YahooFinance.get(companySymbol));</span>
-<span class="fc" id="L41">            return stockObject;</span>
-<span class="nc" id="L42">        } catch (IOException e) {</span>
-<span class="nc" id="L43">            logger.error(&quot;Stock not found!&quot;);</span>
+<span class="fc" id="L37">        StockObject stockObject = new StockObject();</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if(companySymbol!=null) {</span>
+            try {
+<span class="fc" id="L40">                stockObject.setStock(YahooFinance.get(companySymbol));</span>
+<span class="fc" id="L41">                return stockObject;</span>
+<span class="nc" id="L42">            } catch (IOException e) {</span>
+<span class="nc" id="L43">                logger.error(&quot;Stock not found!&quot;);</span>
+            }
         }
-<span class="nc" id="L45">        return null;</span>
+<span class="nc" id="L46">        return stockObject;</span>
     }
 
     @Override
     public List&lt;StockObject&gt; findAllStock(List&lt;String&gt; symbols) {
-<span class="fc" id="L50">        String[] allSymbols = new String[symbols.size()];</span>
-<span class="fc" id="L51">        List&lt;StockObject&gt; sectorWiseStocks = new ArrayList&lt;&gt;();</span>
-        try {
-<span class="pc bpc" id="L53" title="1 of 2 branches missed.">            if (!ObjectUtils.isEmpty(symbols)) {</span>
-<span class="fc" id="L54">                int i = 0;</span>
-<span class="fc bfc" id="L55" title="All 2 branches covered.">                for (String symbol : symbols) {</span>
-<span class="fc" id="L56">                    allSymbols[i] = symbol;</span>
-<span class="fc" id="L57">                    i++;</span>
-<span class="fc" id="L58">                }</span>
-            }
-<span class="fc" id="L60">            List&lt;Stock&gt; apiStockDetails = new ArrayList&lt;&gt;(YahooFinance.get(allSymbols).values()); //get data for all stocks from Yahoo API</span>
-<span class="fc bfc" id="L61" title="All 2 branches covered.">            for (Stock apiStockDetail : apiStockDetails) {</span>
-<span class="fc" id="L62">                StockObject stock = new StockObject();</span>
-<span class="fc" id="L63">                stock.setStock(apiStockDetail);</span>
-<span class="fc" id="L64">                sectorWiseStocks.add(stock);</span>
-<span class="fc" id="L65">            }</span>
 
-<span class="nc" id="L67">        } catch (Exception e) {</span>
-<span class="nc" id="L68">            logger.error(&quot;Exception caught in findAllStocks {}&quot;, e.getMessage());</span>
-<span class="fc" id="L69">        }</span>
-<span class="fc" id="L70">        return sectorWiseStocks;</span>
+<span class="fc" id="L52">        List&lt;StockObject&gt; sectorWiseStocks = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (!ObjectUtils.isEmpty(symbols)) {</span>
+<span class="fc" id="L54">            String[] allSymbols = new String[symbols.size()];</span>
+            try {
+
+<span class="fc" id="L57">                int i = 0;</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">                for (String symbol : symbols) {</span>
+<span class="fc" id="L59">                    allSymbols[i] = symbol;</span>
+<span class="fc" id="L60">                    i++;</span>
+<span class="fc" id="L61">                }</span>
+
+<span class="fc" id="L63">                List&lt;Stock&gt; apiStockDetails = new ArrayList&lt;&gt;(YahooFinance.get(allSymbols).values()); //get data for all stocks from Yahoo API</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">                for (Stock apiStockDetail : apiStockDetails) {</span>
+<span class="fc" id="L65">                    StockObject stock = new StockObject();</span>
+<span class="fc" id="L66">                    stock.setStock(apiStockDetail);</span>
+<span class="fc" id="L67">                    sectorWiseStocks.add(stock);</span>
+<span class="fc" id="L68">                }</span>
+
+<span class="nc" id="L70">            } catch (Exception e) {</span>
+<span class="nc" id="L71">                logger.error(&quot;Exception caught in findAllStocks {}&quot;, e.getMessage());</span>
+<span class="fc" id="L72">            }</span>
+        }
+<span class="fc" id="L74">        return sectorWiseStocks;</span>
     }
 
     @Override
     public StockDetails getStocksDetails(String companySymbol) {
         //Finds Stock for a given companySymbol passed as an argument from Yahoo Finance API and returns its Details.
 
-<span class="fc" id="L77">        StockDetails stockDetails = new StockDetails();</span>
-        try {
+<span class="fc" id="L81">        StockDetails stockDetails = new StockDetails();</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if(companySymbol!=null) {</span>
+            try {
 
-<span class="fc" id="L80">            StockObject stock = stockDetailsService.findStock(companySymbol);</span>
-<span class="fc" id="L81">            stockDetails = setStockDetails(stock);</span>
-<span class="fc" id="L82">            logger.info(&quot;Stock Details of Company Symbol: {} found!&quot;, companySymbol);</span>
+<span class="fc" id="L85">                StockObject stock = stockDetailsService.findStock(companySymbol);</span>
+<span class="fc" id="L86">                stockDetails = setStockDetails(stock);</span>
+<span class="fc" id="L87">                logger.info(&quot;Stock Details of Company Symbol: {} found!&quot;, companySymbol);</span>
 
-<span class="nc" id="L84">        } catch (Exception e) {</span>
-<span class="nc" id="L85">            e.printStackTrace();</span>
-<span class="nc" id="L86">            logger.error(&quot;Stock Details not found!&quot;);</span>
-<span class="fc" id="L87">        }</span>
-<span class="fc" id="L88">        return stockDetails;</span>
+<span class="nc" id="L89">            } catch (Exception e) {</span>
+<span class="nc" id="L90">                e.printStackTrace();</span>
+<span class="nc" id="L91">                logger.error(&quot;Stock Details not found!&quot;);</span>
+<span class="fc" id="L92">            }</span>
+        }
+<span class="fc" id="L94">        return stockDetails;</span>
     }
 
     @Override
     public StockDetails findTopPerformingStock(String userId) {
         //Finds Top Performing Stock from the given list of Companies(companySymbols) passed as an argument.
-<span class="fc" id="L94">        List&lt;String&gt; companySymbols = userHistoryService.getCompanySymbolsSavedByUserId(userId);</span>
-<span class="fc" id="L95">        List&lt;StockObject&gt; stocksList = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L96">        List&lt;StockDetails&gt; sortedStocksList = new ArrayList&lt;&gt;();</span>
-        StockDetails topPerformingStock;
-        try {
-<span class="fc" id="L99">            stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());</span>
-<span class="nc" id="L100">        } catch (Exception e) {</span>
-<span class="nc" id="L101">            e.printStackTrace();</span>
-<span class="fc" id="L102">        }</span>
-<span class="fc bfc" id="L103" title="All 2 branches covered.">        for (int i = 0; i &lt; companySymbols.size(); i++) {</span>
+<span class="fc" id="L100">        StockDetails topPerformingStock = new StockDetails();</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if(userId!=null) {</span>
+<span class="fc" id="L102">            List&lt;String&gt; companySymbols = userHistoryService.getCompanySymbolsSavedByUserId(userId);</span>
+<span class="fc" id="L103">            List&lt;StockObject&gt; stocksList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L104">            List&lt;StockDetails&gt; sortedStocksList = new ArrayList&lt;&gt;();</span>
             try {
-<span class="fc" id="L105">                StockDetails stockDetails = setStockDetails(stocksList.get(i));</span>
-<span class="fc" id="L106">                sortedStocksList.add(stockDetails);</span>
-<span class="fc" id="L107">                logger.info(&quot;Top Performing Stock found!&quot;);</span>
-<span class="nc" id="L108">            } catch (Exception e) {</span>
-<span class="nc" id="L109">                logger.error(&quot;Top Performing Stock not found!&quot;);</span>
-<span class="nc" id="L110">                e.printStackTrace();</span>
-<span class="fc" id="L111">            }</span>
+<span class="fc" id="L106">                stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());</span>
+<span class="nc" id="L107">            } catch (Exception e) {</span>
+<span class="nc" id="L108">                e.printStackTrace();</span>
+<span class="fc" id="L109">            }</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            for (int i = 0; i &lt; companySymbols.size(); i++) {</span>
+                try {
+<span class="fc" id="L112">                    StockDetails stockDetails = setStockDetails(stocksList.get(i));</span>
+<span class="fc" id="L113">                    sortedStocksList.add(stockDetails);</span>
+<span class="fc" id="L114">                    logger.info(&quot;Top Performing Stock found!&quot;);</span>
+<span class="nc" id="L115">                } catch (Exception e) {</span>
+<span class="nc" id="L116">                    logger.error(&quot;Top Performing Stock not found!&quot;);</span>
+<span class="nc" id="L117">                    e.printStackTrace();</span>
+<span class="fc" id="L118">                }</span>
+            }
+<span class="fc" id="L120">            topPerformingStock = sortedStocksList.get(0);</span>
         }
-<span class="fc" id="L113">        topPerformingStock = sortedStocksList.get(0);</span>
-<span class="fc" id="L114">        return topPerformingStock;</span>
+<span class="fc" id="L122">        return topPerformingStock;</span>
     }
 
     @Override
     public List&lt;StockDetails&gt; findStocksAndSort(String sector, String attribute) {
         //Gets Stock from Yahoo API and sorts based on the sector and parameter mentioned
 
-<span class="fc" id="L121">        List&lt;StockObject&gt; stocksList = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L122">        List&lt;StockDetails&gt; sortedStocksList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L129">        List&lt;StockObject&gt; stocksList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L130">        List&lt;StockDetails&gt; sortedStocksList = new ArrayList&lt;&gt;();</span>
         List&lt;String&gt; companySymbols;
 
         try {
-<span class="fc" id="L126">            companySymbols = sectorStocksService.getCompanySymbolBySector(sector);</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">            if (attribute.compareTo(SortingParameterList.MARKET_CAP.toString()) == 0) {</span>
-<span class="fc" id="L128">                logger.info(&quot;Sorting on the basis of Market Capital&quot;);</span>
-<span class="fc" id="L129">                stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());</span>
-<span class="fc bfc" id="L130" title="All 2 branches covered.">            } else if (attribute.compareTo(SortingParameterList.PE_RATIO.toString()) == 0) {</span>
-<span class="fc" id="L131">                logger.info(&quot;Sorting on the basis of PE Ratio&quot;);</span>
-<span class="fc" id="L132">                stocksList = sortStocks.sort(companySymbols, SortingParameterList.PE_RATIO.toString());</span>
+<span class="pc bpc" id="L134" title="1 of 4 branches missed.">            if(sector!=null &amp;&amp; attribute!=null) {</span>
+<span class="fc" id="L135">                companySymbols = sectorStocksService.getCompanySymbolBySector(sector);</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">                if (attribute.compareTo(SortingParameterList.MARKET_CAP.toString()) == 0) {</span>
+<span class="fc" id="L137">                    logger.info(&quot;Sorting on the basis of Market Capital&quot;);</span>
+<span class="fc" id="L138">                    stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">                } else if (attribute.compareTo(SortingParameterList.PE_RATIO.toString()) == 0) {</span>
+<span class="fc" id="L140">                    logger.info(&quot;Sorting on the basis of PE Ratio&quot;);</span>
+<span class="fc" id="L141">                    stocksList = sortStocks.sort(companySymbols, SortingParameterList.PE_RATIO.toString());</span>
 
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">            } else if (attribute.compareTo(SortingParameterList.CHANGE.toString()) == 0) {</span>
-<span class="fc" id="L135">                logger.info(&quot;Sorting on the basis of Change&quot;);</span>
-<span class="fc" id="L136">                stocksList = sortStocks.sort(companySymbols, SortingParameterList.CHANGE.toString());</span>
-            } else {
-<span class="nc" id="L138">                logger.error(&quot;Incorrect parameter passed!&quot;);</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">                } else if (attribute.compareTo(SortingParameterList.CHANGE.toString()) == 0) {</span>
+<span class="fc" id="L144">                    logger.info(&quot;Sorting on the basis of Change&quot;);</span>
+<span class="fc" id="L145">                    stocksList = sortStocks.sort(companySymbols, SortingParameterList.CHANGE.toString());</span>
+                } else {
+<span class="fc" id="L147">                    logger.error(&quot;Incorrect parameter passed!&quot;);</span>
+                }
+<span class="fc" id="L149">                sortedStocksList = setAttributesOfTop5Stocks(stocksList);</span>
             }
-<span class="fc" id="L140">            sortedStocksList = setAttributesOfTop5Stocks(stocksList);</span>
-<span class="nc" id="L141">        } catch (Exception e) {</span>
-<span class="nc" id="L142">            logger.error(&quot;Sorting could not be done!&quot;);</span>
-<span class="fc" id="L143">        }</span>
-<span class="fc" id="L144">        return sortedStocksList;</span>
+<span class="nc" id="L151">        } catch (Exception e) {</span>
+<span class="nc" id="L152">            logger.error(&quot;Sorting could not be done!&quot;);</span>
+<span class="fc" id="L153">        }</span>
+<span class="fc" id="L154">        return sortedStocksList;</span>
     }
 
     public List&lt;StockDetails&gt; setAttributesOfTop5Stocks(List&lt;StockObject&gt; stocksList) {
-<span class="fc" id="L148">        List&lt;StockDetails&gt; sortedStocksList = new ArrayList&lt;&gt;();</span>
-        try {
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">            if (!stocksList.isEmpty()) {</span>
-<span class="fc" id="L151">                int size = Math.min(stocksList.size(), 5); //incase sector has less than 5 stocks</span>
-<span class="fc bfc" id="L152" title="All 2 branches covered.">                for (int i = 0; i &lt; size; i++) {</span>
-<span class="fc" id="L153">                    StockDetails stockDetails = setStockDetails(stocksList.get(i));</span>
-<span class="fc" id="L154">                    sortedStocksList.add(stockDetails);</span>
+<span class="fc" id="L158">        List&lt;StockDetails&gt; sortedStocksList = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        if (!stocksList.isEmpty()) {</span>
+            try {
+
+<span class="fc" id="L162">                int size = Math.min(stocksList.size(), 5); //incase sector has less than 5 stocks</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">                for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L164">                    StockDetails stockDetails = setStockDetails(stocksList.get(i));</span>
+<span class="fc" id="L165">                    sortedStocksList.add(stockDetails);</span>
                 }
 
-            }
-<span class="nc" id="L158">        } catch (Exception e) {</span>
-<span class="nc" id="L159">            logger.error(&quot;Error in setAttributesOfTop5Stocks {}&quot;, e.getMessage());</span>
-<span class="fc" id="L160">        }</span>
-<span class="fc" id="L161">        return sortedStocksList;</span>
+
+<span class="nc" id="L169">            } catch (Exception e) {</span>
+<span class="nc" id="L170">                logger.error(&quot;Error in setAttributesOfTop5Stocks {}&quot;, e.getMessage());</span>
+<span class="fc" id="L171">            }</span>
+        }
+<span class="fc" id="L173">        return sortedStocksList;</span>
     }
 
     public StockDetails setStockDetails(StockObject stock) {
-<span class="fc" id="L165">        StockDetails stockDetails = new StockDetails();</span>
+<span class="fc" id="L177">        StockDetails stockDetails = new StockDetails();</span>
         try {
-<span class="fc" id="L167">            stockDetails.setCompanySymbol(stock.getCompanySymbol());</span>
-<span class="fc" id="L168">            stockDetails.setCompanyName(stock.getCompanyName());</span>
-<span class="fc" id="L169">            stockDetails.setOpen(stock.getOpen());</span>
-<span class="fc" id="L170">            stockDetails.setClose(stock.getClose());</span>
-<span class="fc" id="L171">            stockDetails.setHigh(stock.getHigh());</span>
-<span class="fc" id="L172">            stockDetails.setLow(stock.getLow());</span>
-<span class="fc" id="L173">            stockDetails.setVolume(stock.getVolume());</span>
-<span class="fc" id="L174">            stockDetails.setChange(stock.getChange());</span>
-<span class="fc" id="L175">            stockDetails.setPeRatio(stock.getPeRatio());</span>
-<span class="fc" id="L176">            stockDetails.setMarketCap(stock.getMarketCap());</span>
-<span class="fc" id="L177">            stockDetails.setHistory(stock.getHistory());</span>
-<span class="nc" id="L178">        } catch (IOException e) {</span>
-<span class="nc" id="L179">            logger.error(&quot;Top Performing Stock not found!&quot;);</span>
-<span class="nc" id="L180">            e.printStackTrace();</span>
-<span class="fc" id="L181">        }</span>
-<span class="fc" id="L182">        return stockDetails;</span>
+<span class="fc" id="L179">            stockDetails.setCompanySymbol(stock.getCompanySymbol());</span>
+<span class="fc" id="L180">            stockDetails.setCompanyName(stock.getCompanyName());</span>
+<span class="fc" id="L181">            stockDetails.setOpen(stock.getOpen());</span>
+<span class="fc" id="L182">            stockDetails.setClose(stock.getClose());</span>
+<span class="fc" id="L183">            stockDetails.setHigh(stock.getHigh());</span>
+<span class="fc" id="L184">            stockDetails.setLow(stock.getLow());</span>
+<span class="fc" id="L185">            stockDetails.setVolume(stock.getVolume());</span>
+<span class="fc" id="L186">            stockDetails.setChange(stock.getChange());</span>
+<span class="fc" id="L187">            stockDetails.setPeRatio(stock.getPeRatio());</span>
+<span class="fc" id="L188">            stockDetails.setMarketCap(stock.getMarketCap());</span>
+<span class="fc" id="L189">            stockDetails.setHistory(stock.getHistory());</span>
+<span class="nc" id="L190">        } catch (IOException e) {</span>
+<span class="nc" id="L191">            logger.error(&quot;Top Performing Stock not found!&quot;);</span>
+<span class="nc" id="L192">            e.printStackTrace();</span>
+<span class="fc" id="L193">        }</span>
+<span class="fc" id="L194">        return stockDetails;</span>
     }
 
 	@Override
 	public List&lt;HistoricalQuote&gt; findHistory(String companySymbol) {
-<span class="nc" id="L187">        List&lt;HistoricalQuote&gt; history = new ArrayList&lt;&gt;();</span>
-        try {
-<span class="nc" id="L189">            history = stockDetailsService.findStock(companySymbol).getHistory();</span>
-<span class="nc" id="L190">		} catch (IOException e) {</span>
-<span class="nc" id="L191">			logger.error(&quot;Stock History not found!&quot;);</span>
-			
-<span class="nc" id="L193">		}</span>
-<span class="nc" id="L194">		return history;</span>
+<span class="nc" id="L199">        List&lt;HistoricalQuote&gt; history = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if(companySymbol!= null) {</span>
+            try {
+<span class="nc" id="L202">                history = stockDetailsService.findStock(companySymbol).getHistory();</span>
+<span class="nc" id="L203">            } catch (IOException e) {</span>
+<span class="nc" id="L204">                logger.error(&quot;Stock History not found!&quot;);</span>
+
+<span class="nc" id="L206">            }</span>
+        }
+<span class="nc" id="L208">		return history;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

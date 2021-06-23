@@ -4,14 +4,14 @@ import com.citi.trade.recommendation.model.SectorAvg;
 import com.citi.trade.recommendation.model.SectorStocks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class SectorStocksServiceTest {
     private static final Logger logger = LogManager.getLogger(SectorStocksServiceTest.class);
 
@@ -19,6 +19,7 @@ import java.util.List;
     SectorStocksService sectorstocksService;
 
 
+    @Order(1)
     @Test
      void testShowCompanies() {
 

@@ -52,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     
     @Test
      void userLogin() {
-    	String expectedResult = "Kiran";
+    	String expectedResult = "true";
         UserMaster mockResult = null;
         UserMaster checkuser = new UserMaster();
         checkuser.setUserId("Kiran");
@@ -66,6 +66,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                     .andExpect(content().contentType("application/json"));
             logger.info("Result is {}", result.getResponse().getContentAsString());
             Assertions.assertTrue(result.getResponse().getContentAsString().contains(expectedResult));
+            Assertions.assertEquals(200, result.getResponse().getStatus());
+            expectedResult = "false";
+            checkuser.setUserId("UnknownUser");
+            MvcResult result2 = (MvcResult) mockMvc.perform(MockMvcRequestBuilders.post("/user/login")
+                    .content(asJsonString(checkuser))
+                    .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"));
+            logger.info("Result is {}", result.getResponse().getContentAsString());
+            Assertions.assertFalse(result.getResponse().getContentAsString().contains(expectedResult));
             Assertions.assertEquals(200, result.getResponse().getStatus());
         } catch (Exception e) {
             logger.error("error in userLoginTest");

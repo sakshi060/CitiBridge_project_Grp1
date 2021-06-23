@@ -29,7 +29,10 @@ import java.util.List;
 		String parameter = "MARKET_CAP";
 		List<StockDetails>  finalList = stockDetailsService.findStocksAndSort(sector, parameter);
 		Assertions.assertNotNull(finalList);
-		//Assertions.assertNull(stockDetailsService.findStocksAndSort(null,null));
+		parameter="VOLUME";
+		Assertions.assertEquals(0,stockDetailsService.findStocksAndSort(sector, parameter).size());
+		Assertions.assertEquals(0,stockDetailsService.findStocksAndSort(sector, null).size());
+
 	}
 
 	@Test

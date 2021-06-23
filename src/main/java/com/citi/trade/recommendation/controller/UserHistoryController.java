@@ -7,6 +7,7 @@ import com.citi.trade.recommendation.service.UserHistoryService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class UserHistoryController {
     @Autowired
     StockDetailsService stockDetailsService;
 
-    @PostMapping("/saveStocks")
+    @PostMapping(value = "/saveStocks",consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean saveUserHistory(@RequestBody UserHistory history) {
         // Saves stock and quantity of the stock, the given user wants.
         logger.info("Adding stock to User History of User: {}" ,history.getUserId());
@@ -55,7 +56,7 @@ public class UserHistoryController {
 
     }
 
-    @PostMapping(value = "/deleteSavedStocksByUserId")
+    @PostMapping(value = "/deleteSavedStocksByUserId",consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean deleteSavedStocksByUserId(@RequestBody int[] ids) {
         // Deletes stocks for the logged in user with ids as parameter.
         logger.info("Deleting stocks with ID: {}" ,ids);

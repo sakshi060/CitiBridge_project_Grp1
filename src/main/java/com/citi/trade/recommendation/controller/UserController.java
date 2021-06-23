@@ -5,6 +5,7 @@ import com.citi.trade.recommendation.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/user")
@@ -17,7 +18,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean userLogin(@RequestBody UserMaster userObject) {
         // Checks if user present in database, if yes returns userId
         logger.info("Authenticating User {} :", userObject.getUserId());

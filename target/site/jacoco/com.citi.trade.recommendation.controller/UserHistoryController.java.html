@@ -57,11 +57,11 @@ import java.util.List;
     }
 
     @PostMapping(value = &quot;/deleteSavedStocksByUserId&quot;,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean deleteSavedStocksByUserId(@RequestBody int[] ids) {
+    public boolean deleteSavedStocksById(@RequestBody int[] ids) {
         // Deletes stocks for the logged in user with ids as parameter.
-<span class="nc" id="L62">        logger.info(&quot;Deleting stocks with ID: {}&quot; ,ids);</span>
-<span class="nc" id="L63">        int deleted = userHistoryService.deleteUserHistoryByuserId(ids);</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        return deleted == 1;</span>
+<span class="fc" id="L62">        logger.info(&quot;Deleting stocks with ID: {}&quot; ,ids);</span>
+<span class="fc" id="L63">        int deleted = userHistoryService.deleteUserHistoryByuserId(ids);</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        return deleted == 1;</span>
 
     }
 

@@ -14,39 +14,42 @@ import java.util.Base64;
 @Service
 <span class="fc" id="L15">public class UserServiceImpl implements UserService {</span>
 
-<span class="fc" id="L17">    private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);</span>
+<span class="fc" id="L17">	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);</span>
 
-    @Autowired
-    UserRepository userRepository;
+	@Autowired
+	UserRepository userRepository;
 
-    @Override
-    public UserMaster checkLogin(UserMaster userObject) {
-        // checks if user present in database and password matches
+	@Override
+	public UserMaster checkLogin(UserMaster userObject) {
+		// checks if user present in database and password matches
 
-        UserMaster checkuser;
-<span class="fc" id="L27">        String password = decodeString(userObject.getPassword());</span>
-<span class="fc" id="L28">        checkuser = userRepository.checkLogin(userObject, password);</span>
-<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if (checkuser != null) {</span>
-<span class="pc bpc" id="L30" title="1 of 2 branches missed.">            if (checkuser.getPassword().equals(decodeString(userObject.getPassword()).replaceAll(&quot;\\s&quot;, &quot;&quot;))) {</span>
-<span class="fc" id="L31">                logger.info(&quot;User Login Successful. User: {} - &quot;, userObject.getUserId());</span>
-            } else {
-<span class="nc" id="L33">                logger.info(&quot;User Login UnSuccessful&quot;);</span>
-            }
-        } else {
-<span class="nc" id="L36">            logger.info(&quot;User not found in database.User Login UnSuccessful&quot;);</span>
-        }
-<span class="fc" id="L38">        return checkuser;</span>
+<span class="fc" id="L26">		UserMaster checkuser = null;</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">		if(userObject!=null)</span>
+		{
+<span class="fc" id="L29">			String password = decodeString(userObject.getPassword());</span>
+<span class="fc" id="L30">			checkuser = userRepository.checkLogin(userObject, password);</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">			if (checkuser != null) {</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">				if (checkuser.getPassword().equals(decodeString(userObject.getPassword()).replaceAll(&quot;\\s&quot;, &quot;&quot;))) {</span>
+<span class="fc" id="L33">					logger.info(&quot;User Login Successful. User: {} - &quot;, userObject.getUserId());</span>
+				} else {
+<span class="nc" id="L35">					logger.info(&quot;User Login UnSuccessful&quot;);</span>
+				}
+			} else {
+<span class="nc" id="L38">				logger.info(&quot;User not found in database.User Login UnSuccessful&quot;);</span>
+			}
+		}
+<span class="fc" id="L41">		return checkuser;</span>
 
-    }
+	}
 
-    public String decodeString(String encodedPassword) {
+	public String decodeString(String encodedPassword) {
 
-<span class="fc" id="L44">        String decoded = new String(Base64.getDecoder().decode(encodedPassword));</span>
-<span class="fc" id="L45">        StringBuilder password = new StringBuilder();</span>
-<span class="fc" id="L46">        password.append(decoded);</span>
-<span class="fc" id="L47">        password.reverse();</span>
-<span class="fc" id="L48">        return password.toString();</span>
-    }
+<span class="fc" id="L47">		String decoded = new String(Base64.getDecoder().decode(encodedPassword));</span>
+<span class="fc" id="L48">		StringBuilder password = new StringBuilder();</span>
+<span class="fc" id="L49">		password.append(decoded);</span>
+<span class="fc" id="L50">		password.reverse();</span>
+<span class="fc" id="L51">		return password.toString();</span>
+	}
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

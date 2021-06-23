@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,38 +14,40 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-<span class="fc" id="L16">public class SortStocksServiceImpl implements SortStocksService {</span>
+<span class="fc" id="L17">public class SortStocksServiceImpl implements SortStocksService {</span>
 
-<span class="fc" id="L18">    private static final Logger logger = LogManager.getLogger(SortStocksServiceImpl.class);</span>
-    @Autowired
-    StockDetailsService stockDetailsService;
+<span class="fc" id="L19">	private static final Logger logger = LogManager.getLogger(SortStocksServiceImpl.class);</span>
+	@Autowired
+	StockDetailsService stockDetailsService;
 
-    public List&lt;StockObject&gt; sort(List&lt;String&gt; companySymbols, String attribute) {
-        //Sorts stocks of Companies (companySymbols) on the basis of attribute passed as arguments in the Descending Order.
-<span class="fc" id="L24">        List&lt;StockObject&gt; sortedStocks = new ArrayList&lt;&gt;();</span>
-        try {
+	public List&lt;StockObject&gt; sort(List&lt;String&gt; companySymbols, String attribute) {
+		//Sorts stocks of Companies (companySymbols) on the basis of attribute passed as arguments in the Descending Order.
+<span class="fc" id="L25">		List&lt;StockObject&gt; sortedStocks = new ArrayList&lt;&gt;();</span>
+		try {
+<span class="pc bpc" id="L27" title="2 of 4 branches missed.">			if(!ObjectUtils.isEmpty(companySymbols) &amp;&amp; attribute!=null)</span>
+			{
+<span class="fc" id="L29">				List&lt;StockObject&gt; sectorStocks = stockDetailsService.findAllStock(companySymbols);</span>
 
-<span class="fc" id="L27">            List&lt;StockObject&gt; sectorStocks = stockDetailsService.findAllStock(companySymbols);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">				if (attribute.compareTo(SortingParameterList.MARKET_CAP.toString()) == 0) {</span>
 
-<span class="fc bfc" id="L29" title="All 2 branches covered.">            if (attribute.compareTo(SortingParameterList.MARKET_CAP.toString()) == 0) {</span>
-
-<span class="fc" id="L31">                sortedStocks = sectorStocks.stream()</span>
-<span class="fc" id="L32">                        .sorted(Comparator.comparing(StockObject::getMarketCap).reversed())</span>
-<span class="fc" id="L33">                        .collect(Collectors.toList());</span>
-<span class="fc bfc" id="L34" title="All 2 branches covered.">            } else if (attribute.compareTo(SortingParameterList.PE_RATIO.toString()) == 0) {</span>
-<span class="fc" id="L35">                sortedStocks = sectorStocks.stream()</span>
-<span class="fc" id="L36">                        .sorted(Comparator.comparing(StockObject::getPeRatio).reversed())</span>
-<span class="fc" id="L37">                        .collect(Collectors.toList());</span>
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">            } else if (attribute.compareTo(SortingParameterList.CHANGE.toString()) == 0) {</span>
-<span class="fc" id="L39">                sortedStocks = sectorStocks.stream()</span>
-<span class="fc" id="L40">                        .sorted(Comparator.comparing(StockObject::getChange).reversed())</span>
-<span class="fc" id="L41">                        .collect(Collectors.toList());</span>
-            }
-<span class="nc" id="L43">        } catch (Exception e) {</span>
-<span class="nc" id="L44">            logger.error(&quot;Sorting could not be done!&quot;);</span>
-<span class="fc" id="L45">        }</span>
-<span class="fc" id="L46">        return sortedStocks;</span>
-    }
+<span class="fc" id="L33">					sortedStocks = sectorStocks.stream()</span>
+<span class="fc" id="L34">							.sorted(Comparator.comparing(StockObject::getMarketCap).reversed())</span>
+<span class="fc" id="L35">							.collect(Collectors.toList());</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">				} else if (attribute.compareTo(SortingParameterList.PE_RATIO.toString()) == 0) {</span>
+<span class="fc" id="L37">					sortedStocks = sectorStocks.stream()</span>
+<span class="fc" id="L38">							.sorted(Comparator.comparing(StockObject::getPeRatio).reversed())</span>
+<span class="fc" id="L39">							.collect(Collectors.toList());</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">				} else if (attribute.compareTo(SortingParameterList.CHANGE.toString()) == 0) {</span>
+<span class="fc" id="L41">					sortedStocks = sectorStocks.stream()</span>
+<span class="fc" id="L42">							.sorted(Comparator.comparing(StockObject::getChange).reversed())</span>
+<span class="fc" id="L43">							.collect(Collectors.toList());</span>
+				}
+			}
+<span class="nc" id="L46">		} catch (Exception e) {</span>
+<span class="nc" id="L47">			logger.error(&quot;Sorting could not be done!&quot;);</span>
+<span class="fc" id="L48">		}</span>
+<span class="fc" id="L49">		return sortedStocks;</span>
+	}
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

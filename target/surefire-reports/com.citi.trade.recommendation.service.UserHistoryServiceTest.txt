@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.citi.trade.recommendation.service.UserHistoryServiceTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.534 s - in com.citi.trade.recommendation.service.UserHistoryServiceTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.621 s - in com.citi.trade.recommendation.service.UserHistoryServiceTest

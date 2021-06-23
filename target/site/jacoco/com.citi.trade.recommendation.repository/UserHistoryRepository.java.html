@@ -91,9 +91,9 @@ import java.util.List;
     public int deleteUserHistoryByuserId(String userId) {
         //Deletes selected stocks.
         try {
-<span class="nc" id="L94">            logger.info(&quot;Deleting Stock for User {} &quot;, userId);</span>
-<span class="nc" id="L95">            String deleteQuery = &quot;delete from user_history where user_id=?&quot;;</span>
-<span class="nc" id="L96">            return template.update(deleteQuery, userId);</span>
+<span class="fc" id="L94">            logger.info(&quot;Deleting Stock for User {} &quot;, userId);</span>
+<span class="fc" id="L95">            String deleteQuery = &quot;delete from user_history where user_id=?&quot;;</span>
+<span class="fc" id="L96">            return template.update(deleteQuery, userId);</span>
 <span class="nc" id="L97">        } catch (Exception e) {</span>
 <span class="nc" id="L98">            logger.error(&quot;User History of User: {} could not be deleted&quot;, userId);</span>
 <span class="nc" id="L99">            return 0;</span>

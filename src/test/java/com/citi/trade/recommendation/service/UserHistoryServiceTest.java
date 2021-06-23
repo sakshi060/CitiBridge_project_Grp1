@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,7 +48,7 @@ import java.util.List;
 	Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistory));
 	//Assertions.assertEquals("TCS.NS",stock.getCompanySymbol());
 }
-	
+	@Disabled
 	@Test
 	 void testdeleteStocksByUserId() {
 
@@ -90,7 +91,7 @@ import java.util.List;
 
 	@Test
 	 void testdeleteStocks() {
-		int ids[] = {6,7};
+		int ids[] = {8};
 		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
 			//Assertions.assertNull(userHistoryService.deleteUserHistoryByuserId(null));
 		Assertions.assertEquals(1,  deleted);

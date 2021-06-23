@@ -1,0 +1,10 @@
+com\citi\trade\recommendation\service\SectorStocksServiceTest.class
+com\citi\trade\recommendation\controller\UserControllerTest.class
+com\citi\trade\recommendation\service\StockDetailsServiceTest.class
+com\citi\trade\recommendation\service\UserServiceTest.class
+com\citi\trade\recommendation\controller\StockDetailsControllerTest.class
+com\citi\trade\recommendation\BackendappApplicationTests.class
+com\citi\trade\recommendation\controller\SectorStocksControllerTest.class
+com\citi\trade\recommendation\service\UserHistoryServiceTest.class
+com\citi\trade\recommendation\controller\UserHistoryControllerTest.class
+com\citi\trade\recommendation\service\SortStocksServiceTest.class

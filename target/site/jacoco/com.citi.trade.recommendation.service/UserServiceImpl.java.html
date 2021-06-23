@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backendapp</a> &gt; <a href="index.source.html" class="el_package">com.citi.trade.recommendation.service</a> &gt; <span class="el_source">UserServiceImpl.java</span></div><h1>UserServiceImpl.java</h1><pre class="source lang-java linenums">package com.citi.trade.recommendation.service;
+
+
+import com.citi.trade.recommendation.model.UserMaster;
+import com.citi.trade.recommendation.repository.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Base64;
+
+
+@Service
+<span class="fc" id="L15">public class UserServiceImpl implements UserService {</span>
+
+<span class="fc" id="L17">    private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);</span>
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Override
+    public UserMaster checkLogin(UserMaster userObject) {
+        // checks if user present in database and password matches
+
+        UserMaster checkuser;
+<span class="fc" id="L27">        String password = decodeString(userObject.getPassword());</span>
+<span class="fc" id="L28">        checkuser = userRepository.checkLogin(userObject, password);</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if (checkuser != null) {</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">            if (checkuser.getPassword().equals(decodeString(userObject.getPassword()).replaceAll(&quot;\\s&quot;, &quot;&quot;))) {</span>
+<span class="fc" id="L31">                logger.info(&quot;User Login Successful. User: {} - &quot;, userObject.getUserId());</span>
+            } else {
+<span class="nc" id="L33">                logger.info(&quot;User Login UnSuccessful&quot;);</span>
+            }
+        } else {
+<span class="nc" id="L36">            logger.info(&quot;User not found in database.User Login UnSuccessful&quot;);</span>
+        }
+<span class="fc" id="L38">        return checkuser;</span>
+
+    }
+
+    public String decodeString(String encodedPassword) {
+
+<span class="fc" id="L44">        String decoded = new String(Base64.getDecoder().decode(encodedPassword));</span>
+<span class="fc" id="L45">        StringBuilder password = new StringBuilder();</span>
+<span class="fc" id="L46">        password.append(decoded);</span>
+<span class="fc" id="L47">        password.reverse();</span>
+<span class="fc" id="L48">        return password.toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

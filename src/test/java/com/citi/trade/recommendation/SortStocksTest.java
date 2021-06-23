@@ -13,14 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
-public class SortStocksTest {
+ class SortStocksTest {
     private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
     @Autowired
     StockDetailsService stockDetailsService;
 
     @Test
-    public void testSortOnMarketCap() {
+     void testSortOnMarketCap() {
         logger.info("");
         String parameter = SortingParameterList.MARKET_CAP.toString();
         String sector = "AUTOMOBILE";
@@ -30,7 +30,7 @@ public class SortStocksTest {
     }
 
     @Test
-    public void testSortOnPERatio() {
+     void testSortOnPERatio() {
         String parameter = SortingParameterList.PE_RATIO.toString();
         String sector = "ENERGY";
         List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);
@@ -39,7 +39,7 @@ public class SortStocksTest {
     }
 
     @Test
-    public void testSortOnChange() {
+     void testSortOnChange() {
         String parameter = SortingParameterList.CHANGE.toString();
         String sector = "FINANCIAL SERVICES";
         List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);

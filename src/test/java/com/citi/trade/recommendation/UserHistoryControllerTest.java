@@ -1,18 +1,17 @@
 package com.citi.trade.recommendation;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.citi.trade.recommendation.controller.UserHistoryController;
+import com.citi.trade.recommendation.model.StockDetails;
+import com.citi.trade.recommendation.model.UserHistory;
+import com.citi.trade.recommendation.service.StockDetailsService;
+import com.citi.trade.recommendation.service.UserHistoryService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -27,27 +26,27 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.citi.trade.recommendation.controller.UserHistoryController;
-import com.citi.trade.recommendation.model.StockDetails;
-import com.citi.trade.recommendation.model.UserHistory;
-import com.citi.trade.recommendation.service.StockDetailsService;
-import com.citi.trade.recommendation.service.UserHistoryService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {UserHistoryController.class})
 @WebMvcTest
-public class UserHistoryControllerTest {
+ class UserHistoryControllerTest {
 
     private static final Logger logger = LogManager.getLogger(UserHistoryControllerTest.class);
     private MockMvc mockMvc;
 
     @MockBean
-    private StockDetailsService stockDetailsService;
+    StockDetailsService stockDetailsService;
     @MockBean
-    private UserHistoryService userHistoryService;
+    UserHistoryService userHistoryService;
     
     @Autowired
     WebApplicationContext webApplicationContext;
@@ -59,14 +58,12 @@ public class UserHistoryControllerTest {
     
  
     @Test
-    public void saveUserHistory()  {
+     void saveUserHistory()  {
         String expectedResult = "XYZ";
-        boolean mockResult = false;
-        BigDecimal price = new BigDecimal(539.05);
+        BigDecimal price = new BigDecimal("539.05");
         UserHistory userHistory = new UserHistory(68,"WIPRO.NS","IT",price,"XYZ",6);
         
-        Mockito.when(userHistoryService.saveUserHistoryByuserId(userHistory)).thenReturn(mockResult);
-        //RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/userHistory/saveStocks");
+        Mockito.when(userHistoryService.saveUserHistoryByuserId(userHistory)).thenReturn(false);
 
         try {
         	System.out.println(asJsonString(userHistory));
@@ -79,18 +76,16 @@ public class UserHistoryControllerTest {
             Assertions.assertTrue(result.getResponse().getContentAsString().contains(expectedResult));
             Assertions.assertEquals(200, result.getResponse().getStatus());
         } catch (Exception e) {
-            
+            logger.error("Error in saveUserHistoryTest ");
         }
     }
     
     @Test
-    public void deleteUserHistory()  {
-//        int expectedResult = 1;
+     void deleteUserHistory()  {
         Integer mockResult = 0;
-        int id[] = {1,2};
+        int[] id = {1,2};
         
-        Mockito.when(userHistoryService.deleteUserHistoryByuserId(id)).thenReturn(mockResult);
-        //RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/userHistory/saveStocks");
+        Mockito.when(userHistoryService.deleteUserHistoryByuserId((int[]) ArgumentMatchers.any())).thenReturn(mockResult);
 
         try {
         	
@@ -100,15 +95,15 @@ public class UserHistoryControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(content().contentType("application/json"));
             logger.info("Result is {}", result.getResponse().getContentAsString());
-            Assertions.assertTrue(result.getResponse().getContentLength()==1);
+            Assertions.assertEquals( 1, result.getResponse().getContentLength());
             Assertions.assertEquals(200, result.getResponse().getStatus());
         } catch (Exception e) {
-            
+            logger.error("Error in deleteUserHistoryTest ");
         }
     }
     
     
-    public static String asJsonString(final Object obj) {
+     static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
         } catch (Exception e) {
@@ -117,13 +112,13 @@ public class UserHistoryControllerTest {
     }
     
     @Test
-    public void getUserHistory()  {
+     void getUserHistory()  {
         String expectedResult = "Sakshi";
         List<UserHistory> mockResult = new ArrayList<>();
-        BigDecimal price = new BigDecimal(539.05);
+        BigDecimal price = new BigDecimal("539.05");
         UserHistory userHistory = new UserHistory(7,"WIPRO.NS","IT",price,"Sakshi",6);
         mockResult.add(userHistory);
-        Mockito.when(userHistoryService.getUserHistoryByuserId(Matchers.anyString())).thenReturn(mockResult);
+        Mockito.when(userHistoryService.getUserHistoryByuserId(ArgumentMatchers.anyString())).thenReturn(mockResult);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/userHistory/showStocks/Sakshi");
 
         try {
@@ -140,12 +135,12 @@ public class UserHistoryControllerTest {
   
     
     @Test
-    public void getCompanySymbolsSavedByUserId()  {
+     void getCompanySymbolsSavedByUserId()  {
         String expectedResult = "WIPRO.NS";
         List<String> mockResult  = new ArrayList<>();
         mockResult.add("WIPRO.NS");
         
-        Mockito.when(userHistoryService.getCompanySymbolsSavedByUserId(Matchers.anyString())).thenReturn(mockResult);
+        Mockito.when(userHistoryService.getCompanySymbolsSavedByUserId(ArgumentMatchers.anyString())).thenReturn(mockResult);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/userHistory/getCompanySymbols/Sakshi");
 
         try {
@@ -160,13 +155,11 @@ public class UserHistoryControllerTest {
     
     
     @Test
-    public void getTopPerformingStock()  {
+     void getTopPerformingStock()  {
         String expectedResult = "TCS.NS";
-        StockDetails mockResult = new StockDetails();
         
         StockDetails stockDetails = new StockDetails("TCS.NS","Tata Consultancy Services Limited",null,null,null,null,0,null,null,null,null);
-        mockResult = stockDetails;
-        Mockito.when(stockDetailsService.findTopPerformingStock(Matchers.anyString())).thenReturn(mockResult);
+        Mockito.when(stockDetailsService.findTopPerformingStock(ArgumentMatchers.anyString())).thenReturn(stockDetails);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/userHistory/showTopPerformingStock/Sakshi");
 
         try {

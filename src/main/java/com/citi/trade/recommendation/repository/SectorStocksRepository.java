@@ -46,9 +46,9 @@ public class SectorStocksRepository {
         List<String> sectorCompanies = null;
         try {
             String findShares = "select company_symbol from sector_stocks where sector=?";
-            sectorCompanies = template.query(findShares, (set, arg1) -> {
-                return set.getString(1); //return company symbol
-            }, sector);
+            sectorCompanies = template.query(findShares, (set, arg1) ->
+               set.getString(1) //return company symbol
+            , sector);
             if (sectorCompanies.isEmpty()) {
                 logger.info("Company symbols not found");
             }
@@ -64,9 +64,9 @@ public class SectorStocksRepository {
         List<String> sectorCompanies = new ArrayList<>();
         try {
             String findShares = "select distinct(sector) from sector_stocks";
-            sectorCompanies = template.query(findShares, (set, arg1) -> {
-                return set.getString(1); //sector
-            });
+            sectorCompanies = template.query(findShares, (set, arg1) ->
+                set.getString(1) //sector
+            );
             if (sectorCompanies.isEmpty())
                 logger.info("No company symbols were found");
 

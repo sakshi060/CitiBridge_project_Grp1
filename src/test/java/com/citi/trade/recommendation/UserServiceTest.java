@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class UserServiceTest {
+ class UserServiceTest {
     private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
     @Autowired
@@ -18,9 +18,8 @@ public class UserServiceTest {
 
 
     @Test
-    public void testFindByUserName() {
+     void testFindByUserName() {
         UserMaster user = new UserMaster();
-        UserMaster checkuser = new UserMaster();
         String userName = "Kiran";
         String password = "MzIxbmFyaUsNCg==";
         user.setUserId(userName);
@@ -28,7 +27,7 @@ public class UserServiceTest {
 
 
         logger.info("Authenticating User: {}", user.getUserId());
-        checkuser = userService.checkLogin(user);
+        UserMaster checkuser = userService.checkLogin(user);
         if (checkuser != null) {
             logger.info("SUCCESS");
         } else

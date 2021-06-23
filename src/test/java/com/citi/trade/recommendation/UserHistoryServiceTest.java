@@ -2,7 +2,6 @@ package com.citi.trade.recommendation;
 
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.UserHistory;
-import com.citi.trade.recommendation.service.SectorStocksService;
 import com.citi.trade.recommendation.service.StockDetailsService;
 import com.citi.trade.recommendation.service.UserHistoryService;
 import org.apache.logging.log4j.LogManager;
@@ -15,23 +14,20 @@ import yahoofinance.histquotes.HistoricalQuote;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
-public class UserHistoryServiceTest {
+ class UserHistoryServiceTest {
 
 	@Autowired
 	UserHistoryService userHistoryService;
 	@Autowired
 	StockDetailsService stockDetailsService;
-	@Autowired
-	SectorStocksService sectorStocksService;
 
 	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
 
 	@Test
-	public void testsaveUserHistoryByuserId() {
+	 void testsaveUserHistoryByuserId() {
 	
 	String sector = "IT";
 	UserHistory userHistory = new UserHistory();
@@ -48,12 +44,12 @@ public class UserHistoryServiceTest {
 	userHistory.setVolume(45);
 
 	logger.info("");
-	Assertions.assertNotNull(userHistoryService.saveUserHistoryByuserId(userHistory));
+	Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistory));
 	//Assertions.assertEquals("TCS.NS",stock.getCompanySymbol());
 }
 	
 	@Test
-	public void testdeleteStocksByUserId() {
+	 void testdeleteStocksByUserId() {
 
 		String userId = "XYZ";
 
@@ -63,7 +59,7 @@ public class UserHistoryServiceTest {
 	}
 
 	@Test
-	public void testgetUserHistoryByuserId()
+	 void testgetUserHistoryByuserId()
 	{
 		String userId = "Rhythm";
 
@@ -73,35 +69,27 @@ public class UserHistoryServiceTest {
 	}
 
 	@Test
-	public void testshowTopPerformingStock() throws IOException 
+	 void testshowTopPerformingStock()
 	{
 		String userId = "Rhythm";
-		StockDetails topStock = new StockDetails();
-		List<String> companySymbols=new ArrayList<String>(); 
-		companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
-		topStock = stockDetailsService.getStocksDetails(companySymbols.get(0));
+		List<String> companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
+		StockDetails topStock = stockDetailsService.getStocksDetails(companySymbols.get(0));
 		Assertions.assertNotNull(topStock);
 		//Assertions.assertNull(stockDetailsService.getStocksDetails(null));
 	}
 
 	@Test
-	public void getCompanySymbolsByUserId() {
+	 void getCompanySymbolsByUserId() {
 		//Returns Company Symbols of Saved Stocks of userId passed as an argument.
 		String userId = "Sakshi";
-		List<String> companySymbols=new ArrayList<String>();
-
-		companySymbols =  userHistoryService.getCompanySymbolsSavedByUserId(userId);
-		HashMap<String,Integer> hm = new HashMap<String,Integer>();
-		for (int i = 0; i < companySymbols.size(); i++) {
-			hm.put(companySymbols.get(i), i);
-		}
+		List<String> companySymbols= userHistoryService.getCompanySymbolsSavedByUserId(userId);
 		Assertions.assertNotNull(companySymbols);
 		//Assertions.assertNull(userHistoryService.getCompanySymbolsSavedByUserId(null));
 
 	}
 
 //	@Test
-//	public void testdeleteStocks() {
+//	 void testdeleteStocks() {
 //		int ids[] = {6,7};
 //		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
 //			//Assertions.assertNull(userHistoryService.deleteUserHistoryByuserId(null));
@@ -110,7 +98,7 @@ public class UserHistoryServiceTest {
 //	}
 
 	@Test
-	public void testgetHistoricalData() throws IOException{
+	 void testgetHistoricalData() throws IOException{
 		List<HistoricalQuote> list;
 		String companySymbol = "TCS.NS";
 		list = stockDetailsService.findStock(companySymbol).getHistory();

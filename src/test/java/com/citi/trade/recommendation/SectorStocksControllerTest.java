@@ -1,8 +1,9 @@
 package com.citi.trade.recommendation;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.citi.trade.recommendation.controller.SectorStocksController;
+import com.citi.trade.recommendation.model.SectorAvg;
+import com.citi.trade.recommendation.model.SectorStocks;
+import com.citi.trade.recommendation.service.SectorStocksService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
@@ -23,21 +24,19 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.citi.trade.recommendation.controller.SectorStocksController;
-import com.citi.trade.recommendation.model.SectorAvg;
-import com.citi.trade.recommendation.model.SectorStocks;
-import com.citi.trade.recommendation.service.SectorStocksService;
+import java.util.ArrayList;
+import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SectorStocksController.class})
 @WebMvcTest
-public class SectorStocksControllerTest {
+class SectorStocksControllerTest {
 
     private static final Logger logger = LogManager.getLogger(SectorStocksControllerTest.class);
     private MockMvc mockMvc;
 
     @MockBean
-    private SectorStocksService sectorStocksService;
+    SectorStocksService sectorStocksService;
 
     @Autowired
     WebApplicationContext webApplicationContext;
@@ -49,12 +48,12 @@ public class SectorStocksControllerTest {
 
   
     @Test
-    public void getCompaniesBySector()  {
+    void getCompaniesBySector()  {
         String expectedResult = "TATAMOTORS.NS";
         List<SectorStocks> mockResult = new ArrayList<>();
         SectorStocks sectorStocks = new SectorStocks("TATAMOTORS.NS","Tata Motors Ltd.","AUTOMOBILE");
         mockResult.add(sectorStocks);
-        Mockito.when(sectorStocksService.getCompanyBySector(Matchers.anyString())).thenReturn(mockResult);
+        Mockito.when(sectorStocksService.getCompanyBySector(anyString())).thenReturn(mockResult);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/sectorStocks/showCompanies/AUTOMOBILE");
 
         try {
@@ -68,11 +67,11 @@ public class SectorStocksControllerTest {
     }
     
     @Test
-    public void getCompanySymbolsBySector()  {
+    void getCompanySymbolsBySector()  {
         String expectedResult = "HDFCLIFE.NS";
         List<String> mockResult = new ArrayList<>();
         mockResult.add("HDFCLIFE.NS");
-        Mockito.when(sectorStocksService.getCompanySymbolBySector(Matchers.anyString())).thenReturn(mockResult);
+        Mockito.when(sectorStocksService.getCompanySymbolBySector(anyString())).thenReturn(mockResult);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/sectorStocks/showCompanySymbol/FINANCIAL SERVICES");
 
         try {
@@ -86,7 +85,7 @@ public class SectorStocksControllerTest {
     }
     
     @Test
-    public void getDistinctSectors()  {
+    void getDistinctSectors()  {
         String expectedResult = "ENERGY";
         List<String> mockResult = new ArrayList<>();
         mockResult.add("ENERGY");
@@ -106,12 +105,11 @@ public class SectorStocksControllerTest {
     }
     
     @Test
-    public void getSectorWiseGrowth()  {
+    void getSectorWiseGrowth()  {
     	SectorAvg sectorAvg = new SectorAvg();
     	sectorAvg.setSector("ENERGY");
     	//sectorAvg.setAvgGrowth(-1.7000000000000002);
-        String expectedResult = "ENERGY" ;
-        
+        String expectedResult = "ENERGY";
         List<SectorAvg> mockResult = new ArrayList<>();
         mockResult.add(sectorAvg);
         Mockito.when(sectorStocksService.getSectorWiseGrowth()).thenReturn(mockResult);

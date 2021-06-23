@@ -10,27 +10,24 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-public class SectorStocksServiceTest {
-    private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
+ class SectorStocksServiceTest {
+    private static final Logger logger = LogManager.getLogger(SectorStocksServiceTest.class);
 
     @Autowired
     SectorStocksService sectorstocksService;
 
 
     @Test
-    public void testShowCompanies() {
+     void testShowCompanies() {
 
-        logger.info("");
-        ArrayList<SectorStocks> companies = new ArrayList<SectorStocks>();
+        logger.info("in testShowCompanies");
         String sector = "FINANCIAL SERVICES";
-        companies = (ArrayList<SectorStocks>) sectorstocksService.getCompanyBySector(sector);
+        List<SectorStocks> companies = sectorstocksService.getCompanyBySector(sector);
         Assertions.assertNotNull(companies);
         //Assertions.assertNull(sectorstocksService.getCompanyBySector(null));
-
         //Doubt
         //String companySymbol = "SBIN.NS";
         //Assertions.assertTrue(companies.contains(stockDetailsService.findStock(companySymbol)));
@@ -39,32 +36,29 @@ public class SectorStocksServiceTest {
     }
 
     @Test
-    public void testShowCompanySymbols() {
-
-        List<String> companySymbols = new ArrayList<String>();
+     void testShowCompanySymbols() {
+        
         String sector = "AUTOMOBILE";
-        companySymbols = sectorstocksService.getCompanySymbolBySector(sector);
+        List<String> companySymbols = sectorstocksService.getCompanySymbolBySector(sector);
         Assertions.assertNotNull(companySymbols);
         Assertions.assertTrue(companySymbols.contains("TATAMOTORS.NS"));
         //Assertions.assertNull(sectorstocksService.getCompanySymbolBySector(null));
     }
 
     @Test
-    public void testShowSectorWiseChange() {
+     void testShowSectorWiseChange() {
         // Returns Sector Wise Comparison on attribute - change.
 
         //Doubt
-        List<SectorAvg> sectorAvggrowth = new ArrayList<SectorAvg>();
-        sectorAvggrowth = sectorstocksService.getSectorWiseGrowth();
+        List<SectorAvg> sectorAvggrowth = sectorstocksService.getSectorWiseGrowth();
         Assertions.assertNotNull(sectorAvggrowth);
     }
 
     @Test
-    public void testShowSectors() {
+     void testShowSectors() {
         // Returns Distinct sectors.
         //Doubt
-        List<String> sectors = new ArrayList<String>();
-        sectors = sectorstocksService.getDistinctSectors();
+        List<String> sectors = sectorstocksService.getDistinctSectors();
         Assertions.assertNotNull(sectors);
     }
 }

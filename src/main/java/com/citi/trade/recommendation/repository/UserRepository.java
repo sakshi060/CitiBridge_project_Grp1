@@ -19,12 +19,12 @@ public class UserRepository {
         UserMaster temp = null;
         try {
             String findUser = "select * from user_master where user_id=?";
-            temp = template.queryForObject(findUser, (set, arg1) -> {
-                return new UserMaster(
+            temp = template.queryForObject(findUser, (set, arg1) ->
+                 new UserMaster(
                         set.getString(1),
                         set.getString(2)
-                );
-            }, userObject.getUserId());
+                )
+            , userObject.getUserId());
 
             if (temp != null) {
                 if (!temp.getPassword().equals(password.replaceAll("\\s", ""))) {

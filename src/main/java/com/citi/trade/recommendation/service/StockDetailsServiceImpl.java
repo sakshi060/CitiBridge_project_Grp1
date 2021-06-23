@@ -184,13 +184,13 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 
 	@Override
 	public List<HistoricalQuote> findHistory(String companySymbol) {
-		
-		try {
-			return stockDetailsService.findStock(companySymbol).getHistory();
+        List<HistoricalQuote> history = new ArrayList<>();
+        try {
+            history = stockDetailsService.findStock(companySymbol).getHistory();
 		} catch (IOException e) {
 			logger.error("Stock History not found!");
 			
 		}
-		return null;
+		return history;
 	}
 }

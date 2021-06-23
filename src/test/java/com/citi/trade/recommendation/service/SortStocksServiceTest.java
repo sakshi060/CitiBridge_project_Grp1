@@ -1,8 +1,6 @@
 package com.citi.trade.recommendation.service;
 
-import com.citi.trade.recommendation.BackendappApplication;
 import com.citi.trade.recommendation.model.StockDetails;
-import com.citi.trade.recommendation.service.StockDetailsService;
 import com.citi.trade.recommendation.util.SortingParameterList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,8 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
- class SortStocksTest {
-    private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
+ class SortStocksServiceTest {
+    private static final Logger logger = LogManager.getLogger(SortStocksServiceTest.class);
 
     @Autowired
     StockDetailsService stockDetailsService;

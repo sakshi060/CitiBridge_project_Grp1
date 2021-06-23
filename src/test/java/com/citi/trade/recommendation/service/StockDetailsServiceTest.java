@@ -1,9 +1,7 @@
 package com.citi.trade.recommendation.service;
 
-import com.citi.trade.recommendation.BackendappApplication;
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.StockObject;
-import com.citi.trade.recommendation.service.StockDetailsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +15,7 @@ import java.util.List;
 
 @SpringBootTest
  class StockDetailsServiceTest {
-	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
+	private static final Logger logger = LogManager.getLogger(StockDetailsServiceTest.class);
 
 	@Autowired
 	StockDetailsService stockDetailsService;

@@ -1,10 +1,7 @@
 package com.citi.trade.recommendation.service;
 
-import com.citi.trade.recommendation.BackendappApplication;
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.UserHistory;
-import com.citi.trade.recommendation.service.StockDetailsService;
-import com.citi.trade.recommendation.service.UserHistoryService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +22,7 @@ import java.util.List;
 	@Autowired
 	StockDetailsService stockDetailsService;
 
-	private static final Logger logger = LogManager.getLogger(BackendappApplication.class);
+	private static final Logger logger = LogManager.getLogger(UserHistoryServiceTest.class);
 
 	@Test
 	 void testsaveUserHistoryByuserId() {
@@ -89,14 +86,14 @@ import java.util.List;
 
 	}
 
-//	@Test
-//	 void testdeleteStocks() {
-//		int ids[] = {6,7};
-//		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
-//			//Assertions.assertNull(userHistoryService.deleteUserHistoryByuserId(null));
-//		Assertions.assertEquals(1,  deleted);
-//
-//	}
+	@Test
+	 void testdeleteStocks() {
+		int ids[] = {6,7};
+		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
+			//Assertions.assertNull(userHistoryService.deleteUserHistoryByuserId(null));
+		Assertions.assertEquals(1,  deleted);
+
+	}
 
 	@Test
 	 void testgetHistoricalData() throws IOException{

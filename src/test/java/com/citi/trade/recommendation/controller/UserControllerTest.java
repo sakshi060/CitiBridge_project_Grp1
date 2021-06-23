@@ -1,8 +1,8 @@
-package com.citi.trade.recommendation.service;
+package com.citi.trade.recommendation.controller;
 
 
-import com.citi.trade.recommendation.controller.UserController;
 import com.citi.trade.recommendation.model.UserMaster;
+import com.citi.trade.recommendation.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

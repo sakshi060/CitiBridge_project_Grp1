@@ -23,11 +23,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
-
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {UserController.class})
@@ -56,29 +51,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         UserMaster mockResult = null;
         UserMaster checkuser = new UserMaster();
         checkuser.setUserId("Kiran");
-        checkuser.setPassword("MzIxbmFyaUsNCg==");
+        checkuser.setPassword("Kiran123");
+        mockResult = checkuser;
         Mockito.when(userService.checkLogin(checkuser)).thenReturn(mockResult);
         try {
-            MvcResult result = (MvcResult) mockMvc.perform(MockMvcRequestBuilders.post("/user/login")
-                    .content(asJsonString(checkuser))
-                    .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/json"));
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/user/login")
+            		.content(asJsonString(checkuser))
+					.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andReturn();
+                    
             logger.info("Result is {}", result.getResponse().getContentAsString());
             Assertions.assertTrue(result.getResponse().getContentAsString().contains(expectedResult));
             Assertions.assertEquals(200, result.getResponse().getStatus());
+            
             expectedResult = "false";
             checkuser.setUserId("UnknownUser");
-            MvcResult result2 = (MvcResult) mockMvc.perform(MockMvcRequestBuilders.post("/user/login")
-                    .content(asJsonString(checkuser))
-                    .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/json"));
-            logger.info("Result is {}", result.getResponse().getContentAsString());
-            Assertions.assertFalse(result.getResponse().getContentAsString().contains(expectedResult));
-            Assertions.assertEquals(200, result.getResponse().getStatus());
+            MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders.post("/user/login")
+            		.content(asJsonString(checkuser))
+					.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andReturn();
+            
+            logger.info("Result is {}", result2.getResponse().getContentAsString());
+            Assertions.assertFalse(result2.getResponse().getContentAsString().contains(expectedResult));
+            Assertions.assertEquals(200, result2.getResponse().getStatus());
         } catch (Exception e) {
-            logger.error("error in userLoginTest");
+            logger.error("Error in userLoginTest");
         }
 
 

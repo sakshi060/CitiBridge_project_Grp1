@@ -5,10 +5,11 @@ import com.citi.trade.recommendation.model.UserHistory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import yahoofinance.histquotes.HistoricalQuote;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class UserHistoryServiceTest {
 
 	@Autowired
@@ -49,7 +51,7 @@ import java.util.List;
 	Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistory));
 	//Assertions.assertEquals("TCS.NS",stock.getCompanySymbol());
 }
-	@Disabled
+	@Order(7)
 	@Test
 	 void testdeleteStocksByUserId() {
 
@@ -60,6 +62,7 @@ import java.util.List;
 		//Assertions.assertNull(userHistoryService.getUserHistoryByuserId(null));
 	}
 
+	@Order(2)
 	@Test
 	 void testgetUserHistoryByuserId()
 	{
@@ -70,6 +73,7 @@ import java.util.List;
 		//Assertions.assertNull(userHistoryService.getUserHistoryByuserId(null));
 	}
 
+	@Order(3)
 	@Test
 	 void testshowTopPerformingStock()
 	{
@@ -80,6 +84,7 @@ import java.util.List;
 		//Assertions.assertNull(stockDetailsService.getStocksDetails(null));
 	}
 
+	@Order(4)
 	@Test
 	 void getCompanySymbolsByUserId() {
 		//Returns Company Symbols of Saved Stocks of userId passed as an argument.
@@ -91,15 +96,17 @@ import java.util.List;
 	}
 
 	@Disabled
+	@Order(6)
 	@Test
 	 void testdeleteStocks() {
-		int ids[] = {8};
+		int ids[] = {10};
 		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
 			//Assertions.assertNull(userHistoryService.deleteUserHistoryByuserId(null));
 		Assertions.assertEquals(1,  deleted);
 
 	}
 
+	@Order(5)
 	@Test
 	 void testgetHistoricalData() throws IOException{
 		List<HistoricalQuote> list;

@@ -57,7 +57,7 @@ public class UserHistoryController {
     }
 
     @PostMapping(value = "/deleteSavedStocksByUserId",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean deleteSavedStocksByUserId(@RequestBody int[] ids) {
+    public boolean deleteSavedStocksById(@RequestBody int[] ids) {
         // Deletes stocks for the logged in user with ids as parameter.
         logger.info("Deleting stocks with ID: {}" ,ids);
         int deleted = userHistoryService.deleteUserHistoryByuserId(ids);

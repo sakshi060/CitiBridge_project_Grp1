@@ -1,52 +1,52 @@
 package com.citi.trade.recommendation.service;
 
-import com.citi.trade.recommendation.model.StockDetails;
-import com.citi.trade.recommendation.util.SortingParameterList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-import java.util.List;
+import com.citi.trade.recommendation.model.StockDetails;
+import com.citi.trade.recommendation.util.SortingParameterList;
 
 @SpringBootTest
- class SortStocksServiceTest {
-    private static final Logger logger = LogManager.getLogger(SortStocksServiceTest.class);
+@ActiveProfiles("test")
+class SortStocksServiceTest {
+	private static final Logger logger = LogManager.getLogger(SortStocksServiceTest.class);
 
-    @Autowired
-    StockDetailsService stockDetailsService;
+	@Autowired
+	StockDetailsService stockDetailsService;
 
-    @Test
-     void testSortOnMarketCap() {
-        logger.info("");
-        String parameter = SortingParameterList.MARKET_CAP.toString();
-        String sector = "AUTOMOBILE";
-        List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);
-        Assertions.assertNotNull(stockDetails);
-        //Assertions.assertNull(stockDetailsService.findStocksAndSort(null,null));
-    }
+	@Test
+	void testSortOnMarketCap() {
+		logger.info("");
+		String parameter = SortingParameterList.MARKET_CAP.toString();
+		String sector = "AUTOMOBILE";
+		List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);
+		Assertions.assertNotNull(stockDetails);
+		// Assertions.assertNull(stockDetailsService.findStocksAndSort(null,null));
+	}
 
-    @Test
-     void testSortOnPERatio() {
-        String parameter = SortingParameterList.PE_RATIO.toString();
-        String sector = "ENERGY";
-        List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);
-        Assertions.assertNotNull(stockDetails);
-        //Assertions.assertNull(stockDetailsService.findStocksAndSort(null,null));
-    }
+	@Test
+	void testSortOnPERatio() {
+		String parameter = SortingParameterList.PE_RATIO.toString();
+		String sector = "ENERGY";
+		List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);
+		Assertions.assertNotNull(stockDetails);
+		// Assertions.assertNull(stockDetailsService.findStocksAndSort(null,null));
+	}
 
-    @Test
-     void testSortOnChange() {
-        String parameter = SortingParameterList.CHANGE.toString();
-        String sector = "FINANCIAL SERVICES";
-        List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);
-        Assertions.assertNotNull(stockDetails);
-        //Assertions.assertNull(stockDetailsService.findStocksAndSort(null,null));
-    }
+	@Test
+	void testSortOnChange() {
+		String parameter = SortingParameterList.CHANGE.toString();
+		String sector = "FINANCIAL SERVICES";
+		List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);
+		Assertions.assertNotNull(stockDetails);
+		// Assertions.assertNull(stockDetailsService.findStocksAndSort(null,null));
+	}
 
 }
-
-
-

@@ -1,39 +1,40 @@
 package com.citi.trade.recommendation.service;
 
-import com.citi.trade.recommendation.model.UserMaster;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import com.citi.trade.recommendation.model.UserMaster;
 
 @SpringBootTest
- class UserServiceTest {
-    private static final Logger logger = LogManager.getLogger(UserServiceTest.class);
+@ActiveProfiles("test")
+class UserServiceTest {
+	private static final Logger logger = LogManager.getLogger(UserServiceTest.class);
 
-    @Autowired
-    UserService userService;
+	@Autowired
+	UserService userService;
 
+	@Test
+	void testFindByUserName() {
+		UserMaster user = new UserMaster();
+		String userName = "Kiran";
+		String password = "MzIxbmFyaUsNCg==";
+		user.setUserId(userName);
+		user.setPassword(password);
 
-    @Test
-     void testFindByUserName() {
-        UserMaster user = new UserMaster();
-        String userName = "Kiran";
-        String password = "MzIxbmFyaUsNCg==";
-        user.setUserId(userName);
-        user.setPassword(password);
+		logger.info("Authenticating User: {}", user.getUserId());
+		UserMaster checkuser = userService.checkLogin(user);
+		if (checkuser != null) {
+			logger.info("SUCCESS");
+		} else
+			logger.error("FAILURE");
 
-
-        logger.info("Authenticating User: {}", user.getUserId());
-        UserMaster checkuser = userService.checkLogin(user);
-        if (checkuser != null) {
-            logger.info("SUCCESS");
-        } else
-            logger.error("FAILURE");
-
-        Assertions.assertNotNull(checkuser);
-        //Assertions.assertNull(userService.checkLogin(null));
-    }
+		Assertions.assertNotNull(checkuser);
+		// Assertions.assertNull(userService.checkLogin(null));
+	}
 
 }

@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -16,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.citi.trade.recommendation.model.SectorStocks;
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.UserHistory;
+import com.citi.trade.recommendation.repository.SectorStocksRepository;
 
 import yahoofinance.histquotes.HistoricalQuote;
 
@@ -30,6 +31,10 @@ class UserHistoryServiceTest {
 	UserHistoryService userHistoryService;
 	@Autowired
 	StockDetailsService stockDetailsService;
+	@Autowired
+	SectorStocksRepository sectorStocksRepository;
+
+	public SectorStocks sectorStocks = new SectorStocks();
 
 	private static final Logger logger = LogManager.getLogger(UserHistoryServiceTest.class);
 
@@ -38,53 +43,57 @@ class UserHistoryServiceTest {
 	void testsaveUserHistoryByuserId() {
 
 		String sector = "IT";
-		UserHistory userHistory = new UserHistory();
-		userHistory.setUserId("XYZ");
-		userHistory.setCompanySymbol("TCS.NS");
-		userHistory.setId(100);
-		userHistory.setSector(sector);
+		sectorStocks.setCompanySymbol("INFY.NS");
+		sectorStocks.setCompanyName("Infosys Ltd.");
+		sectorStocks.setSector(sector);
+		Assertions.assertTrue(sectorStocksRepository.addSectorStocks(sectorStocks));
+
+		UserHistory userHistoryUser1 = new UserHistory();
+		userHistoryUser1.setUserId("XYZ");
+		userHistoryUser1.setCompanySymbol("INFY.NS");
+		userHistoryUser1.setId(100);
+		userHistoryUser1.setSector(sector);
+
+		UserHistory userHistoryUser2 = new UserHistory();
+		userHistoryUser2.setUserId("UnknownUser");
+		userHistoryUser2.setCompanySymbol("INFY.NS");
+		userHistoryUser2.setId(101);
+		userHistoryUser2.setSector(sector);
+
 		try {
-			userHistory.setPrice(stockDetailsService.findStock("TCS.NS").getPrice());
+			userHistoryUser1.setPrice(stockDetailsService.findStock("INFY.NS").getPrice());
+			userHistoryUser2.setPrice(stockDetailsService.findStock("INFY.NS").getPrice());
 		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
-		userHistory.setVolume(45);
+		userHistoryUser1.setVolume(45);
+		userHistoryUser2.setVolume(46);
 
 		logger.info("");
-		Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistory));
-		// Assertions.assertEquals("TCS.NS",stock.getCompanySymbol());
-	}
+		System.out.println(userHistoryUser1);
+		Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistoryUser1));
+		System.out.println(userHistoryUser2);
+		Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistoryUser2));
 
-	@Order(7)
-	@Test
-	void testdeleteStocksByUserId() {
-
-		String userId = "XYZ";
-
-		int deleted = userHistoryService.deleteUserHistoryByuserId(userId);
-		Assertions.assertEquals(1, deleted);
-		// Assertions.assertNull(userHistoryService.getUserHistoryByuserId(null));
 	}
 
 	@Order(2)
 	@Test
 	void testgetUserHistoryByuserId() {
-		String userId = "Rhythm";
+		String userId = "XYZ";
 
 		ArrayList<UserHistory> userHistory = (ArrayList<UserHistory>) userHistoryService.getUserHistoryByuserId(userId);
 		Assertions.assertNotNull(userHistory);
-		// Assertions.assertNull(userHistoryService.getUserHistoryByuserId(null));
 	}
 
 	@Order(3)
 	@Test
 	void testshowTopPerformingStock() {
-		String userId = "Rhythm";
+		String userId = "XYZ";
 		List<String> companySymbols = userHistoryService.getCompanySymbolsSavedByUserId(userId);
 		StockDetails topStock = stockDetailsService.getStocksDetails(companySymbols.get(0));
 		Assertions.assertNotNull(topStock);
-		// Assertions.assertNull(stockDetailsService.getStocksDetails(null));
 	}
 
 	@Order(4)
@@ -94,29 +103,40 @@ class UserHistoryServiceTest {
 		String userId = "Sakshi";
 		List<String> companySymbols = userHistoryService.getCompanySymbolsSavedByUserId(userId);
 		Assertions.assertNotNull(companySymbols);
-		// Assertions.assertNull(userHistoryService.getCompanySymbolsSavedByUserId(null));
-
-	}
-
-	@Disabled
-	@Order(6)
-	@Test
-	void testdeleteStocks() {
-		int ids[] = { 10 };
-		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
-		// Assertions.assertNull(userHistoryService.deleteUserHistoryByuserId(null));
-		Assertions.assertEquals(1, deleted);
-
 	}
 
 	@Order(5)
 	@Test
 	void testgetHistoricalData() throws IOException {
 		List<HistoricalQuote> list;
-		String companySymbol = "TCS.NS";
+		String companySymbol = "INFY.NS";
 		list = stockDetailsService.findStock(companySymbol).getHistory();
 		Assertions.assertNotNull(list);
-		// Assertions.assertNull(stockDetailsService.findStock(null).getHistory());
+	}
 
+	@Order(6)
+	@Test
+	void testdeleteStocks() {
+		int ids[] = { 15 };
+		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
+		Assertions.assertEquals(1, deleted);
+	}
+
+	@Order(7)
+	@Test
+	void testdeleteStocksByUserId() {
+
+		String userId = "XYZ";
+		int deleted = userHistoryService.deleteUserHistoryByuserId(userId);
+		Assertions.assertEquals(1, deleted);
+	}
+
+	@Test
+	@Order(8)
+	void testDeleteSectors() {
+		// Returns Distinct sectors.
+		String sector = "IT";
+		int deleted = sectorStocksRepository.deleteStocksBySector(sector);
+		Assertions.assertEquals(1, deleted);
 	}
 }

@@ -6,29 +6,69 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.citi.trade.recommendation.model.SectorStocks;
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.StockObject;
+import com.citi.trade.recommendation.model.UserHistory;
+import com.citi.trade.recommendation.repository.SectorStocksRepository;
+import com.citi.trade.recommendation.util.SortingParameterList;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StockDetailsServiceTest {
 	private static final Logger logger = LogManager.getLogger(StockDetailsServiceTest.class);
 
 	@Autowired
 	StockDetailsService stockDetailsService;
+	@Autowired
+	SectorStocksRepository sectorStocksRepository;
+	@Autowired
+	UserHistoryService userHistoryService;
+
+	public SectorStocks sectorStocks = new SectorStocks();
 
 	@Test
+	@Order(1)
+	public void setUp() {
+		String sector = "ENERGY";
+		sectorStocks.setCompanySymbol("IOC.NS");
+		sectorStocks.setCompanyName("Indian Oil Corporation Ltd.");
+		sectorStocks.setSector(sector);
+		Assertions.assertTrue(sectorStocksRepository.addSectorStocks(sectorStocks));
+		UserHistory userHistory = new UserHistory();
+		userHistory.setUserId("XYZ");
+		userHistory.setCompanySymbol("IOC.NS");
+		userHistory.setId(100);
+		userHistory.setSector(sector);
+		try {
+			userHistory.setPrice(stockDetailsService.findStock("IOC.NS").getPrice());
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		userHistory.setVolume(45);
+
+		logger.info("");
+		Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistory));
+	}
+
+	@Test
+	@Order(2)
 	void testShowRecommendedStocks() {
 		// Returns sorted stocks of given sector and parameters passed as arguments.
 
 		logger.info("");
-		String sector = "FINANCIAL SERVICES";
-		String parameter = "MARKET_CAP";
+		String sector = "ENERGY";
+		String parameter = SortingParameterList.MARKET_CAP.toString();
 		List<StockDetails> finalList = stockDetailsService.findStocksAndSort(sector, parameter);
 		Assertions.assertNotNull(finalList);
 		parameter = "VOLUME";
@@ -38,31 +78,44 @@ class StockDetailsServiceTest {
 	}
 
 	@Test
+	@Order(3)
 	void testShowStockDetails() {
 		// Returns Stock Details of companySymbol passed as an argument.
 
-		String companySymbol = "RELIANCE.NS";
+		String companySymbol = "IOC.NS";
 		StockDetails stockDetails = stockDetailsService.getStocksDetails(companySymbol);
 		Assertions.assertNotNull(stockDetails);
-		// Assertions.assertNull(stockDetailsService.getStocksDetails(null));
 	}
 
 	@Test
+	@Order(4)
 	void getHistory() throws IOException {
 		// Returns History of companySymbol passed as an argument.
 
-		String companySymbol = "BPCL.NS";
+		String companySymbol = "IOC.NS";
 		StockObject stock = stockDetailsService.findStock(companySymbol);
 		Assertions.assertNotNull(stock.getHistory());
-		// Assertions.assertNull(stockDetailsService.findStock(null).getHistory());
 	}
 
 	@Test
+	@Order(5)
 	void getTopPerformingStock() {
-		String userId = "Sakshi";
+		String userId = "XYZ";
 		StockDetails stockDetails = stockDetailsService.findTopPerformingStock(userId);
 		Assertions.assertNotNull(stockDetails);
-		// Assertions.assertNull(stockDetailsService.findTopPerformingStock(null));
+	}
+
+	@Test
+	@Order(6)
+	void testDelete() {
+		// Returns Distinct sectors.
+		String sector = "ENERGY";
+		int deletedSector = sectorStocksRepository.deleteStocksBySector(sector);
+		Assertions.assertEquals(1, deletedSector);
+
+		String userId = "XYZ";
+		int deletedUser = userHistoryService.deleteUserHistoryByuserId(userId);
+		Assertions.assertEquals(1, deletedUser);
 	}
 
 }

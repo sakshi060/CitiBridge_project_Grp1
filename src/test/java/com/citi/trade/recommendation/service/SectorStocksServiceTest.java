@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.citi.trade.recommendation.model.SectorAvg;
 import com.citi.trade.recommendation.model.SectorStocks;
+import com.citi.trade.recommendation.repository.SectorStocksRepository;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -23,44 +25,60 @@ class SectorStocksServiceTest {
 
 	@Autowired
 	SectorStocksService sectorstocksService;
+	@Autowired
+	SectorStocksRepository sectorStocksRepository;
+
+	public SectorStocks sectorStocks = new SectorStocks();
 
 	@Test
-	void testShowCompanies() {
-
+	@Order(1)
+	public void setUp() {
 		String sector = "FINANCIAL SERVICES";
-		List<SectorStocks> companies = sectorstocksService.getCompanyBySector(sector);
-		Assertions.assertNotNull(companies);
-		// Assertions.assertNull(sectorstocksService.getCompanyBySector(null));
-		// Doubt
-		// String companySymbol = "SBIN.NS";
-		// Assertions.assertTrue(companies.contains(stockDetailsService.findStock(companySymbol)));
-
+		sectorStocks.setCompanySymbol("HDFCBANK.NS");
+		sectorStocks.setCompanyName("HDFC Bank Ltd.");
+		sectorStocks.setSector(sector);
+		Assertions.assertTrue(sectorStocksRepository.addSectorStocks(sectorStocks));
 	}
 
 	@Test
-	void testShowCompanySymbols() {
-
-		String sector = "AUTOMOBILE";
-		List<String> companySymbols = sectorstocksService.getCompanySymbolBySector(sector);
+	@Order(2)
+	void testShowCompanies() {
+		String sector = "FINANCIAL SERVICES";
+		List<SectorStocks> companySymbols = sectorstocksService.getCompanyBySector(sector);
 		Assertions.assertNotNull(companySymbols);
-		Assertions.assertTrue(companySymbols.contains("TATAMOTORS.NS"));
-		// Assertions.assertNull(sectorstocksService.getCompanySymbolBySector(null));
 	}
 
 	@Test
+	@Order(3)
+	void testShowCompanySymbols() {
+		String sector = "FINANCIAL SERVICES";
+		List<String> companySymbols = sectorstocksService.getCompanySymbolBySector(sector);
+		System.out.println(companySymbols);
+		Assertions.assertNotNull(companySymbols);
+	}
+
+	@Test
+	@Order(4)
 	void testShowSectorWiseChange() {
 		// Returns Sector Wise Comparison on attribute - change.
-
-		// Doubt
 		List<SectorAvg> sectorAvggrowth = sectorstocksService.getSectorWiseGrowth();
 		Assertions.assertNotNull(sectorAvggrowth);
 	}
 
 	@Test
+	@Order(5)
 	void testShowSectors() {
 		// Returns Distinct sectors.
-		// Doubt
 		List<String> sectors = sectorstocksService.getDistinctSectors();
 		Assertions.assertNotNull(sectors);
+	}
+
+	@Test
+	@Order(6)
+	void testDeleteSectors() {
+		// Returns Distinct sectors.
+		String sector = "FINANCIAL SERVICES";
+		int deleted = sectorStocksRepository.deleteStocksBySector(sector);
+		Assertions.assertEquals(1, deleted);
 	}
 }

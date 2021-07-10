@@ -33,6 +33,7 @@ class SectorStocksServiceTest {
 	@Test
 	@Order(1)
 	public void setUp() {
+		logger.info("Testing setUp for Sector Stocks");
 		String sector = "FINANCIAL SERVICES";
 		sectorStocks.setCompanySymbol("HDFCBANK.NS");
 		sectorStocks.setCompanyName("HDFC Bank Ltd.");
@@ -43,6 +44,7 @@ class SectorStocksServiceTest {
 	@Test
 	@Order(2)
 	void testShowCompanies() {
+		logger.info("Testing Show Companies");
 		String sector = "FINANCIAL SERVICES";
 		List<SectorStocks> companySymbols = sectorstocksService.getCompanyBySector(sector);
 		Assertions.assertNotNull(companySymbols);
@@ -51,6 +53,7 @@ class SectorStocksServiceTest {
 	@Test
 	@Order(3)
 	void testShowCompanySymbols() {
+		logger.info("Testing Show Company Symbols");
 		String sector = "FINANCIAL SERVICES";
 		List<String> companySymbols = sectorstocksService.getCompanySymbolBySector(sector);
 		System.out.println(companySymbols);
@@ -61,6 +64,7 @@ class SectorStocksServiceTest {
 	@Order(4)
 	void testShowSectorWiseChange() {
 		// Returns Sector Wise Comparison on attribute - change.
+		logger.info("Testing Show Sector Wise Change");
 		List<SectorAvg> sectorAvggrowth = sectorstocksService.getSectorWiseGrowth();
 		Assertions.assertNotNull(sectorAvggrowth);
 	}
@@ -69,6 +73,7 @@ class SectorStocksServiceTest {
 	@Order(5)
 	void testShowSectors() {
 		// Returns Distinct sectors.
+		logger.info("Testing Show Distinct sectors");
 		List<String> sectors = sectorstocksService.getDistinctSectors();
 		Assertions.assertNotNull(sectors);
 	}
@@ -77,6 +82,7 @@ class SectorStocksServiceTest {
 	@Order(6)
 	void testDeleteSectors() {
 		// Returns Distinct sectors.
+		logger.info("Testing Delete sectors for Sector Stocks");
 		String sector = "FINANCIAL SERVICES";
 		int deleted = sectorStocksRepository.deleteStocksBySector(sector);
 		Assertions.assertEquals(1, deleted);

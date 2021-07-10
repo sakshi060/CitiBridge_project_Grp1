@@ -33,6 +33,7 @@ class SortStocksServiceTest {
 	@Test
 	@Order(1)
 	public void setUp() {
+		logger.info("Testing setUp for Sort Stocks");
 		String sector = "AUTOMOBILE";
 		sectorStocks.setCompanySymbol("TATAMOTORS.NS");
 		sectorStocks.setCompanyName("Tata Motors Ltd.");
@@ -43,7 +44,7 @@ class SortStocksServiceTest {
 	@Test
 	@Order(2)
 	void testSortOnMarketCap() {
-		logger.info("");
+		logger.info("Testing Sort on Market Cap");
 		String parameter = SortingParameterList.MARKET_CAP.toString();
 		String sector = "AUTOMOBILE";
 		List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);
@@ -53,6 +54,7 @@ class SortStocksServiceTest {
 	@Test
 	@Order(3)
 	void testSortOnPERatio() {
+		logger.info("Testing Sort on PE Ration");
 		String parameter = SortingParameterList.PE_RATIO.toString();
 		String sector = "AUTOMOBILE";
 		List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);
@@ -62,6 +64,7 @@ class SortStocksServiceTest {
 	@Test
 	@Order(4)
 	void testSortOnChange() {
+		logger.info("Testing Sort on Change");
 		String parameter = SortingParameterList.CHANGE.toString();
 		String sector = "AUTOMOBILE";
 		List<StockDetails> stockDetails = stockDetailsService.findStocksAndSort(sector, parameter);
@@ -72,6 +75,7 @@ class SortStocksServiceTest {
 	@Order(5)
 	void testDeleteSectors() {
 		// Returns Distinct sectors.
+		logger.info("Testing Delete for Sort Stocks");
 		String sector = "AUTOMOBILE";
 		int deleted = sectorStocksRepository.deleteStocksBySector(sector);
 		Assertions.assertEquals(1, deleted);

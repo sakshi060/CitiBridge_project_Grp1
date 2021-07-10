@@ -29,6 +29,7 @@ class UserServiceTest {
 	@Test
 	@Order(1)
 	void testFindByUserName() {
+		logger.info("Testing Find User by userId");
 		String userName = "XYZ";
 		String password = "MzIxbmFyaUsNCg==";
 		user.setUserId(userName);
@@ -48,6 +49,7 @@ class UserServiceTest {
 	@Test
 	@Order(2)
 	void deleteUser() {
+		logger.info("Testing Delete User");
 		String userId = "XYZ";
 		int deleted = userRepository.deleteUser(userId);
 		Assertions.assertEquals(1, deleted);

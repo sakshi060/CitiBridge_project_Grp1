@@ -39,6 +39,7 @@ class StockDetailsServiceTest {
 	@Test
 	@Order(1)
 	public void setUp() {
+		logger.info("Testing setUp for Stock Details");
 		String sector = "ENERGY";
 		sectorStocks.setCompanySymbol("IOC.NS");
 		sectorStocks.setCompanyName("Indian Oil Corporation Ltd.");
@@ -66,7 +67,7 @@ class StockDetailsServiceTest {
 	void testShowRecommendedStocks() {
 		// Returns sorted stocks of given sector and parameters passed as arguments.
 
-		logger.info("");
+		logger.info("Testing show Recommended Stocks");
 		String sector = "ENERGY";
 		String parameter = SortingParameterList.MARKET_CAP.toString();
 		List<StockDetails> finalList = stockDetailsService.findStocksAndSort(sector, parameter);
@@ -82,6 +83,7 @@ class StockDetailsServiceTest {
 	void testShowStockDetails() {
 		// Returns Stock Details of companySymbol passed as an argument.
 
+		logger.info("Testing show Stock Details");
 		String companySymbol = "IOC.NS";
 		StockDetails stockDetails = stockDetailsService.getStocksDetails(companySymbol);
 		Assertions.assertNotNull(stockDetails);
@@ -92,6 +94,7 @@ class StockDetailsServiceTest {
 	void getHistory() throws IOException {
 		// Returns History of companySymbol passed as an argument.
 
+		logger.info("Testing get History");
 		String companySymbol = "IOC.NS";
 		StockObject stock = stockDetailsService.findStock(companySymbol);
 		Assertions.assertNotNull(stock.getHistory());
@@ -100,6 +103,7 @@ class StockDetailsServiceTest {
 	@Test
 	@Order(5)
 	void getTopPerformingStock() {
+		logger.info("Testing get Top Performing Stock");
 		String userId = "XYZ";
 		StockDetails stockDetails = stockDetailsService.findTopPerformingStock(userId);
 		Assertions.assertNotNull(stockDetails);
@@ -109,6 +113,7 @@ class StockDetailsServiceTest {
 	@Order(6)
 	void testDelete() {
 		// Returns Distinct sectors.
+		logger.info("Testing delete for Stock Details");
 		String sector = "ENERGY";
 		int deletedSector = sectorStocksRepository.deleteStocksBySector(sector);
 		Assertions.assertEquals(1, deletedSector);

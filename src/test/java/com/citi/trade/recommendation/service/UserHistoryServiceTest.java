@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -43,6 +42,7 @@ class UserHistoryServiceTest {
 	@Test
 	void testsaveUserHistoryByuserId() {
 
+		logger.info("Testing setUp for User History");
 		String sector = "IT";
 		sectorStocks.setCompanySymbol("INFY.NS");
 		sectorStocks.setCompanyName("Infosys Ltd.");
@@ -76,12 +76,12 @@ class UserHistoryServiceTest {
 		Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistoryUser1));
 		System.out.println(userHistoryUser2);
 		Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistoryUser2));
-
 	}
 
 	@Order(2)
 	@Test
 	void testgetUserHistoryByuserId() {
+		logger.info("Testing get User History");
 		String userId = "XYZ";
 
 		ArrayList<UserHistory> userHistory = (ArrayList<UserHistory>) userHistoryService.getUserHistoryByuserId(userId);
@@ -92,6 +92,7 @@ class UserHistoryServiceTest {
 	@Test
 	void testshowTopPerformingStock() {
 		String userId = "XYZ";
+		logger.info("Testing show Top Performing Stock");
 		List<String> companySymbols = userHistoryService.getCompanySymbolsSavedByUserId(userId);
 		StockDetails topStock = stockDetailsService.getStocksDetails(companySymbols.get(0));
 		Assertions.assertNotNull(topStock);
@@ -101,14 +102,16 @@ class UserHistoryServiceTest {
 	@Test
 	void getCompanySymbolsByUserId() {
 		// Returns Company Symbols of Saved Stocks of userId passed as an argument.
-		String userId = "Sakshi";
+		logger.info("Testing get Company Symbol");
+		String userId = "XYZ";
 		List<String> companySymbols = userHistoryService.getCompanySymbolsSavedByUserId(userId);
 		Assertions.assertNotNull(companySymbols);
 	}
 
 	@Order(5)
 	@Test
-	void testgetHistoricalData() throws IOException {
+	void testgetHistory() throws IOException {
+		logger.info("Testing get History");
 		List<HistoricalQuote> list;
 		String companySymbol = "INFY.NS";
 		list = stockDetailsService.findStock(companySymbol).getHistory();
@@ -116,10 +119,10 @@ class UserHistoryServiceTest {
 	}
 
 	@Order(6)
-	@Disabled
 	@Test
 	void testdeleteStocks() {
-		int ids[] = { 15 };
+		logger.info("Testing Delete Stocks by Id");
+		int ids[] = { 2 };
 		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
 		Assertions.assertEquals(1, deleted);
 	}
@@ -127,7 +130,7 @@ class UserHistoryServiceTest {
 	@Order(7)
 	@Test
 	void testdeleteStocksByUserId() {
-
+		logger.info("Testing Delete Stocks by userId");
 		String userId = "XYZ";
 		int deleted = userHistoryService.deleteUserHistoryByuserId(userId);
 		Assertions.assertEquals(1, deleted);
@@ -137,6 +140,7 @@ class UserHistoryServiceTest {
 	@Order(8)
 	void testDeleteSectors() {
 		// Returns Distinct sectors.
+		logger.info("Testing Delete Sectors for User History");
 		String sector = "IT";
 		int deleted = sectorStocksRepository.deleteStocksBySector(sector);
 		Assertions.assertEquals(1, deleted);

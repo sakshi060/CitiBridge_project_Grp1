@@ -1,5 +1,6 @@
 package com.citi.trade.recommendation.controller;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,9 @@ import org.springframework.web.context.WebApplicationContext;
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.service.StockDetailsService;
 
+import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.HistoricalQuote;
+
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { StockDetailsController.class })
 @WebMvcTest
@@ -39,6 +43,8 @@ class StockDetailsControllerTest {
 
 	@MockBean
 	StockDetailsService stockDetailsService;
+	@Autowired
+	StockDetailsService stock;
 
 	@Autowired
 	WebApplicationContext webApplicationContext;
@@ -103,25 +109,27 @@ class StockDetailsControllerTest {
 		}
 	}
 
-//    @Test
-//     void getStockHistory() throws IOException  {
-//        String expectedResult = "SBIN.NS";
-//       
-//        List<HistoricalQuote> mockResult = new ArrayList<HistoricalQuote>();
-//        
-//        mockResult = stockDetailsService.findHistory("SBIN.NS");
-//        System.out.println(mockResult);
-//        Mockito.when(stockDetailsService.findHistory(Matchers.anyString())).thenReturn(mockResult);
-//        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/stockDetails/showStockHistory/SBIN.NS");
-//
-//        try {
-//            MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-//            logger.info("Result is {}", result.getResponse().getContentAsString());
-//            Assertions.assertTrue(result.getResponse().getContentAsString().contains(expectedResult));
-//            Assertions.assertEquals(200, result.getResponse().getStatus());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+	@Test
+	void getStockHistory() throws IOException {
+		String expectedResult = "SBILIFE.NS";
+
+		List<HistoricalQuote> mockResult;
+		mockResult = history(expectedResult);
+		Mockito.when(stockDetailsService.findHistory(ArgumentMatchers.anyString())).thenReturn(mockResult);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/stockDetails/showStockHistory/SBILIFE.NS");
+
+		try {
+			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+			logger.info("Result is {}", result.getResponse().getContentAsString());
+			Assertions.assertTrue(result.getResponse().getContentAsString().contains(expectedResult));
+			Assertions.assertEquals(200, result.getResponse().getStatus());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	List<HistoricalQuote> history(String expectedResult) throws IOException {
+		return YahooFinance.get(expectedResult).getHistory();
+	}
 
 }

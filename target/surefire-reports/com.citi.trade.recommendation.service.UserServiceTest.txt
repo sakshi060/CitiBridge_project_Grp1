@@ -1,8 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.citi.trade.recommendation.service.UserServiceTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.01 s <<< FAILURE! - in com.citi.trade.recommendation.service.UserServiceTest
-testFindByUserName  Time elapsed: 0.006 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: not <null>
-	at com.citi.trade.recommendation.service.UserServiceTest.testFindByUserName(UserServiceTest.java:36)
-
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.087 s - in com.citi.trade.recommendation.service.UserServiceTest

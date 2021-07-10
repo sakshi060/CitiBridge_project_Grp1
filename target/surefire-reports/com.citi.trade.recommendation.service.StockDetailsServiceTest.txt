@@ -1,8 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.citi.trade.recommendation.service.StockDetailsServiceTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 2.213 s <<< FAILURE! - in com.citi.trade.recommendation.service.StockDetailsServiceTest
-getTopPerformingStock  Time elapsed: 0.068 s  <<< ERROR!
-java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
-	at com.citi.trade.recommendation.service.StockDetailsServiceTest.getTopPerformingStock(StockDetailsServiceTest.java:63)
-
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.969 s - in com.citi.trade.recommendation.service.StockDetailsServiceTest

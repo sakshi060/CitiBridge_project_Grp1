@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -115,6 +116,7 @@ class UserHistoryServiceTest {
 	}
 
 	@Order(6)
+	@Disabled
 	@Test
 	void testdeleteStocks() {
 		int ids[] = { 15 };

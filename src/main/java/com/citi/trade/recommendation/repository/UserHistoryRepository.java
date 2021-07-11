@@ -42,8 +42,8 @@ public class UserHistoryRepository {
         List<UserHistory> userHistoryList = new ArrayList<>();
         try {
             logger.info("Fetching User History of User: {} ", userId);
-            String findShares = "select * from user_history where user_id=?";
-            userHistoryList = template.query(findShares, (set, arg1) -> new UserHistory(
+            String query = "select * from user_history where user_id=?";
+            userHistoryList = template.query(query, (set, arg1) -> new UserHistory(
                      set.getInt(1),
                      set.getString(2),
                      set.getString(4),
@@ -62,8 +62,8 @@ public class UserHistoryRepository {
         List<String> companySymbols = new ArrayList<>();
         try {
             logger.info("Fetching Company Symbols of saved stocks of user - {}", userId);
-            String findShares = "select company_symbol from user_history where user_id=?";
-            companySymbols = template.query(findShares, (set, arg1) -> set.getString(1), userId);
+            String query = "select company_symbol from user_history where user_id=?";
+            companySymbols = template.query(query, (set, arg1) -> set.getString(1), userId);
             if (!companySymbols.isEmpty())
                 logger.info("User History found for User: {} ", userId);
             else

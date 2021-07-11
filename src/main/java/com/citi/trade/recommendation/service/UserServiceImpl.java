@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Base64;
 
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
 		// checks if user present in database and password matches
 
 		UserMaster checkuser = null;
-		if(userObject!=null)
+		if(userObject!=null && !ObjectUtils.isEmpty(userObject.getUserId()) && !ObjectUtils.isEmpty(userObject.getPassword()) )
 		{
 			String password = decodeString(userObject.getPassword());
 			checkuser = userRepository.checkLogin(userObject, password);
@@ -37,6 +38,8 @@ public class UserServiceImpl implements UserService {
 			} else {
 				logger.info("User not found in database.User Login UnSuccessful");
 			}
+		} else {
+			logger.info("User ID/Password was empty");
 		}
 		return checkuser;
 

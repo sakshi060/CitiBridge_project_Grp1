@@ -66,7 +66,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 	public List<String> getCompanySymbolsSavedByUserId(String userId) {
 
 		List<String> companySymbols;
-		List<String> distinctcompanySymbols = new ArrayList<>();
+		List<String> distinctCompanySymbols = new ArrayList<>();
 		try {
 			if(userId!=null)
 			{
@@ -75,14 +75,14 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 				for (int i = 0; i < companySymbols.size(); i++) {
 					hm.put(companySymbols.get(i), i);
 				}
-				distinctcompanySymbols.addAll(hm.keySet());
+				distinctCompanySymbols.addAll(hm.keySet());
 				if (!companySymbols.isEmpty())
 					logger.info("Company Symbols of Stocks saved by User: {} Found!", userId);
 			}
 		} catch (Exception e) {
 			logger.error("Company Symbols of Stocks saved by User: {} not Found!", userId);
 		}
-		return distinctcompanySymbols;
+		return distinctCompanySymbols;
 	}
 
 	@Override

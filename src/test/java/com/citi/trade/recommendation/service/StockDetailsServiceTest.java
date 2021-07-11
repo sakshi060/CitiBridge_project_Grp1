@@ -48,7 +48,7 @@ class StockDetailsServiceTest {
 
 		userHistory.setUserId("XYZ");
 		userHistory.setCompanySymbol("IOC.NS");
-		userHistory.setId(100);
+		userHistory.setId(1);
 		userHistory.setSector(sector);
 		try {
 			userHistory.setPrice(stockDetailsService.findStock("IOC.NS").getPrice());

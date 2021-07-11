@@ -52,12 +52,12 @@ class UserHistoryServiceTest {
 
 		userHistoryUser1.setUserId("XYZ");
 		userHistoryUser1.setCompanySymbol("INFY.NS");
-		userHistoryUser1.setId(100);
+		userHistoryUser1.setId(2);
 		userHistoryUser1.setSector(sector);
 
 		userHistoryUser2.setUserId("UnknownUser");
 		userHistoryUser2.setCompanySymbol("INFY.NS");
-		userHistoryUser2.setId(101);
+		userHistoryUser2.setId(3);
 		userHistoryUser2.setSector(sector);
 
 		try {
@@ -122,21 +122,26 @@ class UserHistoryServiceTest {
 		Assertions.assertNotNull(list);
 	}
 
-	@Order(7)
 	@Test
-	void testdeleteStocks() {
-		logger.info("Testing Delete Stocks by Id");
-		int ids[] = { 3 };
-		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
-		Assertions.assertEquals(1, deleted);
-	}
-
 	@Order(6)
-	@Test
 	void testdeleteStocksByUserId() {
 		logger.info("Testing Delete Stocks by userId");
 		String userId = "XYZ";
 		int deleted = userHistoryService.deleteUserHistoryByuserId(userId);
+		Assertions.assertEquals(1, deleted);
+	}
+
+	@Test
+	@Order(7)
+	void testdeleteStocks() {
+		logger.info("Testing Delete Stocks by Id");
+		int ids[] = new int[1];
+		ids[0] = 2;
+		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
+		if (deleted == 0) {
+			ids[0] = 3;
+			deleted = userHistoryService.deleteUserHistoryByuserId(ids);
+		}
 		Assertions.assertEquals(1, deleted);
 	}
 

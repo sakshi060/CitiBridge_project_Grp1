@@ -15,41 +15,43 @@ import java.util.Base64;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
-    @Autowired
-    UserRepository userRepository;
+	@Autowired
+	UserRepository userRepository;
 
-    @Override
-    public UserMaster checkLogin(UserMaster userObject) {
-        // checks if user present in database and password matches
+	@Override
+	public UserMaster checkLogin(UserMaster userObject) {
+		// checks if user present in database and password matches
 
-        UserMaster checkuser = null;
-        if(!ObjectUtils.isEmpty(userObject))
-        {
-        String password = decodeString(userObject.getPassword());
-        checkuser = userRepository.checkLogin(userObject, password);
-        if (checkuser != null) {
-            if (checkuser.getPassword().equals(decodeString(userObject.getPassword()).replaceAll("\\s", ""))) {
-                logger.info("User Login Successful. User: {} - ", userObject.getUserId());
-            } else {
-                logger.info("User Login UnSuccessful");
-            }
-        } else {
-            logger.info("User not found in database.User Login UnSuccessful");
-        }
-        
-        }
-        return checkuser;
-    }
+		UserMaster checkuser = null;
+		if(userObject!=null && !ObjectUtils.isEmpty(userObject.getUserId()) && !ObjectUtils.isEmpty(userObject.getPassword()) )
+		{
+			String password = decodeString(userObject.getPassword());
+			checkuser = userRepository.checkLogin(userObject, password);
+			if (checkuser != null) {
+				if (checkuser.getPassword().equals(decodeString(userObject.getPassword()).replaceAll("\\s", ""))) {
+					logger.info("User Login Successful. User: {} - ", userObject.getUserId());
+				} else {
+					logger.info("User Login UnSuccessful");
+				}
+			} else {
+				logger.info("User not found in database.User Login UnSuccessful");
+			}
+		} else {
+			logger.info("User ID/Password was empty");
+		}
+		return checkuser;
 
-    public String decodeString(String encodedPassword) {
+	}
 
-        String decoded = new String(Base64.getDecoder().decode(encodedPassword));
-        StringBuilder password = new StringBuilder();
-        password.append(decoded);
-        password.reverse();
-        return password.toString();
-    }
+	public String decodeString(String encodedPassword) {
+
+		String decoded = new String(Base64.getDecoder().decode(encodedPassword));
+		StringBuilder password = new StringBuilder();
+		password.append(decoded);
+		password.reverse();
+		return password.toString();
+	}
 
 }

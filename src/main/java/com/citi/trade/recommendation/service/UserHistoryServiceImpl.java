@@ -47,7 +47,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 
 		ArrayList<UserHistory> finalStocks = new ArrayList<>();
 		try {
-			if(!ObjectUtils.isEmpty(userId))
+			if(userId!=null)
 			{
 				finalStocks = (ArrayList<UserHistory>) userHistoryRepository.findUserHistoryByuserId(userId);
 				if (!finalStocks.isEmpty())
@@ -66,24 +66,23 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 	public List<String> getCompanySymbolsSavedByUserId(String userId) {
 
 		List<String> companySymbols;
-		List<String> distinctcompanySymbols = new ArrayList<>();
+		List<String> distinctCompanySymbols = new ArrayList<>();
 		try {
-			if(!ObjectUtils.isEmpty(userId))
+			if(userId!=null)
 			{
 				companySymbols = userHistoryRepository.findCompanySymbolsByUserId(userId);
 				HashMap<String, Integer> hm = new HashMap<>();
 				for (int i = 0; i < companySymbols.size(); i++) {
 					hm.put(companySymbols.get(i), i);
 				}
-				distinctcompanySymbols.addAll(hm.keySet());
+				distinctCompanySymbols.addAll(hm.keySet());
 				if (!companySymbols.isEmpty())
 					logger.info("Company Symbols of Stocks saved by User: {} Found!", userId);
-			} 
-		}
-		catch (Exception e) {
+			}
+		} catch (Exception e) {
 			logger.error("Company Symbols of Stocks saved by User: {} not Found!", userId);
 		}
-		return distinctcompanySymbols;
+		return distinctCompanySymbols;
 	}
 
 	@Override
@@ -91,7 +90,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 		//Deletes selected stocks.
 		int deleted = 0;
 		try {
-			if(!ObjectUtils.isEmpty(ids))
+			if(ids.length!=0)
 			{
 				for (int id : ids) {
 					deleted = userHistoryRepository.deleteUserHistoryByuserId(id);
@@ -110,15 +109,15 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 
 		int deleted = 0;
 		try {
-			if(!ObjectUtils.isEmpty(userId))
+			if(userId!=null)
 			{
 				deleted = userHistoryRepository.deleteUserHistoryByuserId(userId);
 				logger.info("User History of User {} deleted", userId);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			logger.error("User History data could not be deleted");
 		}
+
 		return deleted;
 	}
 

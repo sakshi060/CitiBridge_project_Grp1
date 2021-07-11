@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.citi.trade.recommendation.service.StockDetailsServiceTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.969 s - in com.citi.trade.recommendation.service.StockDetailsServiceTest

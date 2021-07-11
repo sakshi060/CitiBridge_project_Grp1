@@ -17,10 +17,11 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.citi.trade.recommendation.model.SectorStocks;
 import com.citi.trade.recommendation.model.StockDetails;
-import com.citi.trade.recommendation.model.StockObject;
 import com.citi.trade.recommendation.model.UserHistory;
 import com.citi.trade.recommendation.repository.SectorStocksRepository;
 import com.citi.trade.recommendation.util.SortingParameterList;
+
+import yahoofinance.histquotes.HistoricalQuote;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -101,8 +102,8 @@ class StockDetailsServiceTest {
 
 		logger.info("Testing get History");
 		String companySymbol = "IOC.NS";
-		StockObject stock = stockDetailsService.findStock(companySymbol);
-		Assertions.assertNotNull(stock.getHistory());
+		List<HistoricalQuote> stock = stockDetailsService.findHistory(companySymbol);
+		Assertions.assertNotNull(stock);
 	}
 
 	@Test

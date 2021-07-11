@@ -1,17 +1,16 @@
 package com.citi.trade.recommendation.service;
 
-import com.citi.trade.recommendation.model.UserHistory;
-import com.citi.trade.recommendation.repository.UserHistoryRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.citi.trade.recommendation.model.UserHistory;
+import com.citi.trade.recommendation.repository.UserHistoryRepository;
 
 @Service
 public class UserHistoryServiceImpl implements UserHistoryService {
@@ -43,12 +42,11 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 
 	@Override
 	public List<UserHistory> getUserHistoryByuserId(String userId) {
-		//Displays UserHistory
+		// Displays UserHistory
 
 		ArrayList<UserHistory> finalStocks = new ArrayList<>();
 		try {
-			if(userId!=null)
-			{
+			if (userId != null) {
 				finalStocks = (ArrayList<UserHistory>) userHistoryRepository.findUserHistoryByuserId(userId);
 				if (!finalStocks.isEmpty())
 					logger.info("User History of User: {} Found!", userId);
@@ -68,8 +66,7 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 		List<String> companySymbols;
 		List<String> distinctCompanySymbols = new ArrayList<>();
 		try {
-			if(userId!=null)
-			{
+			if (userId != null) {
 				companySymbols = userHistoryRepository.findCompanySymbolsByUserId(userId);
 				HashMap<String, Integer> hm = new HashMap<>();
 				for (int i = 0; i < companySymbols.size(); i++) {
@@ -87,11 +84,10 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 
 	@Override
 	public int deleteUserHistoryByuserId(int[] ids) {
-		//Deletes selected stocks.
+		// Deletes selected stocks.
 		int deleted = 0;
 		try {
-			if(ids.length!=0)
-			{
+			if (ids.length != 0) {
 				for (int id : ids) {
 					deleted = userHistoryRepository.deleteUserHistoryByuserId(id);
 					logger.info("User History data of ID: {} deleted", id);
@@ -105,12 +101,11 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 
 	@Override
 	public int deleteUserHistoryByuserId(String userId) {
-		//Deletes all stocks of a particular user.
+		// Deletes all stocks of a particular user.
 
 		int deleted = 0;
 		try {
-			if(userId!=null)
-			{
+			if (userId != null) {
 				deleted = userHistoryRepository.deleteUserHistoryByuserId(userId);
 				logger.info("User History of User {} deleted", userId);
 			}
@@ -122,6 +117,3 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 	}
 
 }
-
-
-

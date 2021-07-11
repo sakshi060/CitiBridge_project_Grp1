@@ -122,16 +122,16 @@ class UserHistoryServiceTest {
 		Assertions.assertNotNull(list);
 	}
 
-	@Order(6)
+	@Order(7)
 	@Test
 	void testdeleteStocks() {
 		logger.info("Testing Delete Stocks by Id");
-		int ids[] = { 2 };
+		int ids[] = { 3 };
 		int deleted = userHistoryService.deleteUserHistoryByuserId(ids);
 		Assertions.assertEquals(1, deleted);
 	}
 
-	@Order(7)
+	@Order(6)
 	@Test
 	void testdeleteStocksByUserId() {
 		logger.info("Testing Delete Stocks by userId");

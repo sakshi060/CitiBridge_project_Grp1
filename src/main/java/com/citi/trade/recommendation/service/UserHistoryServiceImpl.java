@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +55,6 @@ public class UserHistoryServiceImpl implements UserHistoryService {
 				else
 					logger.error("User History of User: {} not Found!", userId);
 			}
-
 		} catch (Exception e) {
 			logger.error("User History not Found!");
 		}

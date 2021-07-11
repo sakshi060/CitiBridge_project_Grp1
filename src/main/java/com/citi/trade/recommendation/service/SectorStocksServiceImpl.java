@@ -1,6 +1,5 @@
 package com.citi.trade.recommendation.service;
 
-
 import com.citi.trade.recommendation.model.SectorAvg;
 import com.citi.trade.recommendation.model.SectorStocks;
 import com.citi.trade.recommendation.model.StockObject;
@@ -13,7 +12,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Service
 public class SectorStocksServiceImpl implements SectorStocksService {
@@ -124,6 +122,3 @@ public class SectorStocksServiceImpl implements SectorStocksService {
 		return sectors;
 	}
 }
-
-
-

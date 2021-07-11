@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -30,14 +31,19 @@ class SectorStocksServiceTest {
 
 	public SectorStocks sectorStocks = new SectorStocks();
 
-	@Test
-	@Order(1)
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		logger.info("Testing setUp for Sector Stocks");
 		String sector = "FINANCIAL SERVICES";
 		sectorStocks.setCompanySymbol("HDFCBANK.NS");
 		sectorStocks.setCompanyName("HDFC Bank Ltd.");
 		sectorStocks.setSector(sector);
+	}
+
+	@Test
+	@Order(1)
+	void addSectorStocks() {
+		logger.info("Testing setUp for Sector Stocks");
 		Assertions.assertTrue(sectorStocksRepository.addSectorStocks(sectorStocks));
 	}
 

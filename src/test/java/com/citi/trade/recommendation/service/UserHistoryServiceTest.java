@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,24 +39,22 @@ class UserHistoryServiceTest {
 
 	private static final Logger logger = LogManager.getLogger(UserHistoryServiceTest.class);
 
-	@Order(1)
-	@Test
-	void testsaveUserHistoryByuserId() {
+	UserHistory userHistoryUser1 = new UserHistory();
+	UserHistory userHistoryUser2 = new UserHistory();
 
-		logger.info("Testing setUp for User History");
+	@BeforeEach
+	void setUp() {
+
 		String sector = "IT";
 		sectorStocks.setCompanySymbol("INFY.NS");
 		sectorStocks.setCompanyName("Infosys Ltd.");
 		sectorStocks.setSector(sector);
-		Assertions.assertTrue(sectorStocksRepository.addSectorStocks(sectorStocks));
 
-		UserHistory userHistoryUser1 = new UserHistory();
 		userHistoryUser1.setUserId("XYZ");
 		userHistoryUser1.setCompanySymbol("INFY.NS");
 		userHistoryUser1.setId(100);
 		userHistoryUser1.setSector(sector);
 
-		UserHistory userHistoryUser2 = new UserHistory();
 		userHistoryUser2.setUserId("UnknownUser");
 		userHistoryUser2.setCompanySymbol("INFY.NS");
 		userHistoryUser2.setId(101);
@@ -71,10 +70,15 @@ class UserHistoryServiceTest {
 		userHistoryUser1.setVolume(45);
 		userHistoryUser2.setVolume(46);
 
-		logger.info("");
-		System.out.println(userHistoryUser1);
+	}
+
+	@Order(1)
+	@Test
+	void testsaveUserHistoryByuserId() {
+
+		logger.info("Testing setUp for User History");
+		Assertions.assertTrue(sectorStocksRepository.addSectorStocks(sectorStocks));
 		Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistoryUser1));
-		System.out.println(userHistoryUser2);
 		Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistoryUser2));
 	}
 

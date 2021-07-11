@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,18 +35,17 @@ class StockDetailsServiceTest {
 	@Autowired
 	UserHistoryService userHistoryService;
 
-	public SectorStocks sectorStocks = new SectorStocks();
+	SectorStocks sectorStocks = new SectorStocks();
+	UserHistory userHistory = new UserHistory();
 
-	@Test
-	@Order(1)
-	public void setUp() {
-		logger.info("Testing setUp for Stock Details");
+	@BeforeEach
+	void setUp() {
+
 		String sector = "ENERGY";
 		sectorStocks.setCompanySymbol("IOC.NS");
 		sectorStocks.setCompanyName("Indian Oil Corporation Ltd.");
 		sectorStocks.setSector(sector);
-		Assertions.assertTrue(sectorStocksRepository.addSectorStocks(sectorStocks));
-		UserHistory userHistory = new UserHistory();
+
 		userHistory.setUserId("XYZ");
 		userHistory.setCompanySymbol("IOC.NS");
 		userHistory.setId(100);
@@ -57,8 +57,13 @@ class StockDetailsServiceTest {
 			e.printStackTrace();
 		}
 		userHistory.setVolume(45);
+	}
 
-		logger.info("");
+	@Test
+	@Order(1)
+	void addStock() {
+		logger.info("Testing setUp for Stock Details");
+		Assertions.assertTrue(sectorStocksRepository.addSectorStocks(sectorStocks));
 		Assertions.assertTrue(userHistoryService.saveUserHistoryByuserId(userHistory));
 	}
 

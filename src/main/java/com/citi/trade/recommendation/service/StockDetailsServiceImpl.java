@@ -206,7 +206,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 
 	@Override
 	public List<HistoricalQuote> findHistory(String companySymbol) {
-		System.out.println(companySymbol);
+
 		List<HistoricalQuote> history = new ArrayList<>();
 		if (companySymbol != null) {
 			try {

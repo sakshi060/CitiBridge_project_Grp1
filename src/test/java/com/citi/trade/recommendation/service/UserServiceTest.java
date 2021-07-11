@@ -3,6 +3,7 @@ package com.citi.trade.recommendation.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -26,14 +27,19 @@ class UserServiceTest {
 	UserRepository userRepository;
 	public UserMaster user = new UserMaster();
 
-	@Test
-	@Order(1)
-	void testFindByUserName() {
-		logger.info("Testing Find User by userId");
+	@BeforeEach
+	void setUp() {
 		String userName = "XYZ";
 		String password = "MzIxbmFyaUsNCg==";
 		user.setUserId(userName);
 		user.setPassword(password);
+	}
+
+	@Test
+	@Order(1)
+	void testFindByUserName() {
+		logger.info("Testing Find User by userId");
+
 		Assertions.assertTrue(userRepository.addUser(user));
 
 		logger.info("Authenticating User: {}", user.getUserId());

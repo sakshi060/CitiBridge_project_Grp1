@@ -20,6 +20,7 @@ import com.citi.trade.recommendation.model.SectorStocks;
 import com.citi.trade.recommendation.model.StockDetails;
 import com.citi.trade.recommendation.model.UserHistory;
 import com.citi.trade.recommendation.repository.SectorStocksRepository;
+import com.citi.trade.recommendation.repository.UserHistoryRepository;
 
 import yahoofinance.histquotes.HistoricalQuote;
 
@@ -34,6 +35,8 @@ class UserHistoryServiceTest {
 	StockDetailsService stockDetailsService;
 	@Autowired
 	SectorStocksRepository sectorStocksRepository;
+	@Autowired
+	UserHistoryRepository userHistoryRepository;
 
 	public SectorStocks sectorStocks = new SectorStocks();
 
@@ -142,6 +145,7 @@ class UserHistoryServiceTest {
 			ids[0] = 3;
 			deleted = userHistoryService.deleteUserHistoryByuserId(ids);
 		}
+
 		Assertions.assertEquals(1, deleted);
 	}
 

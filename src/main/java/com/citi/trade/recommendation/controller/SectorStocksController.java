@@ -73,8 +73,10 @@ public class SectorStocksController {
 		restService(new RestTemplateBuilder());
 		String url = "https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=fe85013235624481abbe65c9f37baf27";
 		try {
+			logger.info("Getting latest news");
 			return this.restTemplate.exchange(url, HttpMethod.GET, null, NewsData.class).getBody().getArticles();
 		} catch (NullPointerException e) {
+			logger.error("News could not be loaded");
 			return new Articles[0];
 		}
 

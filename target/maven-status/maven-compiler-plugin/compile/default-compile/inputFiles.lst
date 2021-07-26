@@ -1,6 +1,8 @@
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\controller\StockDetailsController.java
+C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\model\NewsSource.java
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\service\UserHistoryService.java
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\controller\UserController.java
+C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\model\Articles.java
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\service\SortStocksService.java
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\controller\UserHistoryController.java
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\model\StockObject.java
@@ -11,6 +13,7 @@ C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\rec
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\repository\UserRepository.java
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\service\UserServiceImpl.java
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\model\UserMaster.java
+C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\model\NewsData.java
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\repository\UserHistoryRepository.java
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\model\SectorStocks.java
 C:\Users\Lenovo\Desktop\CitiBridge_project_Grp1\src\main\java\com\citi\trade\recommendation\service\SectorStocksService.java

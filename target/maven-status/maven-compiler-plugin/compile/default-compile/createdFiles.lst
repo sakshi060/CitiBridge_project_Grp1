@@ -5,6 +5,7 @@ com\citi\trade\recommendation\controller\SectorStocksController.class
 com\citi\trade\recommendation\service\SortStocksService.class
 com\citi\trade\recommendation\BackendappApplication.class
 com\citi\trade\recommendation\controller\UserController.class
+com\citi\trade\recommendation\model\NewsSource.class
 com\citi\trade\recommendation\model\StockDetails.class
 com\citi\trade\recommendation\model\SectorStocks.class
 com\citi\trade\recommendation\service\UserHistoryService.class
@@ -12,6 +13,7 @@ com\citi\trade\recommendation\controller\StockDetailsController.class
 com\citi\trade\recommendation\service\SectorStocksServiceImpl.class
 com\citi\trade\recommendation\service\UserHistoryServiceImpl.class
 com\citi\trade\recommendation\repository\UserRepository.class
+com\citi\trade\recommendation\model\Articles.class
 com\citi\trade\recommendation\service\StockDetailsService.class
 com\citi\trade\recommendation\service\UserService.class
 com\citi\trade\recommendation\model\StockObject.class
@@ -22,4 +24,5 @@ com\citi\trade\recommendation\service\UserServiceImpl.class
 com\citi\trade\recommendation\model\UserHistory.class
 com\citi\trade\recommendation\repository\UserHistoryRepository.class
 com\citi\trade\recommendation\repository\SectorStocksRepository.class
+com\citi\trade\recommendation\model\NewsData.class
 com\citi\trade\recommendation\controller\UserHistoryController.class

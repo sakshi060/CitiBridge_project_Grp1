@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.citi.trade.recommendation.BackendappApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 29.54 s - in com.citi.trade.recommendation.BackendappApplicationTests

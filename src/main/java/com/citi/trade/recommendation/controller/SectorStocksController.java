@@ -1,14 +1,25 @@
 package com.citi.trade.recommendation.controller;
 
-import com.citi.trade.recommendation.model.SectorAvg;
-import com.citi.trade.recommendation.model.SectorStocks;
-import com.citi.trade.recommendation.service.SectorStocksService;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import com.citi.trade.recommendation.model.Articles;
+import com.citi.trade.recommendation.model.NewsData;
+import com.citi.trade.recommendation.model.SectorAvg;
+import com.citi.trade.recommendation.model.SectorStocks;
+import com.citi.trade.recommendation.service.SectorStocksService;
 
 @RequestMapping("/sectorStocks")
 @RestController
@@ -18,12 +29,13 @@ public class SectorStocksController {
 
 	@Autowired
 	SectorStocksService sectorstocksService;
+	RestTemplate restTemplate = new RestTemplate();
 
 	@GetMapping(value = "/showCompanies/{sector}")
 	public List<SectorStocks> showStocks(@PathVariable String sector) {
 		// Returns Companies when sector is passed as an argument.
 
-		logger.info("Fetching Companies belonging to Sector: {}" ,sector);
+		logger.info("Fetching Companies belonging to Sector: {}", sector);
 		return sectorstocksService.getCompanyBySector(sector);
 	}
 
@@ -31,7 +43,7 @@ public class SectorStocksController {
 	public List<String> showCompanySymbols(@PathVariable String sector) {
 		// Returns Company Symbols when sector is passed as an argument.
 
-		logger.info("Fetching Company Symbols of Companies belonging to Sector: {}" ,sector);
+		logger.info("Fetching Company Symbols of Companies belonging to Sector: {}", sector);
 		return sectorstocksService.getCompanySymbolBySector(sector);
 	}
 
@@ -51,8 +63,19 @@ public class SectorStocksController {
 		return sectorstocksService.getDistinctSectors();
 	}
 
+	public RestTemplate restService(RestTemplateBuilder restTemplateBuilder) {
+		return this.restTemplate = restTemplateBuilder.build();
+	}
+
+	@GetMapping(value = "/getNews")
+	public @ResponseBody Articles[] showNews() throws NullPointerException {
+		restService(new RestTemplateBuilder());
+		String url = "https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=fe85013235624481abbe65c9f37baf27";
+		try {
+			return this.restTemplate.exchange(url, HttpMethod.GET, null, NewsData.class).getBody().getArticles();
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
 }
-
-
-
-

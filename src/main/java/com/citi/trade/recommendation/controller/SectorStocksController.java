@@ -64,7 +64,8 @@ public class SectorStocksController {
 	}
 
 	public RestTemplate restService(RestTemplateBuilder restTemplateBuilder) {
-		return this.restTemplate = restTemplateBuilder.build();
+		this.restTemplate = restTemplateBuilder.build();
+		return this.restTemplate;
 	}
 
 	@GetMapping(value = "/getNews")
@@ -73,8 +74,8 @@ public class SectorStocksController {
 		String url = "https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=fe85013235624481abbe65c9f37baf27";
 		try {
 			return this.restTemplate.exchange(url, HttpMethod.GET, null, NewsData.class).getBody().getArticles();
-		} catch (Exception e) {
-			return null;
+		} catch (NullPointerException e) {
+			return new Articles[0];
 		}
 
 	}

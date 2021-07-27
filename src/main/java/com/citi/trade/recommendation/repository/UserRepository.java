@@ -45,6 +45,7 @@ public class UserRepository {
 			if (temp != null) {
 				if (!temp.getPassword().equals(password.replaceAll("\\s", ""))) {
 					logger.error("Enter the correct Password!");
+					return null;
 				}
 			} else {
 				logger.error("User not found in database");

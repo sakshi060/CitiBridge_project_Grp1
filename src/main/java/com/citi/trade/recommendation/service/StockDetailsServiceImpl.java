@@ -107,24 +107,28 @@ public class StockDetailsServiceImpl implements StockDetailsService {
 		StockDetails topPerformingStock = new StockDetails();
 		if (userId != null) {
 			List<String> companySymbols = userHistoryService.getCompanySymbolsSavedByUserId(userId);
-			List<StockObject> stocksList = new ArrayList<>();
-			List<StockDetails> sortedStocksList = new ArrayList<>();
-			try {
-				stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			for (int i = 0; i < companySymbols.size(); i++) {
+			if (!ObjectUtils.isEmpty(companySymbols)) {
+				List<StockObject> stocksList = new ArrayList<>();
+				List<StockDetails> sortedStocksList = new ArrayList<>();
 				try {
-					StockDetails stockDetails = setStockDetails(stocksList.get(i));
-					sortedStocksList.add(stockDetails);
-					logger.info("Top Performing Stock found!");
+					stocksList = sortStocks.sort(companySymbols, SortingParameterList.MARKET_CAP.toString());
 				} catch (Exception e) {
-					logger.error("Top Performing Stock not found!");
 					e.printStackTrace();
 				}
+				for (int i = 0; i < companySymbols.size(); i++) {
+					try {
+						StockDetails stockDetails = setStockDetails(stocksList.get(i));
+						sortedStocksList.add(stockDetails);
+						logger.info("Top Performing Stock found!");
+					} catch (Exception e) {
+						logger.error("Top Performing Stock not found!");
+						e.printStackTrace();
+					}
+				}
+				topPerformingStock = sortedStocksList.get(0);
+			} else {
+				topPerformingStock = null;
 			}
-			topPerformingStock = sortedStocksList.get(0);
 		}
 		return topPerformingStock;
 	}

@@ -30,7 +30,7 @@ class UserServiceTest {
 	@BeforeEach
 	void setUp() {
 		String userName = "XYZ";
-		String password = "MzIxbmFyaUsNCg==";
+		String password = "MzIxWllY";
 		user.setUserId(userName);
 		user.setPassword(password);
 	}

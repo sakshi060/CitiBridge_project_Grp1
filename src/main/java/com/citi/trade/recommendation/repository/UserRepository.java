@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.citi.trade.recommendation.model.UserMaster;
+import com.citi.trade.recommendation.service.UserServiceImpl;
 
 @Repository
 public class UserRepository {
@@ -18,10 +19,14 @@ public class UserRepository {
 	public boolean addUser(UserMaster user) {
 		// Saves Sector wise Stocks
 		try {
+
+			UserServiceImpl userServiceImpl = new UserServiceImpl();
+			String password = userServiceImpl.decodeString(user.getPassword());
+
 			logger.info("Inserting into database User {} ", user.getUserId());
 
 			int added = template.update("insert into user_master(user_id,password) values(?,?)", user.getUserId(),
-					user.getPassword());
+					password);
 
 			if (added == 1) {
 				logger.info("Insertion Successful for User {}", user.getUserId());

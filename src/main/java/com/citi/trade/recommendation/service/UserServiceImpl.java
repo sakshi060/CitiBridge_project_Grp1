@@ -1,16 +1,15 @@
 package com.citi.trade.recommendation.service;
 
+import java.util.Base64;
 
-import com.citi.trade.recommendation.model.UserMaster;
-import com.citi.trade.recommendation.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Base64;
-
+import com.citi.trade.recommendation.model.UserMaster;
+import com.citi.trade.recommendation.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,8 +24,8 @@ public class UserServiceImpl implements UserService {
 		// checks if user present in database and password matches
 
 		UserMaster checkuser = null;
-		if(userObject!=null && !ObjectUtils.isEmpty(userObject.getUserId()) && !ObjectUtils.isEmpty(userObject.getPassword()) )
-		{
+		if (userObject != null && !ObjectUtils.isEmpty(userObject.getUserId())
+				&& !ObjectUtils.isEmpty(userObject.getPassword())) {
 			String password = decodeString(userObject.getPassword());
 			checkuser = userRepository.checkLogin(userObject, password);
 			if (checkuser != null) {

@@ -19,6 +19,7 @@ com\citi\trade\recommendation\service\UserService.class
 com\citi\trade\recommendation\model\StockObject.class
 com\citi\trade\recommendation\model\UserMaster.class
 com\citi\trade\recommendation\service\SectorStocksService.class
+com\citi\trade\recommendation\util\PasswordUtil.class
 com\citi\trade\recommendation\service\StockDetailsServiceImpl.class
 com\citi\trade\recommendation\service\UserServiceImpl.class
 com\citi\trade\recommendation\model\UserHistory.class

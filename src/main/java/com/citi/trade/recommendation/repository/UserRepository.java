@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.citi.trade.recommendation.model.UserMaster;
-import com.citi.trade.recommendation.service.UserServiceImpl;
+import com.citi.trade.recommendation.util.PasswordUtil;
 
 @Repository
 public class UserRepository {
@@ -20,8 +20,7 @@ public class UserRepository {
 		// Saves Sector wise Stocks
 		try {
 
-			UserServiceImpl userServiceImpl = new UserServiceImpl();
-			String password = userServiceImpl.decodeString(user.getPassword());
+			String password = PasswordUtil.decodeString(user.getPassword());
 
 			logger.info("Inserting into database User {} ", user.getUserId());
 
